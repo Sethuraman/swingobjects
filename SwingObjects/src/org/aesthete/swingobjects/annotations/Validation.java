@@ -7,6 +7,9 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Validate {
-	public Validation[] value();
+public @interface Validation {
+	public String action() default "ALL";
+	public ValidateTypes[] value();
+	public String customFormat() default "";
+	public String errMsg() default "";
 }

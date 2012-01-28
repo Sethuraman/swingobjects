@@ -11,11 +11,13 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.aesthete.swingobjects.YesNo;
 import org.aesthete.swingobjects.annotations.Action;
 import org.aesthete.swingobjects.annotations.DataClass;
+import org.aesthete.swingobjects.annotations.Trim;
 import org.aesthete.swingobjects.annotations.Validate;
 import org.aesthete.swingobjects.annotations.ValidateTypes;
-import org.aesthete.swingobjects.annotations.Validator;
+import org.aesthete.swingobjects.annotations.Validation;
 import org.aesthete.swingobjects.view.FrameFactory;
 
 @DataClass(TestData.class)
@@ -23,19 +25,20 @@ public class CompTest extends JFrame{
 
 	private static final long serialVersionUID = 1L;
 
-	@Validate({@Validator({ValidateTypes.Required,ValidateTypes.Date})})
+	@Validate({@Validation({ValidateTypes.Required,ValidateTypes.Date})})
 	private JTextField tftest;
-	
-	@Validate({@Validator({ValidateTypes.Required})})
+
+	@Validate({@Validation({ValidateTypes.Required})})
+	@Trim(YesNo.NO)
 	private JTextField tftest1;
-	
+
 	private JComboBox cbCombo;
-	
+
 	private JCheckBox chkBx;
-	
-	
+
+
 	private JButton btntest;
-	
+
 	public CompTest() {
 		JPanel panel=new JPanel();
 		panel.setLayout(new FlowLayout());
@@ -46,7 +49,7 @@ public class CompTest extends JFrame{
 		btntest.setActionCommand("btntest");
 		tftest1=new JTextField();
 		tftest1.setColumns(20);
-		
+
 		cbCombo=new JComboBox(new String[]{"Yes","No"});
 		chkBx=new JCheckBox("Is to be checked?");
 		panel.add(tftest);
@@ -57,12 +60,12 @@ public class CompTest extends JFrame{
 		this.setContentPane(panel);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-	
+
 	@Action("tftest")
 	public void test1(ActionEvent e){
 		System.out.println(tftest.getText());
 	}
-	
+
 	@Action("btntest")
 	public void test2(ActionEvent e){
 		System.out.println("button clicked");
