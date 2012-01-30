@@ -8,21 +8,5 @@ package org.aesthete.swingobjects.view;
  * @author sethu
  *
  */
-public abstract class Components {
-
-	public boolean validate(String action) {
-
-		return validateLocally(action);
-	}
-
-	/**
-	 * Override this method if you would like to perform validations on UI components that haven't been annotated
-	 * or you would like to any additional validations.
-	 * @param action - String
-	 * @return  true if validation is successful, false if not
-	 */
-	public boolean validateLocally(String action) {
-		return true;
-	}
-
+public interface Components {
 }

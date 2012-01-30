@@ -7,7 +7,6 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import org.aesthete.swingobjects.CommonUtilities;
 import org.aesthete.swingobjects.exceptions.ErrorSeverity;
 import org.aesthete.swingobjects.exceptions.SwingObjectRunException;
 import org.apache.commons.beanutils.MethodUtils;

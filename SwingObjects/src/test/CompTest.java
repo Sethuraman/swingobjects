@@ -13,27 +13,27 @@ import javax.swing.JTextField;
 
 import org.aesthete.swingobjects.YesNo;
 import org.aesthete.swingobjects.annotations.Action;
-import org.aesthete.swingobjects.annotations.DataClass;
+import org.aesthete.swingobjects.annotations.DataBeanName;
+import org.aesthete.swingobjects.annotations.Required;
+import org.aesthete.swingobjects.annotations.ShouldBeEmpty;
 import org.aesthete.swingobjects.annotations.Trim;
-import org.aesthete.swingobjects.annotations.Validate;
-import org.aesthete.swingobjects.annotations.ValidateTypes;
-import org.aesthete.swingobjects.annotations.Validation;
 import org.aesthete.swingobjects.view.FrameFactory;
 
-@DataClass(TestData.class)
 public class CompTest extends JFrame{
 
 	private static final long serialVersionUID = 1L;
 
-	@Validate({@Validation({ValidateTypes.Required,ValidateTypes.Date})})
+	@Required
 	private JTextField tftest;
 
-	@Validate({@Validation({ValidateTypes.Required})})
+	@Required
 	@Trim(YesNo.NO)
 	private JTextField tftest1;
 
+	@ShouldBeEmpty
 	private JComboBox cbCombo;
 
+	
 	private JCheckBox chkBx;
 
 
