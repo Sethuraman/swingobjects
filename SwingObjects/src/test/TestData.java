@@ -2,6 +2,10 @@ package test;
 
 import java.lang.reflect.InvocationTargetException;
 
+import javax.swing.JTextField;
+import javax.swing.text.JTextComponent;
+
+import org.aesthete.swingobjects.datamap.converters.JTextComponentConverter;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.DynaBean;
 import org.apache.commons.beanutils.LazyDynaBean;
@@ -50,16 +54,10 @@ public class TestData {
 
 	public static void main(String[] args) {
 		try {
-			MutableDynaClass dynaClass = new LazyDynaClass();
-			dynaClass.add("name", String.class);
-			dynaClass.add("age", Integer.class);
+			TestData bean = new TestData();
+			PropertyUtils.setProperty(bean, "tftest", "something");
+			System.out.println(bean.getTftest());
 
-			DynaBean dynaBean = new LazyDynaBean(dynaClass);
-			dynaBean.set("name", "Ashu");
-			dynaBean.set("age", "28");
-
-			
-			System.out.println(dynaBean.get("age"));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

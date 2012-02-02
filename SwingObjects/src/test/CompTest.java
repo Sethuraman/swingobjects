@@ -11,14 +11,21 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.aesthete.swingobjects.SwingObjectsInit;
 import org.aesthete.swingobjects.YesNo;
 import org.aesthete.swingobjects.annotations.Action;
 import org.aesthete.swingobjects.annotations.DataBeanName;
 import org.aesthete.swingobjects.annotations.Required;
 import org.aesthete.swingobjects.annotations.ShouldBeEmpty;
 import org.aesthete.swingobjects.annotations.Trim;
+import org.aesthete.swingobjects.datamap.DataMapper;
+import org.aesthete.swingobjects.datamap.SwingObjData;
+import org.aesthete.swingobjects.exceptions.SwingObjectException;
+import org.aesthete.swingobjects.scope.RequestScope;
+import org.aesthete.swingobjects.scope.RequestScopeObject;
 import org.aesthete.swingobjects.view.FrameFactory;
 
+@DataBeanName("CompTest")
 public class CompTest extends JFrame{
 
 	private static final long serialVersionUID = 1L;
@@ -33,9 +40,7 @@ public class CompTest extends JFrame{
 	@ShouldBeEmpty
 	private JComboBox cbCombo;
 
-	
 	private JCheckBox chkBx;
-
 
 	private JButton btntest;
 
@@ -59,6 +64,7 @@ public class CompTest extends JFrame{
 		panel.add(btntest);
 		this.setContentPane(panel);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 	}
 
 	@Action("tftest")
@@ -69,11 +75,22 @@ public class CompTest extends JFrame{
 	@Action("btntest")
 	public void test2(ActionEvent e){
 		System.out.println("button clicked");
+		DataMapper.mapData(this);
+		RequestScopeObject scopeObj=RequestScope.getRequestObj();
+		SwingObjData objData=(SwingObjData)scopeObj.getObjectFromMap("CompTest");
+		System.out.println(objData.getValue("tftest").asString());
+
 	}
 	public static void main(String[] args) {
-		CompTest test=FrameFactory.getNewContainer("test", CompTest.class);
-		test.pack();
-		test.setVisible(true);
-		test.setPreferredSize(new Dimension(200, 200));
+		try {
+			SwingObjectsInit.init("/swingobjects.properties");
+			CompTest test=FrameFactory.getNewContainer("test", CompTest.class);
+			test.pack();
+			test.setVisible(true);
+			test.setPreferredSize(new Dimension(200, 200));
+		} catch (SwingObjectException e) {
+			e.printStackTrace();
+		}
+
 	}
 }
