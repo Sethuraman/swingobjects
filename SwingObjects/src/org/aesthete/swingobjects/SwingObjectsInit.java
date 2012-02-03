@@ -9,10 +9,10 @@ import javax.swing.JToggleButton;
 import javax.swing.text.JTextComponent;
 
 import org.aesthete.swingobjects.datamap.converters.ConverterUtils;
-import org.aesthete.swingobjects.datamap.converters.JComboBoxConverter;
-import org.aesthete.swingobjects.datamap.converters.JTextComponentConverter;
-import org.aesthete.swingobjects.datamap.converters.JToggleButtonConverter;
-import org.aesthete.swingobjects.datamap.converters.SwingObjTableConverter;
+import org.aesthete.swingobjects.datamap.converters.ConverterUtils.JComboBoxConverter;
+import org.aesthete.swingobjects.datamap.converters.ConverterUtils.JTextComponentConverter;
+import org.aesthete.swingobjects.datamap.converters.ConverterUtils.JToggleButtonConverter;
+import org.aesthete.swingobjects.datamap.converters.ConverterUtils.SwingObjTableConverter;
 import org.aesthete.swingobjects.exceptions.ErrorSeverity;
 import org.aesthete.swingobjects.exceptions.SwingObjectException;
 import org.aesthete.swingobjects.view.table.SwingObjTable;

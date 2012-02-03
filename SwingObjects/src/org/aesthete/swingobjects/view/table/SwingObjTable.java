@@ -8,17 +8,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultCellEditor;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
-import org.aesthete.swingobjects.datamap.converters.SwingObjTableConverter;
 import org.aesthete.swingobjects.exceptions.ErrorSeverity;
 import org.aesthete.swingobjects.exceptions.SwingObjectRunException;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.jdesktop.swingx.JXTable;
-import org.jdesktop.swingx.decorator.Highlighter;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
-import org.jdesktop.swingx.renderer.DefaultListRenderer;
 import org.jdesktop.swingx.renderer.DefaultTableRenderer;
 import org.jdesktop.swingx.table.TableColumnExt;
 
@@ -90,11 +91,19 @@ public class SwingObjTable<T> extends JXTable {
 
 	public void makeColumnsIntoComboBox(Object[] values,int... cols){
 		for(int col : cols){
-			getColumnExt(col).setCellRenderer((new DefaultListRenderer(new ComboBoxProvider(values))));
+			getColumnExt(col).setCellRenderer((new DefaultTableRenderer(new ComboBoxProvider(new DefaultComboBoxModel(values)))));
+			getColumnExt(col).setCellEditor(new ComboBoxEditor(new DefaultComboBoxModel(values)));
 		}
 	}
+
+	public static class ComboBoxEditor extends DefaultCellEditor {
+        public ComboBoxEditor(ComboBoxModel model) {
+            super(new JComboBox(model));
+        }
+    }
+
 	/**
-	 * This method has serious performance issues when huge set of rows (tested with 3000) 
+	 * This method has serious performance issues when huge set of rows (tested with 3000)
 	 * is added. This method makes use of the same things described here:
 	 * <a href="http://home.java.net/node/688840">http://home.java.net/node/688840</a>
 	 * @param cols
@@ -117,16 +126,16 @@ public class SwingObjTable<T> extends JXTable {
 					setRowHeight(row, rowHeight);
 				}
 			}
-	
+
 			public void componentMoved(ComponentEvent e) {
 			}
-	
+
 			public void componentShown(ComponentEvent e) {
 			}
-	
+
 			public void componentHidden(ComponentEvent e) {
 			}
-		});	
+		});
 	}
 
 	/**
@@ -134,7 +143,7 @@ public class SwingObjTable<T> extends JXTable {
 	 * {@link SwingObjTableConverter} there will be errors while working with
 	 * generic types. Ensure that the List passed in has only T objects stored
 	 * in it.
-	 * 
+	 *
 	 * @param data
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })

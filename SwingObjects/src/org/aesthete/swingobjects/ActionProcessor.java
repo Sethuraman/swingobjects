@@ -1,5 +1,7 @@
 package org.aesthete.swingobjects;
 
+import java.awt.Color;
+import java.awt.Container;
 import java.awt.Cursor;
 import java.lang.reflect.Field;
 import java.util.regex.Matcher;
@@ -17,8 +19,11 @@ import javax.swing.text.JTextComponent;
 import org.aesthete.swingobjects.annotations.Required;
 import org.aesthete.swingobjects.annotations.ShouldBeEmpty;
 import org.aesthete.swingobjects.annotations.Trim;
+import org.aesthete.swingobjects.datamap.DataMapper;
 import org.aesthete.swingobjects.exceptions.ErrorSeverity;
 import org.aesthete.swingobjects.exceptions.SwingObjectRunException;
+import org.aesthete.swingobjects.util.FieldCallback;
+import org.aesthete.swingobjects.util.ReflectionUtils;
 import org.aesthete.swingobjects.view.Components;
 import org.aesthete.swingobjects.view.FrameFactory;
 import org.aesthete.swingobjects.workers.CommonSwingWorker;
@@ -27,11 +32,13 @@ import org.apache.commons.lang3.StringUtils;
 public class ActionProcessor {
 
 	public enum CLIENT_PROPS{BORDER,ENABLED,TOOLTIP};
+	boolean isError=false;
 
 	public static void processAction(Object container,CommonSwingWorker swingworker){
 		try{
-			initCompsBeforeAction(container);
-			if(performUIValidations(container,swingworker)) {
+			ActionProcessor processor=new ActionProcessor();
+			processor.initCompsBeforeAction(container);
+			if(processor.performUIValidations(container,swingworker)) {
 			}
 		}catch(Exception e){
 			throw new SwingObjectRunException("Error processing action", e,
@@ -39,36 +46,52 @@ public class ActionProcessor {
 		}
 	}
 
+	private boolean performUIValidations(final Object container, final CommonSwingWorker swingworker) throws IllegalArgumentException, IllegalAccessException {
+		ReflectionUtils.iterateOverFields(container.getClass(), Container.class, new FieldCallback() {
+			private boolean isComponents;
+			private Required reqAnno;
+			private ShouldBeEmpty empty;
 
-	private static boolean performUIValidations(Object container, CommonSwingWorker swingworker) throws IllegalArgumentException, IllegalAccessException {
-		Field[] fields=container.getClass().getDeclaredFields();
-		boolean isError=false;
-		for(Field field:fields){
-			field.setAccessible(true);
-			Object prop=field.get(container);
-			if(prop instanceof Components) {
-				isError=performUIValidations(prop, swingworker);
-			} else {
-				Required reqAnno = field.getAnnotation(Required.class);
-				ShouldBeEmpty empty=field.getAnnotation(ShouldBeEmpty.class);
-				if(reqAnno!=null || empty!=null) {
-					isError=checkForRequired(reqAnno!=null,
-							reqAnno!=null? reqAnno.errorMsg() : empty.errorMsg(),
-							reqAnno!=null? reqAnno.value() : empty.value(),		
-									field,container,swingworker.getAction());
+			@Override
+			public boolean filter(Field field) {
+				field.setAccessible(true);
+				reqAnno = field.getAnnotation(Required.class);
+				empty = field.getAnnotation(ShouldBeEmpty.class);
+				if(Components.class.isAssignableFrom(field.getType())) {
+					isComponents=true;
+					return true;
+				}else if(reqAnno!=null || empty!=null){
+					return true;
+				}
+				return false;
+			}
+
+			@Override
+			public void consume(Field field) {
+				try {
+					if(isComponents) {
+						isError=performUIValidations(field.get(container), swingworker);
+					}else {
+						isError=checkForRequired(reqAnno!=null,
+								reqAnno!=null? reqAnno.errorMsg() : empty.errorMsg(),
+								reqAnno!=null? reqAnno.value() : empty.value(),
+										field,container,swingworker.getAction());
+					}
+				}catch(Exception e){
+					throw new SwingObjectRunException("Error occured while accessing fields to validate", e, ErrorSeverity.SEVERE, DataMapper.class);
 				}
 			}
-		}
+		});
 		return isError;
 	}
 
 
-	private static boolean checkForRequired(boolean isRequired, String msg, String[] actions,
+	private boolean checkForRequired(boolean isRequired, String msg, String[] actions,
 			Field field, Object container,String action) throws IllegalArgumentException, IllegalAccessException {
-		if(actions==null || actions.length==0  
+		if(actions==null || actions.length==0
 			||	(actions.length>1 && "ALL".equals(actions[0]))
 			||  (actions.length>1 && StringUtils.isNotEmpty(action) &&	action.equals(actions[0]))){
-			
+
 			Object fieldObj = field.get(container);
 			if(fieldObj instanceof JComponent){
 				JComponent jcomponent = (JComponent)fieldObj;
@@ -105,16 +128,17 @@ public class ActionProcessor {
 						isError=true;
 					}
 				}
-				
+
 				if(isError){
 					String tooltip=jcomponent.getToolTipText();
 					if(StringUtils.isEmpty(tooltip)){
 						tooltip="<html>"+msg+"</html>";
 					}else{
-						tooltip=tooltip.replace(Pattern.quote("<html>"), 
+						tooltip=tooltip.replace(Pattern.quote("<html>"),
 								Matcher.quoteReplacement("<html>"+msg+"<br/>"));
 					}
 					jcomponent.setToolTipText(tooltip);
+					jcomponent.setBorder(BorderFactory.createLineBorder(Color.red));
 					return true;
 				}
 			}
@@ -123,7 +147,7 @@ public class ActionProcessor {
 	}
 
 
-	private static void initCompsBeforeAction(Object comp) throws IllegalArgumentException, IllegalAccessException{
+	private void initCompsBeforeAction(Object comp) throws IllegalArgumentException, IllegalAccessException{
 		Field[] fields=comp.getClass().getDeclaredFields();
 		for(Field field:fields){
 			field.setAccessible(true);
@@ -136,7 +160,7 @@ public class ActionProcessor {
 	}
 
 
-	private static void trimTexts(Field field, Object prop) {
+	private void trimTexts(Field field, Object prop) {
 		if(JTextComponent.class.isAssignableFrom(field.getClass())) {
 			JTextComponent txtComp=(JTextComponent)prop;
 
@@ -153,7 +177,7 @@ public class ActionProcessor {
 	}
 
 
-	private static void initComponent(Object prop) {
+	private void initComponent(Object prop) {
 		JComponent component = (JComponent)prop;
 		Border savedBorder=(Border)component.getClientProperty(CLIENT_PROPS.BORDER);
 		if(savedBorder==null){
@@ -171,7 +195,7 @@ public class ActionProcessor {
 		component.setEnabled(false);
 
 		component.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-		
+
 		String tooltip=(String)component.getClientProperty(CLIENT_PROPS.TOOLTIP);
 		if(tooltip==null){
 			component.putClientProperty(CLIENT_PROPS.TOOLTIP, component.getToolTipText()==null ? "" : component.getToolTipText());

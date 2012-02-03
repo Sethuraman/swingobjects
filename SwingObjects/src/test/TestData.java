@@ -7,7 +7,7 @@ import javax.swing.JComboBox;
 
 import org.aesthete.swingobjects.annotations.Column;
 import org.aesthete.swingobjects.view.table.SwingObjTable;
-import org.apache.commons.beanutils.PropertyUtils;
+
 
 public class TestData {
 
@@ -21,9 +21,9 @@ public class TestData {
 	private boolean chkBx;
 
 	public TestData(){
-		
+
 	}
-	
+
 	public TestData(String tftest, String tftest1, String cbCombo, boolean chkBx) {
 		super();
 		this.tftest = tftest;
@@ -67,10 +67,11 @@ public class TestData {
 	public static void main(String[] args) {
 		try {
 			SwingObjTable<TestData> testdata=new SwingObjTable<TestData>(TestData.class);
-			
+
 			List<String> strings=new ArrayList<String>();
-			
+
 			List<?> check=(List<?>)strings;
+
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
