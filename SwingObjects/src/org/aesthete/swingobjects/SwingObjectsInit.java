@@ -12,8 +12,10 @@ import org.aesthete.swingobjects.datamap.converters.ConverterUtils;
 import org.aesthete.swingobjects.datamap.converters.JComboBoxConverter;
 import org.aesthete.swingobjects.datamap.converters.JTextComponentConverter;
 import org.aesthete.swingobjects.datamap.converters.JToggleButtonConverter;
+import org.aesthete.swingobjects.datamap.converters.SwingObjTableConverter;
 import org.aesthete.swingobjects.exceptions.ErrorSeverity;
 import org.aesthete.swingobjects.exceptions.SwingObjectException;
+import org.aesthete.swingobjects.view.table.SwingObjTable;
 import org.apache.log4j.PropertyConfigurator;
 
 public class SwingObjectsInit {
@@ -37,6 +39,7 @@ public class SwingObjectsInit {
 		ConverterUtils.registerConverter(JTextComponent.class, new JTextComponentConverter());
 		ConverterUtils.registerConverter(JComboBox.class, new JComboBoxConverter());
 		ConverterUtils.registerConverter(JToggleButton.class, new JToggleButtonConverter());
+		ConverterUtils.registerConverter(SwingObjTable.class, new SwingObjTableConverter());
 	}
 
 	private static void configureLog4j() throws IOException {

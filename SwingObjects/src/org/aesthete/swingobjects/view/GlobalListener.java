@@ -9,7 +9,7 @@ import java.util.Map;
 import org.aesthete.swingobjects.annotations.Action;
 import org.aesthete.swingobjects.exceptions.ErrorSeverity;
 import org.aesthete.swingobjects.exceptions.SwingObjectRunException;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class GlobalListener implements ActionListener{
 

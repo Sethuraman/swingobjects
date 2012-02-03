@@ -15,6 +15,7 @@ import org.aesthete.swingobjects.exceptions.SwingObjectRunException;
 import org.aesthete.swingobjects.util.FieldCallback;
 import org.aesthete.swingobjects.util.ReflectionUtils;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang3.ClassUtils;
 
 public class SwingObjTableModel<T extends Object> extends AbstractTableModel{
 
@@ -28,7 +29,7 @@ public class SwingObjTableModel<T extends Object> extends AbstractTableModel{
 		this.t=t;
 		columns=new HashMap<Integer, ColumnInfo>();
 		init();
-		rows=new ArrayList<T>(columns.size());
+		rows=new ArrayList<T>();
 	}
 
 	private void init() {
@@ -46,10 +47,14 @@ public class SwingObjTableModel<T extends Object> extends AbstractTableModel{
 				info.setFieldName(field.getName());
 				info.setIndex(column.index());
 				info.setHeading(column.name());
-				info.setType(field.getType());
 				info.setEditable(column.editable());
 				if(column.editable()) {
 					isTableEditable=true;
+				}
+				if(column.type()==Class.class){
+					info.setType(ClassUtils.primitiveToWrapper(field.getType()));
+				}else{
+					info.setType(column.type());
 				}
 				columns.put(column.index(), info);
 			}

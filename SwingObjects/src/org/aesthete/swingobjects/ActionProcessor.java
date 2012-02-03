@@ -22,7 +22,7 @@ import org.aesthete.swingobjects.exceptions.SwingObjectRunException;
 import org.aesthete.swingobjects.view.Components;
 import org.aesthete.swingobjects.view.FrameFactory;
 import org.aesthete.swingobjects.workers.CommonSwingWorker;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class ActionProcessor {
 

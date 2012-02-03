@@ -1,24 +1,36 @@
 package test;
 
-import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.swing.JTextField;
-import javax.swing.text.JTextComponent;
+import javax.swing.JComboBox;
 
-import org.aesthete.swingobjects.datamap.converters.JTextComponentConverter;
-import org.apache.commons.beanutils.ConvertUtils;
-import org.apache.commons.beanutils.DynaBean;
-import org.apache.commons.beanutils.LazyDynaBean;
-import org.apache.commons.beanutils.LazyDynaClass;
-import org.apache.commons.beanutils.MutableDynaClass;
+import org.aesthete.swingobjects.annotations.Column;
+import org.aesthete.swingobjects.view.table.SwingObjTable;
 import org.apache.commons.beanutils.PropertyUtils;
 
 public class TestData {
 
+	@Column(name="Column 1",index=0)
 	private String tftest = "test";
+	@Column(name="Column 2",index=1,editable=true)
 	private String tftest1;
+	@Column(name="Column 3",index=2,editable=true,type=JComboBox.class)
 	private String cbCombo;
+	@Column(name="Column 4",index=3,editable=true)
 	private boolean chkBx;
+
+	public TestData(){
+		
+	}
+	
+	public TestData(String tftest, String tftest1, String cbCombo, boolean chkBx) {
+		super();
+		this.tftest = tftest;
+		this.tftest1 = tftest1;
+		this.cbCombo = cbCombo;
+		this.chkBx = chkBx;
+	}
 
 	public String getCbCombo() {
 		return cbCombo;
@@ -54,9 +66,11 @@ public class TestData {
 
 	public static void main(String[] args) {
 		try {
-			TestData bean = new TestData();
-			PropertyUtils.setProperty(bean, "tftest", "something");
-			System.out.println(bean.getTftest());
+			SwingObjTable<TestData> testdata=new SwingObjTable<TestData>(TestData.class);
+			
+			List<String> strings=new ArrayList<String>();
+			
+			List<?> check=(List<?>)strings;
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

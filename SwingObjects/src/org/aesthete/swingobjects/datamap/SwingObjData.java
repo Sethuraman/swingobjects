@@ -61,6 +61,11 @@ public class SwingObjData extends LazyDynaBean {
 	}
 
 	public DataWrapper getValue(String key) {
-		return new DataWrapper(get(key));
+		Object value = get(key);
+		if(value instanceof DataWrapper){
+			return (DataWrapper)value;
+		}else{
+			return new DataWrapper(value);
+		}
 	}
 }

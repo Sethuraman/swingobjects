@@ -10,5 +10,6 @@ import java.lang.annotation.Target;
 public @interface Column {
 	public int index();
 	public String name();
-	public boolean editable();
+	public boolean editable() default false;
+	public Class<?> type() default Class.class;
 }
