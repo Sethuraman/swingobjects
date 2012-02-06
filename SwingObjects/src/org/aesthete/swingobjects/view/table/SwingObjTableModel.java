@@ -157,8 +157,7 @@ public class SwingObjTableModel<T extends Object> extends AbstractTableModel{
 				return null;
 			} else {
 				if (rows.size() <= row) {
-					throw new SwingObjectRunException(String.format("SwingObjTableModel rows-%s less than row %s", rows.size(), row), null,
-							ErrorSeverity.SEVERE, SwingObjTableModel.class);
+					throw new SwingObjectRunException(ErrorSeverity.SEVERE,String.format("SwingObjTableModel rows-%s less than row %s", rows.size(), row), SwingObjTableModel.class);
 				} else {
 					T t = rows.get(row);
 					if (t == null) {
@@ -168,7 +167,7 @@ public class SwingObjTableModel<T extends Object> extends AbstractTableModel{
 				}
 			}
 		} catch (Exception e) {
-			throw new SwingObjectRunException("Error while setting value into Table Model", e, ErrorSeverity.SEVERE, SwingObjTableModel.class);
+			throw new SwingObjectRunException(ErrorSeverity.SEVERE,"Error while setting value into Table Model", SwingObjTableModel.class);
 		}
 	}
 

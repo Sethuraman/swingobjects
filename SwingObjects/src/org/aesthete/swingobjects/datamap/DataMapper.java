@@ -30,8 +30,7 @@ public class DataMapper {
 				scopeObj.putObjectInMap(beanName, swingObjdata);
 			}
 		} catch (Exception e) {
-			throw new SwingObjectRunException("Error processing action", e,
-					ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException(e,ErrorSeverity.SEVERE, FrameFactory.class);
 
 		}
 	}
@@ -65,7 +64,7 @@ public class DataMapper {
 						objData.setUnchanged(name, swingObjdata);
 					}
 				}catch(Exception e){
-					throw new SwingObjectRunException("Error occured while accessing fields", e, ErrorSeverity.SEVERE, DataMapper.class);
+					throw new SwingObjectRunException(e, ErrorSeverity.SEVERE, DataMapper.class);
 				}
 			}
 		});

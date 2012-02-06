@@ -50,10 +50,10 @@ public class DataWrapper {
 			}else if(value instanceof String[]) {
 				return (String[])value;
 			}else {
-				throw new SwingObjectRunException("Error converting", null, ErrorSeverity.SEVERE, FrameFactory.class);
+				throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
 			}
 		}catch (Exception e) {
-			throw new SwingObjectRunException("Error converting", e, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( e, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 
@@ -81,7 +81,7 @@ public class DataWrapper {
 				return null;
 			}
 		} catch (Exception e) {
-			throw new SwingObjectRunException("Error converting", e, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( e, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 
@@ -112,7 +112,7 @@ public class DataWrapper {
 				return null;
 			}
 		} catch (Exception e) {
-			throw new SwingObjectRunException("Error converting", e, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( e, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 
@@ -136,7 +136,7 @@ public class DataWrapper {
 
 			return (check == null) ? false : isTrue(check);
 		} catch (Exception e) {
-			throw new SwingObjectRunException("Error converting", e, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( e, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 
@@ -173,7 +173,7 @@ public class DataWrapper {
 				return Boolean.FALSE;
 			}
 		} catch (Exception e) {
-			throw new SwingObjectRunException("Error converting", e, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( e, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 
@@ -205,7 +205,7 @@ public class DataWrapper {
 				return Integer.valueOf(asString()).intValue();
 			}
 		} catch (Exception e) {
-			throw new SwingObjectRunException("Error converting", e, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( e, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 
@@ -226,10 +226,10 @@ public class DataWrapper {
 			} else if (isString() || isDouble() || isFloat() || isBigDecimal() || isLong() || isShort() || isByte()) {
 				return new Integer(asString());
 			} else {
-				throw new SwingObjectRunException("Invalid type of Integer", null, ErrorSeverity.SEVERE, FrameFactory.class);
+				throw new SwingObjectRunException(null, ErrorSeverity.SEVERE, FrameFactory.class);
 			}
 		} catch (Exception e) {
-			throw new SwingObjectRunException("Illegal conversion", null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException(null, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 
@@ -266,7 +266,7 @@ public class DataWrapper {
 				return Integer.valueOf(asString()).byteValue();
 			}
 		} catch (Exception e) {
-			throw new SwingObjectRunException("Illegal conversion", null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException(null, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 
@@ -288,10 +288,10 @@ public class DataWrapper {
 			} else if (isString() || isDouble() || isFloat() || isInt() || isLong() || isShort() || isBigDecimal()) {
 				return new Byte(asString());
 			} else {
-				throw new SwingObjectRunException("invalid type for byte", null, ErrorSeverity.SEVERE, FrameFactory.class);
+				throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
 			}
 		} catch (Exception e) {
-			throw new SwingObjectRunException("Illegal conversion", null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException(null, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 
@@ -313,7 +313,7 @@ public class DataWrapper {
 				return ((String) value).getBytes();
 			}
 		} catch (Exception e) {
-			throw new SwingObjectRunException("Illegal conversion", null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 
 		return new byte[0];
@@ -349,7 +349,7 @@ public class DataWrapper {
 				return Integer.valueOf(asString()).shortValue();
 			}
 		} catch (Exception e) {
-			throw new SwingObjectRunException("Illegal conversion", null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 
@@ -370,10 +370,10 @@ public class DataWrapper {
 			} else if (isString() || isDouble() || isFloat() || isInt() || isLong() || isBigDecimal() || isByte()) {
 				return new Short(asString());
 			} else {
-				throw new SwingObjectRunException("Invalid type for short", null, ErrorSeverity.SEVERE, FrameFactory.class);
+				throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
 			}
 		} catch (Exception e) {
-			throw new SwingObjectRunException("Illegal conversion", null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 
@@ -407,7 +407,7 @@ public class DataWrapper {
 				return Integer.valueOf(asString()).longValue();
 			}
 		} catch (Exception e) {
-			throw new SwingObjectRunException("Illegal conversion", null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 
@@ -428,10 +428,10 @@ public class DataWrapper {
 			} else if (isString() || isDouble() || isFloat() || isInt() || isBigDecimal() || isShort() || isByte()) {
 				return new Long(asString());
 			} else {
-				throw new SwingObjectRunException("Invalida type for Long", null, ErrorSeverity.SEVERE, FrameFactory.class);
+				throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
 			}
 		} catch (Exception e) {
-			throw new SwingObjectRunException("Illegal conversion", null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 
@@ -466,7 +466,7 @@ public class DataWrapper {
 				return Integer.valueOf(asString()).doubleValue();
 			}
 		} catch (Exception e) {
-			throw new SwingObjectRunException("Illegal conversion", null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 
@@ -487,10 +487,10 @@ public class DataWrapper {
 			} else if (isString() || isBigDecimal() || isFloat() || isInt() || isLong() || isShort() || isByte()) {
 				return new Double(asString());
 			} else {
-				throw new SwingObjectRunException("Invalid type for double", null, ErrorSeverity.SEVERE, FrameFactory.class);
+				throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
 			}
 		} catch (Exception e) {
-			throw new SwingObjectRunException("Illegal conversion", null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 
@@ -524,7 +524,7 @@ public class DataWrapper {
 				return Integer.valueOf(asString()).floatValue();
 			}
 		} catch (Exception e) {
-			throw new SwingObjectRunException("Illegal conversion", null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 
@@ -545,10 +545,10 @@ public class DataWrapper {
 			} else if (isString() || isDouble() || isBigDecimal() || isInt() || isLong() || isShort() || isByte()) {
 				return new Float(asString());
 			} else {
-				throw new SwingObjectRunException("Incorrect float", null, ErrorSeverity.SEVERE, FrameFactory.class);
+				throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
 			}
 		} catch (Exception e) {
-			throw new SwingObjectRunException("Illegal conversion", null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 
@@ -584,9 +584,9 @@ public class DataWrapper {
 				return Time.valueOf(asString());
 			}
 		} catch (IllegalArgumentException a) {
-			throw new SwingObjectRunException("Illegal conversion", null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
 		} catch (Exception b) {
-			throw new SwingObjectRunException("Illegal conversion", null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 
@@ -620,9 +620,9 @@ public class DataWrapper {
 				return Timestamp.valueOf(asString());
 			}
 		} catch (IllegalArgumentException a) {
-			throw new SwingObjectRunException("Illegal conversion", null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
 		} catch (Exception b) {
-			throw new SwingObjectRunException("Illegal conversion", null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 
@@ -667,9 +667,9 @@ public class DataWrapper {
 				return java.sql.Date.valueOf(asString());
 			}
 		} catch (IllegalArgumentException a) {
-			throw new SwingObjectRunException("Illegal conversion", null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
 		} catch (Exception b) {
-			throw new SwingObjectRunException("Illegal conversion", null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 
@@ -723,9 +723,9 @@ public class DataWrapper {
 				return null;
 			}
 		} catch (IllegalArgumentException a) {
-			throw new SwingObjectRunException("Illegal conversion", null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
 		} catch (Exception b) {
-			throw new SwingObjectRunException("Illegal conversion", null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 

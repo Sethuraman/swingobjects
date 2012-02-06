@@ -39,11 +39,19 @@ public class ActionProcessor {
 			ActionProcessor processor=new ActionProcessor();
 			processor.initCompsBeforeAction(container);
 			if(processor.performUIValidations(container,swingworker)) {
+				
+			}else{
+				showErrorDialog();
 			}
 		}catch(Exception e){
-			throw new SwingObjectRunException("Error processing action", e,
-					ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException(e,ErrorSeverity.SEVERE, FrameFactory.class);
 		}
+	}
+
+	private static void showErrorDialog() {
+
+		
+		
 	}
 
 	private boolean performUIValidations(final Object container, final CommonSwingWorker swingworker) throws IllegalArgumentException, IllegalAccessException {
@@ -78,7 +86,7 @@ public class ActionProcessor {
 										field,container,swingworker.getAction());
 					}
 				}catch(Exception e){
-					throw new SwingObjectRunException("Error occured while accessing fields to validate", e, ErrorSeverity.SEVERE, DataMapper.class);
+					throw new SwingObjectRunException(e, ErrorSeverity.SEVERE, DataMapper.class);
 				}
 			}
 		});

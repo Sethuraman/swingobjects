@@ -15,6 +15,7 @@ import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
+import org.aesthete.swingobjects.datamap.converters.ConverterUtils.SwingObjTableConverter;
 import org.aesthete.swingobjects.exceptions.ErrorSeverity;
 import org.aesthete.swingobjects.exceptions.SwingObjectRunException;
 import org.apache.commons.beanutils.PropertyUtils;
@@ -84,8 +85,7 @@ public class SwingObjTable<T> extends JXTable {
 			this.setVisibleColumnCount(model.getColumns().size());
 			this.addHighlighter(HighlighterFactory.createAlternateStriping());
 		} catch (Exception e) {
-			throw new SwingObjectRunException("Error while initialising table",
-					e, ErrorSeverity.SEVERE, SwingObjTable.class);
+			throw new SwingObjectRunException(e, ErrorSeverity.SEVERE, SwingObjTable.class);
 		}
 	}
 
@@ -97,7 +97,9 @@ public class SwingObjTable<T> extends JXTable {
 	}
 
 	public static class ComboBoxEditor extends DefaultCellEditor {
-        public ComboBoxEditor(ComboBoxModel model) {
+		private static final long serialVersionUID = 1L;
+
+		public ComboBoxEditor(ComboBoxModel model) {
             super(new JComboBox(model));
         }
     }

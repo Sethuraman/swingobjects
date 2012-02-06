@@ -82,8 +82,7 @@ public class DateTextField extends JFormattedTextField implements Observer {
 			int x=getWidth()-22;
 			g.drawImage(img,x,1,20,getHeight()-2,null);
 		}catch (IOException e) {
-			throw new SwingObjectRunException("Error obtaining Date Text Field Component", e,
-					ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException(e,ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 }

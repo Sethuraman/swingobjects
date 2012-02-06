@@ -31,8 +31,7 @@ public class GlobalListener implements ActionListener{
 				try {
 					m.invoke(comp, e);
 				} catch (Exception exp) {
-					throw new SwingObjectRunException("Error invoking action methods", exp.getCause(),
-							ErrorSeverity.SEVERE, FrameFactory.class);
+					throw new SwingObjectRunException(exp.getCause(),ErrorSeverity.SEVERE, FrameFactory.class);
 				}
 			}
 		}

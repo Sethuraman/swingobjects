@@ -20,18 +20,16 @@ import org.apache.log4j.PropertyConfigurator;
 
 public class SwingObjectsInit {
 
-	public static void init(String swingObjPropsFromClasspath) throws SwingObjectException {
+	public static void init(String swingObjPropsFromClasspath,String errorPropsFromClasspath) throws SwingObjectException {
 		try {
 			configureLog4j();
-			SwingObjProps.init(swingObjPropsFromClasspath);
+			SwingObjProps.init(swingObjPropsFromClasspath,errorPropsFromClasspath);
 			FormLayoutConfig.init();
 			initConverters();
 		}catch(SwingObjectException e){
 			throw e;
 		} catch (Exception e) {
-			throw new SwingObjectException(
-					"Error initialising the swing objects framework", e,
-					ErrorSeverity.SEVERE, SwingObjectsInit.class);
+			throw new SwingObjectException(e,ErrorSeverity.SEVERE, SwingObjectsInit.class);
 		}
 	}
 

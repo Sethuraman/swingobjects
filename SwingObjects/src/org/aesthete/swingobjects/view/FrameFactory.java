@@ -31,8 +31,7 @@ public class FrameFactory {
 			framesetidsmap.put(comp, framesetid);
 			registerActionlistner(comp);
 		} catch (Exception e) {
-			throw new SwingObjectRunException("Error obtaining container", e,
-					ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException(e,ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 		return (T)comp;
 	}
