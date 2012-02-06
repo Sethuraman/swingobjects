@@ -2,6 +2,7 @@ package org.aesthete.swingobjects.view;
 
 import java.awt.Component;
 import java.awt.GraphicsConfiguration;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Window;
 import java.lang.reflect.Field;
@@ -93,7 +94,7 @@ public class CommonUI {
 		locateOnOpticalScreenCenter(frame);
 		frame.setVisible(true);
 	}
-	
+
 	 /**
      * Locates the given component on the screen's center.
      *
@@ -106,13 +107,20 @@ public class CommonUI {
     	int y = (int) ( bounds.getHeight() - component.getHeight() ) /2;
     	component.setLocation( x, y );
     }
-    
+
     public static void setIconImageForContainer(Window window){
     	String iconimg = SwingObjProps.getProperty("application-icon");
 		if(StringUtils.isNotEmpty(iconimg)){
 			window.setIconImage(new ImageIcon(CommonUI.class.getResource(iconimg)).getImage());
-    		
+
     	}
     }
+
+    public static ImageIcon getScaledImage(int width, int height, String imageLoc){
+		ImageIcon icon=new ImageIcon(CommonUI.class.getResource(imageLoc));
+		Image scaledImage=icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+		icon=new ImageIcon(scaledImage);
+		return icon;
+	}
 
 }

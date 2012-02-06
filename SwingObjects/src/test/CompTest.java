@@ -66,14 +66,14 @@ public class CompTest extends JFrame {
 			btntest.setActionCommand("btntest");
 			tftest1 = new JTextField();
 			tftest1.setColumns(20);
-			final TestData e = new TestData(
-					"test1",
-					"test2asfsdfsdfasfdsaf asdfasdflaslj ahfsadlkjal akjhfalkhas afkljhadf lkafl afhalhfal alskjhfad slkfhaasfdk fafsdlkh adfs",
-					"No", true);
+
 			table = new SwingObjTable<TestData>(TestData.class);
 			List<TestData> list = new ArrayList<TestData>() {
 				{
-					add(e);
+					add(new TestData(
+							"test1",
+							"test2asfsdfsdfasfdsaf asdfasdflaslj ahfsadlkjal akjhfalkhas afkljhadf lkafl afhalhfal alskjhfad slkfhaasfdk fafsdlkh adfs",
+							"No", true));
 					add(new TestData("test1", "test2", "Yes", true));
 					add(new TestData("test1", "test2", "No", true));
 					add(new TestData("test1", "test2", "Yes", true));
@@ -83,6 +83,8 @@ public class CompTest extends JFrame {
 			table.setData(list);
 			table.makeColumnsIntoTextArea(1);
 			table.makeColumnsIntoComboBox(new String[]{"Yes","No"}, 2);
+
+
 			cbCombo = new JComboBox(new String[] { "Yes", "No" });
 			chkBx = new JCheckBox("Is to be checked?");
 			SwingObjFormBuilder builder=new SwingObjFormBuilder(new FormLayout("5dlu,100dlu:grow,2dlu,100dlu,2dlu,50dlu,2dlu,100dlu,5dlu"));
@@ -118,7 +120,7 @@ public class CompTest extends JFrame {
 	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			SwingObjectsInit.init("/swingobjects.properties");
+			SwingObjectsInit.init("/swingobjects.properties","error.properties");
 			CompTest test = FrameFactory
 					.getNewContainer("test", CompTest.class);
 			test.pack();

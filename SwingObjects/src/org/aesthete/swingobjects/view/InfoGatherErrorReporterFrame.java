@@ -4,17 +4,19 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
 import org.aesthete.swingobjects.SwingObjProps;
+import org.aesthete.swingobjects.view.SwingObjFormBuilder.ButtonBarPos;
 import org.jdesktop.swingx.error.ErrorInfo;
 import org.jdesktop.swingx.error.ErrorReporter;
 
 import com.jgoodies.forms.layout.FormLayout;
 
-public class InfoGatherErrorReporterFrame implements ErrorReporter, ActionListener {
+public class InfoGatherErrorReporterFrame extends JFrame implements ErrorReporter, ActionListener {
 
 	private static final long serialVersionUID = 835506162586804557L;
 	private ErrorInfo info;
@@ -36,11 +38,11 @@ public class InfoGatherErrorReporterFrame implements ErrorReporter, ActionListen
 		initComponents();
 		layoutComponents();
 	}
-	
+
 	protected void layoutComponents() {
 		FormLayout layout = new FormLayout("10dlu:grow,fill:200dlu:grow,10dlu:grow", "");
 		SwingObjFormBuilder builder = new SwingObjFormBuilder(layout);
-		builder.addComponent(CommonComponentFactory.getBoldLabel("error.errorreport.enterdtls"));
+		builder.addComponent(CommonComponentFactory.getBoldLabelFromValue("Please briefly describe what you were doing when this error occured"));
 		builder.nextLine("fill:100dlu");
 		builder.addComponent(pnTxtArea);
 		builder.addButtonBar(1, ButtonBarPos.Center, null, btnSendEmail);
