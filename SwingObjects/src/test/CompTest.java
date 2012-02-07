@@ -1,7 +1,6 @@
 package test;
 
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,12 +9,12 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 
+import org.aesthete.swingobjects.ActionProcessor;
 import org.aesthete.swingobjects.SwingObjectsInit;
 import org.aesthete.swingobjects.YesNo;
 import org.aesthete.swingobjects.annotations.Action;
@@ -23,7 +22,6 @@ import org.aesthete.swingobjects.annotations.DataBeanName;
 import org.aesthete.swingobjects.annotations.Required;
 import org.aesthete.swingobjects.annotations.ShouldBeEmpty;
 import org.aesthete.swingobjects.annotations.Trim;
-import org.aesthete.swingobjects.datamap.DataMapper;
 import org.aesthete.swingobjects.datamap.SwingObjData;
 import org.aesthete.swingobjects.exceptions.SwingObjectException;
 import org.aesthete.swingobjects.scope.RequestScope;
@@ -32,7 +30,7 @@ import org.aesthete.swingobjects.view.FrameFactory;
 import org.aesthete.swingobjects.view.SwingObjFormBuilder;
 import org.aesthete.swingobjects.view.SwingObjFormBuilder.ButtonBarPos;
 import org.aesthete.swingobjects.view.table.SwingObjTable;
-import org.jdesktop.swingx.JXTable;
+import org.aesthete.swingobjects.workers.CommonSwingWorker;
 
 import com.jgoodies.forms.layout.FormLayout;
 
@@ -48,7 +46,7 @@ public class CompTest extends JFrame {
 	@Trim(YesNo.NO)
 	private JTextField tftest1;
 
-	@ShouldBeEmpty
+	@Required
 	private JComboBox cbCombo;
 
 	private JCheckBox chkBx;
@@ -60,11 +58,11 @@ public class CompTest extends JFrame {
 	public CompTest() {
 		try {
 			btntest = new JButton("Test");
-			tftest = new JTextField();
+			tftest = new JTextField("Check this out");
 			tftest.setColumns(20);
 			tftest.setActionCommand("tftest");
 			btntest.setActionCommand("btntest");
-			tftest1 = new JTextField();
+			tftest1 = new JTextField("123254562634");
 			tftest1.setColumns(20);
 
 			table = new SwingObjTable<TestData>(TestData.class);
@@ -108,19 +106,35 @@ public class CompTest extends JFrame {
 	@Action("btntest")
 	public void test2(ActionEvent e) {
 		System.out.println("button clicked");
-		DataMapper.mapData(this);
-		RequestScopeObject scopeObj = RequestScope.getRequestObj();
-		SwingObjData objData = (SwingObjData) scopeObj
-				.getObjectFromMap("CompTest");
-		System.out.println(objData.getValue("tftest").asString());
-		List<TestData> testdata=(List<TestData>)objData.getValue("table").getValue();
-		System.out.println(testdata.size());
+		CommonSwingWorker worker=new CommonSwingWorker("btntest") {
+			@Override
+			public void callModel() throws SwingObjectException {
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				RequestScopeObject scopeObj = RequestScope.getRequestObj();
+				SwingObjData objData = (SwingObjData) scopeObj.getObjectFromMap("CompTest");
+				System.out.println(objData.getValue("tftest").asString());
+				List<TestData> testdata=(List<TestData>)objData.getValue("table").getValue();
+				System.out.println(testdata.size());
+			}
+
+			@Override
+			public void callConnector() {
+				JOptionPane.showMessageDialog(CompTest.this, "Connector called successfully");
+			}
+		};
+
+		ActionProcessor.processAction(this, worker);
+
 	}
 
 	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			SwingObjectsInit.init("/swingobjects.properties","error.properties");
+			SwingObjectsInit.init("/swingobjects.properties","/error.properties");
 			CompTest test = FrameFactory
 					.getNewContainer("test", CompTest.class);
 			test.pack();

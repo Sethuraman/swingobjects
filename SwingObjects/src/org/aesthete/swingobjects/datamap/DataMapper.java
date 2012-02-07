@@ -19,13 +19,13 @@ import org.aesthete.swingobjects.view.FrameFactory;
 public class DataMapper {
 
 	public static void mapData(Object container) {
-		SwingObjData swingObjdata=new SwingObjData();
 		try {
 			DataBeanName dataClass = container.getClass().getAnnotation(
 					DataBeanName.class);
 			if (dataClass != null) {
 				String beanName = dataClass.value();
-				populateObject(container,swingObjdata);
+				SwingObjData swingObjdata=new SwingObjData();
+				populateObject(container,swingObjdata,true);
 				RequestScopeObject scopeObj=RequestScope.getRequestObj();
 				scopeObj.putObjectInMap(beanName, swingObjdata);
 			}
@@ -35,11 +35,23 @@ public class DataMapper {
 		}
 	}
 
-	private static void populateObject(final Object container,final SwingObjData objData){
+	public static void mapGUI(Object container) {
+		DataBeanName dataClass = container.getClass().getAnnotation(DataBeanName.class);
+		if (dataClass != null) {
+			String beanName = dataClass.value();
+			RequestScopeObject scopeObj=RequestScope.getRequestObj();
+			SwingObjData objData=(SwingObjData)scopeObj.getRequestMap().get(beanName);
+			populateObject(container,objData,false);
+		}
+	}
+
+
+	private static void populateObject(final Object container,final SwingObjData objData,final boolean isData){
 		ReflectionUtils.iterateOverFields(container.getClass(), null, new FieldCallback() {
 			private boolean isJComponent;
 			@Override
 			public boolean filter(Field field) {
+				isJComponent=false;
 				if(JComponent.class.isAssignableFrom(field.getType())){
 					isJComponent=true;
 					return true;
@@ -56,12 +68,28 @@ public class DataMapper {
 					if(isJComponent) {
 						Converter converter=ConverterUtils.getConverter(field.getType());
 						if(converter!=null) {
-							objData.setUnchanged(name, converter.getDataFromViewComponent((JComponent)field.get(container)));
+							if(isData) {
+								objData.setUnchanged(name, converter.getDataFromViewComponent((JComponent)field.get(container)));
+							}else {
+								if(objData.isChanged(name)) {
+									converter.setDataIntoViewComponent(objData.getValue(name),(JComponent)field.get(container));
+								}
+							}
 						}
 					}else {
-						SwingObjData swingObjdata=new SwingObjData();
-						populateObject(field.get(container),swingObjdata);
-						objData.setUnchanged(name, swingObjdata);
+						SwingObjData swingObjdata=null;
+						if(isData) {
+							swingObjdata=new SwingObjData();
+							populateObject(field.get(container),swingObjdata,isData);
+							if(isData) {
+								objData.setUnchanged(name, swingObjdata);
+							}
+						}else {
+							swingObjdata=(SwingObjData)objData.getValue(name).getValue();
+							if(swingObjdata.isDataChanged()) {
+								populateObject(field.get(container),swingObjdata,isData);
+							}
+						}
 					}
 				}catch(Exception e){
 					throw new SwingObjectRunException(e, ErrorSeverity.SEVERE, DataMapper.class);

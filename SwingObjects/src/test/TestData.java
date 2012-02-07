@@ -66,11 +66,7 @@ public class TestData {
 
 	public static void main(String[] args) {
 		try {
-			SwingObjTable<TestData> testdata=new SwingObjTable<TestData>(TestData.class);
-
-			List<String> strings=new ArrayList<String>();
-
-			List<?> check=(List<?>)strings;
+			System.out.println("<html>Try</html>".replaceAll("<html>|</html>", ""));
 
 
 		} catch (Exception e) {

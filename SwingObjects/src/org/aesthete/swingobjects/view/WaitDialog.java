@@ -17,7 +17,7 @@ import com.jgoodies.forms.layout.FormLayout;
 
 /**
  * Plain wait dialog, that has an indeterminate wait image on the top
- * followed by a text area in a scrollpane. The text area can be updated 
+ * followed by a text area in a scrollpane. The text area can be updated
  * from anywhere in the application by calling the below methods:
  * @see WaitDialog#appendWaitDialogMessage(String)
  * @see WaitDialog#setWaitDialogMessage(String)
@@ -39,7 +39,7 @@ public class WaitDialog extends JDialog {
     public static WaitDialog getInstance(){
     	return instance;
     }
-    
+
     private WaitDialog() {
    		super((JFrame)null,true);
         initComponents();
@@ -84,7 +84,7 @@ public class WaitDialog extends JDialog {
     public static void displayWaitDialog(){
     	showHideWaitDialog(true);
     }
-    
+
     /**
      * Call this method to hide the wait dialog. This method is guaranteed
      * to execute in the EDT.
@@ -93,37 +93,45 @@ public class WaitDialog extends JDialog {
     	showHideWaitDialog(false);
     }
 
-	public static void showHideWaitDialog(boolean isShow) {
+	public static void showHideWaitDialog(final boolean isShow) {
 		if(SwingUtilities.isEventDispatchThread()){
-    		WaitDialog.instance.setVisible(false);
+			if(isShow) {
+				CommonUI.showOnScreen(WaitDialog.instance);
+			}else {
+				WaitDialog.instance.setVisible(false);
+			}
     	}else{
     		SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					WaitDialog.instance.setVisible(false);
+					if(isShow) {
+						CommonUI.showOnScreen(WaitDialog.instance);
+					}else {
+						WaitDialog.instance.setVisible(false);
+					}
 				}
 			});
     	}
 	}
-    
-    
+
+
     /**
-     * Append text to the wait dialog. Use this method to provide visual 
+     * Append text to the wait dialog. Use this method to provide visual
      * input to your users on the status of a particular long running task.
-     * This method can be executed from any thread. Meaning you dont have to 
-     * be in the Event Despatch Thread (EDT) to call this method since a 
+     * This method can be executed from any thread. Meaning you dont have to
+     * be in the Event Despatch Thread (EDT) to call this method since a
      * {@link JTextArea#setText(String)} is thread-safe.
      * @param text text to update. HTML not supported. Use \n to break lines.
      */
     public static void appendWaitDialogMessage(String text){
     	instance.waitDisplayArea.setText(instance.waitDisplayArea.getText()+text);
     }
- 
+
     /**
-     * Replace the text in the wait dialog. Use this method to provide visual 
+     * Replace the text in the wait dialog. Use this method to provide visual
      * input to your users on the status of a particular long running task.
-     * This method can be executed from any thread. Meaning you dont have to 
-     * be in the Event Despatch Thread (EDT) to call this method since a 
+     * This method can be executed from any thread. Meaning you dont have to
+     * be in the Event Despatch Thread (EDT) to call this method since a
      * {@link JTextArea#setText(String)} is thread-safe.
      * @param text text to update. HTML not supported. Use \n to break lines.
      */

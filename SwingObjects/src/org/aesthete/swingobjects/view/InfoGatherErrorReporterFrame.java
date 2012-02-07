@@ -5,12 +5,20 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
+import org.aesthete.swingobjects.ActionProcessor;
 import org.aesthete.swingobjects.SwingObjProps;
+import org.aesthete.swingobjects.exceptions.SwingObjectException;
+import org.aesthete.swingobjects.exceptions.SwingObjectsExceptions;
+import org.aesthete.swingobjects.util.EmailHelper.EmailDetailsDto;
+import org.aesthete.swingobjects.util.EmailHelper;
+import org.aesthete.swingobjects.util.HTMLUtils;
 import org.aesthete.swingobjects.view.SwingObjFormBuilder.ButtonBarPos;
+import org.aesthete.swingobjects.workers.CommonSwingWorker;
 import org.jdesktop.swingx.error.ErrorInfo;
 import org.jdesktop.swingx.error.ErrorReporter;
 
@@ -64,21 +72,27 @@ public class InfoGatherErrorReporterFrame extends JFrame implements ErrorReporte
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-//		EmailErrorReporter reporter = new EmailErrorReporter();
-//		try {
-//			reporter.reportError(info, txtArea.getText());
-//			JOptionPane.showMessageDialog(this, Properties.getAppProps("errorreport.sent"));
-//			this.dispose();
-//		} catch (CsmartException e1) {
-//			if (CommonPropertyConstants.ERROR_EMAIL_AUTHFAILED.equals(e1.getErrorCode())) {
-//				JOptionPane.showMessageDialog(this, e1.getMessage());
-//			} else {
-//				JOptionPane.showMessageDialog(
-//						this,
-//						Properties.getAppProps("errorreport.notsent", Properties.getDefaultProperty("emailerrorreportto"),
-//								FilenameUtils.separatorsToWindows(Properties.getUserDefaults("installationfolder"))));
-//				this.dispose();
-//			}
-//		}
+		CommonSwingWorker worker =new CommonSwingWorker() {
+			@Override
+			public void callModel() throws SwingObjectException {
+				EmailDetailsDto dto=new EmailDetailsDto();
+				dto.setBody(SwingObjProps.getProperty("swingobj.infogather.emailbody"
+								,HTMLUtils.convertAllLineBreaksToHtml(txtArea.getText()),
+								((SwingObjectsExceptions)info.getErrorException()).getDetailedMessage(false).replaceAll("<html>|</html>","")));
+				dto.setEmailID(SwingObjProps.getProperty("sendemailto"));
+				dto.setPassword(SwingObjProps.getProperty("emailpassword"));
+				dto.setTo(SwingObjProps.getProperty("sendemailto"));
+				dto.setFromName("Error In Application");
+				dto.setSubj("Error in Application");
+				EmailHelper.sendMail(dto);
+			}
+
+			@Override
+			public void callConnector() {
+				JOptionPane.showMessageDialog(InfoGatherErrorReporterFrame.this, SwingObjProps.getProperty("swingobj.errorreport.sent"));
+				InfoGatherErrorReporterFrame.this.dispose();
+			}
+		};
+		ActionProcessor.processAction(this, worker);
 	}
 }

@@ -1,7 +1,12 @@
 package org.aesthete.swingobjects.scope;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import javax.swing.JComponent;
+
+import org.aesthete.swingobjects.exceptions.SwingObjectsExceptions;
 
 /**
  * You would use this object to store data that needs
@@ -29,7 +34,10 @@ import java.util.Map;
 public class RequestScopeObject {
 
 	private Object scopeObj;
+	private Object container;
+	private List<JComponent> fieldsOfTheContainer;
 	private Map<String,Object> requestMap=new HashMap<String,Object>();
+	private SwingObjectsExceptions errorObj;
 
 	/**
 	 * You will never need to directly call the constructor.
@@ -59,5 +67,29 @@ public class RequestScopeObject {
 
 	public void putObjectInMap(String key,Object obj){
 		requestMap.put(key,obj);
+	}
+
+	public SwingObjectsExceptions getErrorObj() {
+		return errorObj;
+	}
+
+	public void setErrorObj(SwingObjectsExceptions errorObj) {
+		this.errorObj = errorObj;
+	}
+
+	public Object getContainer() {
+		return container;
+	}
+
+	public void setContainer(Object container) {
+		this.container = container;
+	}
+
+	public List<JComponent> getFieldsOfTheContainer() {
+		return fieldsOfTheContainer;
+	}
+
+	public void setFieldsOfTheContainer(List<JComponent> fieldsOfTheContainer) {
+		this.fieldsOfTheContainer = fieldsOfTheContainer;
 	}
 }

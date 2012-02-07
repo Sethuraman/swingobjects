@@ -25,6 +25,15 @@ public class SwingObjData extends LazyDynaBean {
 		super.set(name, index, value);
 	}
 
+	/**
+	 * Make sure you call this method if in case your value has changed. You need to call this method if you need your GUi to be automatically
+	 * updated with the values you set here.
+	 * To prevent unnecessarily setting the same data onto a Component and triggering a repaint, the framework, will only set the data into the
+	 * Component if the flag associated with this 'name' parameter is set to true. Hence if you are working with the value Object, then after
+	 * you finish, call this method to set the value back. This will trigger the flag to be set to true.
+	 *
+	 *  @see SwingObjData#markChanged(String, Object)
+	 */
 	@Override
 	public void set(String name, Object value) {
 		markChanged(name,value);
@@ -60,12 +69,66 @@ public class SwingObjData extends LazyDynaBean {
 		}
 	}
 
+	/**
+	 * Dont call this method. Call this one instead:
+	 * @see SwingObjData#getValue()
+	 * @deprecated
+	 */
+	@Override
+	@Deprecated
+	public Object get(String name) {
+		return super.get(name);
+	}
+
+	/**
+	 * Dont call this method. Call this one instead:
+	 * @see SwingObjData#getValue()
+	 * @deprecated
+	 */
+	@Override
+	@Deprecated
+	public Object get(String name, int index) {
+		return super.get(name, index);
+	}
+
+	/**
+	 * Dont call this method. Call this one instead:
+	 * @see SwingObjData#getValue()
+	 * @deprecated
+	 */
+	@Override
+	public Object get(String name, String key) {
+		return super.get(name, key);
+	}
+
 	public DataWrapper getValue(String key) {
-		Object value = get(key);
+		Object value = super.get(key);
 		if(value instanceof DataWrapper){
 			return (DataWrapper)value;
 		}else{
 			return new DataWrapper(value);
 		}
+	}
+
+	public DataWrapper getValue(String key, int index) {
+		Object value = super.get(key,index);
+		if(value instanceof DataWrapper){
+			return (DataWrapper)value;
+		}else{
+			return new DataWrapper(value);
+		}
+	}
+
+	public DataWrapper getValue(String name, String key) {
+		Object value = super.get(name,key);
+		if(value instanceof DataWrapper){
+			return (DataWrapper)value;
+		}else{
+			return new DataWrapper(value);
+		}
+	}
+
+	public boolean isChanged(String key) {
+		return valueChanged.get(key);
 	}
 }
