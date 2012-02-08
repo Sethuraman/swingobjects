@@ -12,7 +12,7 @@
 	<classpathentry kind="lib" path="jars/commons-beanutils-1.8.3.jar" sourcepath="jar-sources/commons-beanutils-1.8.3-sources.jar"/>
 	<classpathentry kind="lib" path="jars/commons-beanutils-bean-collections-1.8.3.jar"/>
 	<classpathentry kind="lib" path="jars/commons-beanutils-core-1.8.3.jar"/>
-	<classpathentry kind="lib" path="jars/swingx-0.9-b3.jar" sourcepath="jar-sources/swingx-0.9-b3-sources.jar"/>
 	<classpathentry kind="lib" path="jars/commons-lang3-3.1.jar" sourcepath="jar-sources/commons-lang3-3.1-sources.jar"/>
+	<classpathentry kind="lib" path="jars/swingx-core-1.6.2.jar" sourcepath="jar-sources/swingx-1.6.2-sources.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

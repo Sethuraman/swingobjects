@@ -50,7 +50,7 @@ public abstract class CommonSwingWorker extends SwingWorker<Void, Void> implemen
 		}catch(SwingObjectRunException e) {
 			scopeObj.setErrorObj(e);
 		}catch(Exception e) {
-			scopeObj.setErrorObj(new SwingObjectException(ErrorSeverity.SEVERE, this.getClass()));
+			scopeObj.setErrorObj(new SwingObjectException(e,ErrorSeverity.SEVERE, CommonSwingWorker.class));
 		}
 
 		return null;

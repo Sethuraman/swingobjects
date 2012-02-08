@@ -19,10 +19,14 @@ public class SwingObjData extends LazyDynaBean {
 		this.isDataChanged = isDataChanged;
 	}
 
+	/**
+	 * @ see {@link SwingObjData#set(String, Object)}
+	 */
 	@Override
 	public void set(String name, int index, Object value) {
-		markChanged(name+index,value);
-		super.set(name, index, value);
+		DataWrapper wrapDataIfNot = wrapDataIfNot(value);
+		markChanged(name+index,wrapDataIfNot);
+		super.set(name, index, wrapDataIfNot);
 	}
 
 	/**
@@ -36,27 +40,32 @@ public class SwingObjData extends LazyDynaBean {
 	 */
 	@Override
 	public void set(String name, Object value) {
-		markChanged(name,value);
-		super.set(name, value);
+		DataWrapper wrapDataIfNot = wrapDataIfNot(value);
+		markChanged(name,wrapDataIfNot);
+		super.set(name, wrapDataIfNot);
 	}
 
+	/**
+	 * @ see {@link SwingObjData#set(String, Object)}
+	 */
 	@Override
 	public void set(String name, String key, Object value) {
-		markChanged(name+"("+key+")",value);
-		super.set(name, key, value);
+		DataWrapper wrapDataIfNot = wrapDataIfNot(value);
+		markChanged(name+"("+key+")",wrapDataIfNot);
+		super.set(name, key, wrapDataIfNot);
 	}
 
 
 	public void setUnchanged(String name, int index, Object value) {
-		super.set(name, index, value);
+		super.set(name, index, wrapDataIfNot(value));
 	}
 
 	public void setUnchanged(String name, Object value) {
-		super.set(name, value);
+		super.set(name, wrapDataIfNot(value));
 	}
 
 	public void setUnchanged(String name, String key, Object value) {
-		super.set(name, key, value);
+		super.set(name, key, wrapDataIfNot(value));
 	}
 
 	private void markChanged(String name, Object value) {
@@ -102,33 +111,28 @@ public class SwingObjData extends LazyDynaBean {
 	}
 
 	public DataWrapper getValue(String key) {
-		Object value = super.get(key);
-		if(value instanceof DataWrapper){
-			return (DataWrapper)value;
-		}else{
-			return new DataWrapper(value);
-		}
+		return wrapDataIfNot(super.get(key));
 	}
 
 	public DataWrapper getValue(String key, int index) {
-		Object value = super.get(key,index);
-		if(value instanceof DataWrapper){
-			return (DataWrapper)value;
-		}else{
-			return new DataWrapper(value);
-		}
+		return wrapDataIfNot(super.get(key,index));
 	}
 
 	public DataWrapper getValue(String name, String key) {
-		Object value = super.get(name,key);
-		if(value instanceof DataWrapper){
-			return (DataWrapper)value;
-		}else{
-			return new DataWrapper(value);
+		return wrapDataIfNot(super.get(name,key));
+	}
+
+	public DataWrapper wrapDataIfNot(Object o) {
+		if(o==null) {
+			return null;
 		}
+		if(o instanceof DataWrapper) {
+			return (DataWrapper)o;
+		}
+		return new DataWrapper(o);
 	}
 
 	public boolean isChanged(String key) {
-		return valueChanged.get(key);
+		return valueChanged.containsKey(key) && valueChanged.get(key);
 	}
 }

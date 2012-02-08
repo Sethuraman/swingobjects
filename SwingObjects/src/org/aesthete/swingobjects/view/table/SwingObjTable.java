@@ -24,7 +24,7 @@ import org.jdesktop.swingx.decorator.HighlighterFactory;
 import org.jdesktop.swingx.renderer.DefaultTableRenderer;
 import org.jdesktop.swingx.table.TableColumnExt;
 
-public class SwingObjTable<T> extends JXTable {
+public class SwingObjTable<T extends RowDataBean> extends JXTable {
 	private static final long serialVersionUID = 1L;
 	private boolean isSingleSelection = true; // false for multiple selection
 	protected Map<Integer, Color> shadedColsWithColor = new HashMap<Integer, Color>();
@@ -114,7 +114,7 @@ public class SwingObjTable<T> extends JXTable {
 		for(int col : cols){
 			getColumnExt(col).setCellRenderer((new DefaultTableRenderer(new TextAreaProvider())));
 		}
-		setRowHeightEnabled(true);
+//		setRowHeightEnabled(true);
 		addComponentListener(new ComponentListener() {
 			public void componentResized(ComponentEvent e) {
 				for (int row = 0; row < getRowCount(); row++) {

@@ -17,27 +17,27 @@ public class SwingObjectException extends Exception implements SwingObjectsExcep
     private String message;
     private String[] placeHolderValues;
 
-    public SwingObjectException(ErrorSeverity errorSeverity,Object objFromWhereExpIsThrown){
-		this("swingobj.severe",null,errorSeverity,objFromWhereExpIsThrown.getClass());
+    public SwingObjectException(ErrorSeverity errorSeverity,Class<?> classFromWhereThrown){
+		this("swingobj.severe",null,errorSeverity,classFromWhereThrown);
 	}
-    
-	public SwingObjectException(Throwable e, ErrorSeverity errorSeverity,Object objFromWhereExpIsThrown){
-		this("swingobj.severe",e,errorSeverity,objFromWhereExpIsThrown.getClass());
+
+	public SwingObjectException(Throwable e, ErrorSeverity errorSeverity,Class<?> classFromWhereThrown){
+		this("swingobj.severe",e,errorSeverity,classFromWhereThrown);
 	}
-	
+
 	public SwingObjectException(String errorCode,Throwable e, ErrorSeverity errorSeverity,Class<?> clz,String... placeholders){
 		super(e);
 		this.errorCode=errorCode;
 		this.errorSeverity=errorSeverity;
 		this.placeHolderValues=placeholders;
 		Logger logger=Logger.getLogger(clz);
-		logger.error(formatMessage(), e);
+		logger.error(formatMessage(), e==null?null:(e.getCause()==null?e:e.getCause()));
 	}
-	
+
 	public String getMessage(String errorCode,String[] placeholders) {
         return SwingObjProps.getErrorProperty(errorCode, placeHolderValues);
     }
-	
+
 	/* (non-Javadoc)
 	 * @see org.aesthete.swingobjects.exceptions.SwingObjectsExceptions#formatMessage()
 	 */
@@ -91,15 +91,15 @@ public class SwingObjectException extends Exception implements SwingObjectsExcep
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	
+
 	public String getDetailedMessage(boolean isBasic) {
 		StringWriter writer=new StringWriter();
 		if(getCause()!=null) {
-			getCause().printStackTrace(new PrintWriter(writer,true));	
+			getCause().printStackTrace(new PrintWriter(writer,true));
 		}else {
 			printStackTrace(new PrintWriter(writer,true));
 		}
-		
+
 		writer.flush();
 		StringBuilder builder=new StringBuilder("<b>");
 		builder.append(HTMLUtils.convertAllLineBreaksToHtml(SwingObjProps.getErrorProperty(getErrorCode(),placeHolderValues)));
@@ -116,7 +116,7 @@ public class SwingObjectException extends Exception implements SwingObjectsExcep
 				.append("<br/> <br/>")
 				.append(HTMLUtils.convertAllLineBreaksToHtml(writer.getBuffer().toString()))
 				.append("</html>");
-		
+
 		return builder2.toString();
 	}
 }

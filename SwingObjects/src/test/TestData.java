@@ -1,15 +1,15 @@
 package test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.JComboBox;
 
+import org.aesthete.swingobjects.SwingObjectsInit;
 import org.aesthete.swingobjects.annotations.Column;
-import org.aesthete.swingobjects.view.table.SwingObjTable;
+import org.aesthete.swingobjects.view.CommonUI;
+import org.aesthete.swingobjects.view.WaitDialog;
+import org.aesthete.swingobjects.view.table.RowDataBean;
 
 
-public class TestData {
+public class TestData extends RowDataBean{
 
 	@Column(name="Column 1",index=0)
 	private String tftest = "test";
@@ -66,7 +66,19 @@ public class TestData {
 
 	public static void main(String[] args) {
 		try {
-			System.out.println("<html>Try</html>".replaceAll("<html>|</html>", ""));
+			SwingObjectsInit.init("/swingobjects.properties", "/error.properties");
+//			JXPanel panel = new JXPanel();
+//			MattePainter mp = new MattePainter(Colors.LightBlue.alpha(0.5f));
+//			GlossPainter gp = new GlossPainter(Colors.White.alpha(0.3f), GlossPainter.GlossPosition.TOP);
+//			panel.setBackgroundPainter(new CompoundPainter<JXPanel>(mp, gp));
+//
+//			SwingObjFormBuilder builder=new SwingObjFormBuilder(new FormLayout("10dlu:grow,150dlu,5dlu,150dlu,10dlu:grow", "10dlu:grow,300dlu,10dlu:grow"), panel);
+//			builder.addComponents(new JLabel("Something"),new JTextField());
+//
+//
+//			JXFrame frame=new JXFrame();
+//			frame.setContentPane(panel);
+			CommonUI.showOnScreen(WaitDialog.getInstance());
 
 
 		} catch (Exception e) {
@@ -74,4 +86,46 @@ public class TestData {
 			e.printStackTrace();
 		}
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((cbCombo == null) ? 0 : cbCombo.hashCode());
+		result = prime * result + (chkBx ? 1231 : 1237);
+		result = prime * result + ((tftest == null) ? 0 : tftest.hashCode());
+		result = prime * result + ((tftest1 == null) ? 0 : tftest1.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TestData other = (TestData) obj;
+		if (cbCombo == null) {
+			if (other.cbCombo != null)
+				return false;
+		} else if (!cbCombo.equals(other.cbCombo))
+			return false;
+		if (chkBx != other.chkBx)
+			return false;
+		if (tftest == null) {
+			if (other.tftest != null)
+				return false;
+		} else if (!tftest.equals(other.tftest))
+			return false;
+		if (tftest1 == null) {
+			if (other.tftest1 != null)
+				return false;
+		} else if (!tftest1.equals(other.tftest1))
+			return false;
+		return true;
+	}
+
+
 }
