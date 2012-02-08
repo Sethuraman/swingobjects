@@ -14,13 +14,15 @@ import javax.swing.JTextField;
 
 import org.aesthete.swingobjects.exceptions.ErrorSeverity;
 import org.aesthete.swingobjects.exceptions.SwingObjectRunException;
+import org.aesthete.swingobjects.util.FieldCallback;
+import org.aesthete.swingobjects.util.ReflectionUtils;
 import org.apache.commons.beanutils.ConstructorUtils;
 import org.apache.commons.beanutils.MethodUtils;
 
 public class FrameFactory {
-	
+
 	private static Map<Component,String> framesetidsmap=new ConcurrentHashMap<Component,String>();
-	
+
 
 	@SuppressWarnings("unchecked")
 	public static <T extends Component> T getNewContainer(String framesetid,
@@ -29,28 +31,44 @@ public class FrameFactory {
 		try {
 			comp = (Component)ConstructorUtils.invokeConstructor(clz, objs);
 			framesetidsmap.put(comp, framesetid);
-			registerActionlistner(comp);
+			registerActionlistener(comp);
 		} catch (Exception e) {
 			throw new SwingObjectRunException(e,ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 		return (T)comp;
 	}
 
-	private static void registerActionlistner(Object comp) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-		GlobalListener listner=new GlobalListener(comp);
-		Field[] fields=comp.getClass().getDeclaredFields();
-		for(Field field:fields){
-			field.setAccessible(true);
-			Object prop=field.get(comp);
-			if(prop instanceof AbstractButton || 
-					prop instanceof JComboBox || 
-					prop instanceof JTextField){
-				MethodUtils.invokeMethod(prop, "addActionListener", listner);
-			}else if(prop instanceof Components){
-				registerActionlistner(prop);
+	private static void registerActionlistener(final Object comp) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+		final GlobalListener listener=new GlobalListener(comp);
+		ReflectionUtils.iterateOverFields(comp.getClass(), null, new FieldCallback() {
+			private Object prop;
+			@Override
+			public boolean filter(Field field) {
+				try{
+					prop=field.get(comp);
+					if(Components.class.isAssignableFrom(field.getType())) {
+						registerActionlistener(field.get(comp));
+					}else if(prop instanceof AbstractButton ||
+							prop instanceof JComboBox ||
+							prop instanceof JTextField) {
+						return true;
+					}
+
+				}catch(Exception e){
+					throw new SwingObjectRunException(e, ErrorSeverity.SEVERE, FrameFactory.class);
+				}
+				return false;
 			}
-		}
-		
+
+			@Override
+			public void consume(Field field) {
+				try {
+					MethodUtils.invokeMethod(prop, "addActionListener", listener);
+				} catch (Exception e) {
+					throw new SwingObjectRunException(e, ErrorSeverity.SEVERE, FrameFactory.class);
+				}
+			}
+		});
 	}
 
 	private static int frameno;

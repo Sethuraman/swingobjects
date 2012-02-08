@@ -2,9 +2,11 @@ package org.aesthete.swingobjects.view;
 
 import java.awt.Component;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.GraphicsConfiguration;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.Window;
 import java.lang.reflect.Field;
 import java.util.List;
@@ -17,8 +19,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
-import org.aesthete.swingobjects.SwingObjProps;
 import org.aesthete.swingobjects.ActionProcessor.CLIENT_PROPS;
+import org.aesthete.swingobjects.SwingObjProps;
 import org.aesthete.swingobjects.exceptions.ErrorSeverity;
 import org.aesthete.swingobjects.exceptions.SwingObjectRunException;
 import org.aesthete.swingobjects.exceptions.SwingObjectsExceptions;
@@ -31,6 +33,8 @@ public class CommonUI {
 
 	public static final Cursor WAIT_CURSOR = Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR);
 	public static final Cursor DEFAULT_CURSOR = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+
+	private static Dimension screenSize=Toolkit.getDefaultToolkit().getScreenSize();
 
 	public static void initComponent(Object prop) {
 		JComponent component = (JComponent)prop;
@@ -123,8 +127,26 @@ public class CommonUI {
 		errorPane.setIcon(imageIcon);
 		errorPane.setErrorInfo(new ErrorInfo(e.getErrorSeverity().toString(), e.getDetailedMessage(true), detailedMessage, null, (Throwable) e, e
 				.getErrorSeverity().getJavaLoggingLevel(), null));
+		errorPane.setPreferredSize(new Dimension(CommonUI.getFractionedWidth(35), CommonUI.getFractionedHeight(22)));
 		JXErrorPane.showFrame(null, errorPane);
 	}
+
+
+	public static int getFractionedWidth(double widthPercent){
+		return (int)(screenSize.getWidth()*widthPercent/100);
+	}
+
+	public static int getFractionedHeight(double heightPercent){
+		return (int)(screenSize.getHeight()*heightPercent/100);
+	}
+
+	public static int getScreenWidth(){
+		return (int)screenSize.getWidth();
+	}
+	public static int getScreenHeight(){
+		return (int)screenSize.getHeight();
+	}
+
 
 	public static void showOnScreen(JFrame frame) {
 		frame.pack();

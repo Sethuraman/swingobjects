@@ -17,7 +17,7 @@ import org.aesthete.swingobjects.util.ReflectionUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.ClassUtils;
 
-public class SwingObjTableModel<T extends Object> extends AbstractTableModel{
+public class SwingObjTableModel<T extends RowDataBean> extends AbstractTableModel{
 
 	private Class<T> t;
 	private static final long serialVersionUID = 1;

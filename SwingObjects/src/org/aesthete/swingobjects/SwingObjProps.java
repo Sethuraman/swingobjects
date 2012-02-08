@@ -11,7 +11,7 @@ import org.aesthete.swingobjects.exceptions.SwingObjectException;
  * A wrapper to access the swingobjects.properties file. This file is required
  * for a few default configurations to use the Swing Objects Framework. To know
  * more about what this file is used for see the swingobjects.properties file
- * 
+ *
  * @author sethu
  */
 public class SwingObjProps {
@@ -31,13 +31,13 @@ public class SwingObjProps {
 	}
 
 	public static String getProperty(String key,String... placeHolderValues) {
-		return swingObjProps.getProperty(replacePlaceHolders(key,placeHolderValues));
+		return replacePlaceHolders(swingObjProps.getProperty(key),placeHolderValues);
 	}
-	
+
 	public static String getErrorProperty(String key,String... placeholderValues){
-		return errorProps.getProperty(replacePlaceHolders(key,placeholderValues));
+		return replacePlaceHolders(errorProps.getProperty(key),placeholderValues);
 	}
-	
+
 	public static String replacePlaceHolders(String property,String[] params) {
 		if(params!=null && params.length>0){
 			for (int i = 0; i < params.length; i++) {

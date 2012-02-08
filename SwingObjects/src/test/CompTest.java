@@ -2,6 +2,8 @@ package test;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +21,8 @@ import org.aesthete.swingobjects.SwingObjectsInit;
 import org.aesthete.swingobjects.YesNo;
 import org.aesthete.swingobjects.annotations.Action;
 import org.aesthete.swingobjects.annotations.DataBeanName;
+import org.aesthete.swingobjects.annotations.Listener;
+import org.aesthete.swingobjects.annotations.Listeners;
 import org.aesthete.swingobjects.annotations.Required;
 import org.aesthete.swingobjects.annotations.ShouldBeEmpty;
 import org.aesthete.swingobjects.annotations.Trim;
@@ -118,7 +122,10 @@ public class CompTest extends JFrame {
 				SwingObjData objData = (SwingObjData) scopeObj.getObjectFromMap("CompTest");
 				System.out.println(objData.getValue("tftest").asString());
 				List<TestData> testdata=(List<TestData>)objData.getValue("table").getValue();
+				testdata.get(0).setTftest1("Changed to short");
+				objData.set("table", testdata);
 				System.out.println(testdata.size());
+				objData.set("tftest","12345");
 			}
 
 			@Override
@@ -135,8 +142,7 @@ public class CompTest extends JFrame {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			SwingObjectsInit.init("/swingobjects.properties","/error.properties");
-			CompTest test = FrameFactory
-					.getNewContainer("test", CompTest.class);
+			CompTest test = FrameFactory.getNewContainer("test", CompTest.class);
 			test.pack();
 			test.setVisible(true);
 			test.setPreferredSize(new Dimension(1200, 1200));

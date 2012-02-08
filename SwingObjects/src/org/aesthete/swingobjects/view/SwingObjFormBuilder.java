@@ -26,7 +26,13 @@ public class SwingObjFormBuilder {
 	private PanelBuilder builder;
 	private boolean isDontAddRowsAuto;
 
+	public SwingObjFormBuilder(String colSpecs) {
+		this(new FormLayout(colSpecs));
+	}
 
+	public SwingObjFormBuilder(String colSpecs,JPanel panel) {
+		this(new FormLayout(colSpecs),panel);
+	}
 
 	public SwingObjFormBuilder(FormLayout layout) {
 		this.layout=layout;
@@ -160,7 +166,7 @@ public class SwingObjFormBuilder {
 		builder.appendRow("$row");
 		incrementRowCounter(1);
 	}
-	
+
 	public void addLabeledSeparatorFromValue(String value){
 		builder.appendRow("$rowsegap");
 		incrementRowCounter(1);
@@ -170,7 +176,7 @@ public class SwingObjFormBuilder {
 		incrementRowCounter(1);
 		resetColumnCount();
 	}
-	
+
 	public void nextLinePlain(){
 		incrementRowCounter(2);
 		resetColumnCount();
