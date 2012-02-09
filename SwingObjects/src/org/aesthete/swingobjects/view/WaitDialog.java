@@ -68,7 +68,7 @@ public class WaitDialog extends JDialog {
 		scrollpane = new JScrollPane();
 		waitDisplayArea = new JTextArea();
 		waitDisplayArea.setOpaque(false);
-		waitDisplayArea.setText(SwingObjProps.getProperty("waitdialog.title"));
+		waitDisplayArea.setText(SwingObjProps.getApplicationProperty("waitdialog.title"));
 		waitDisplayArea.setEditable(false);
 		scrollpane.setViewportView(waitDisplayArea);
 		scrollpane.getViewport().setOpaque(false);

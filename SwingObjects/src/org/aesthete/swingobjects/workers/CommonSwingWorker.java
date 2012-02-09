@@ -23,7 +23,7 @@ public abstract class CommonSwingWorker extends SwingWorker<Void, Void> implemen
 
 	private String action;
 	private Timer timer;
-	private static final int WAIT_DELAY=Integer.parseInt(SwingObjProps.getProperty("waitdialogopentime"));
+	private static final int WAIT_DELAY=Integer.parseInt(SwingObjProps.getSwingObjProperty("waitdialogopentime"));
 	private RequestScopeObject scopeObj;
 
 

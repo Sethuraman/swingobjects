@@ -53,7 +53,7 @@ public class EmailHelper {
 	}
 
 	private static void setCommonAttributes(EmailDetailsDto emailDto, MultiPartEmail email) throws EmailException, SwingObjectException {
-		email.setHostName(SwingObjProps.getProperty("emailsmtp"));
+		email.setHostName(SwingObjProps.getSwingObjProperty("emailsmtp"));
 		email.setAuthenticator(new DefaultAuthenticator(emailDto.getEmailID(),emailDto.getPassword()));
 		email.setFrom(emailDto.getEmailID(), emailDto.getFromName());
 		email.setDebug(true);

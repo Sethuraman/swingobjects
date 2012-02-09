@@ -2,10 +2,12 @@ package test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 
+import org.aesthete.swingobjects.SwingObjectsInit;
 import org.aesthete.swingobjects.annotations.Column;
 import org.aesthete.swingobjects.view.table.RowDataBean;
 import org.aesthete.swingobjects.view.table.SwingObjTable;
@@ -19,7 +21,7 @@ public class TableDemo {
 
 			//For this demo the Framework need not be initialised.. If you plan on using the entire framework, then
 			//its best you initialise it before working on anything...
-//			SwingObjectsInit.init("/swingobjects.properties", "/error.properties");
+			SwingObjectsInit.init("swingobjects", "application",new Locale("fr", "FR"));
 
 			//Here's the data to show on the table
 			final List<Row> rows = new ArrayList<Row>();
@@ -50,16 +52,16 @@ public class TableDemo {
 
 	public static class Row extends RowDataBean{
 
-		@Column(index=0,name="Column 1",editable=true)
+		@Column(index=0,key="test.column1",editable=true)
 		private String column1;
 
-		@Column(index=1,name="Column 2",editable=true)
+		@Column(index=1,key="test.column2",editable=true)
 		private String column2;
 
-		@Column(index=2,name="Column 3",editable=true)
+		@Column(index=2,key="test.column3",editable=true)
 		private String column3;
 
-		@Column(index=3,name="Column 4",editable=true)
+		@Column(index=3,key="test.column4",editable=true)
 		private boolean column4;
 
 		public Row(String column1, String column2, String column3, boolean column4) {

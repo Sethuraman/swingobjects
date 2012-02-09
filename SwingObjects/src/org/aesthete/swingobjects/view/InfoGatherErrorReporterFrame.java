@@ -60,7 +60,7 @@ public class InfoGatherErrorReporterFrame extends JFrame implements ErrorReporte
 	}
 
 	private void initComponents() {
-		this.setTitle(SwingObjProps.getProperty("errorreport.gatherinfo.title"));
+		this.setTitle(SwingObjProps.getApplicationProperty("errorreport.gatherinfo.title"));
 		CommonUI.setIconImageForContainer(this);
 		txtArea = new JTextArea();
 		pnTxtArea = new JScrollPane(txtArea);
@@ -76,12 +76,12 @@ public class InfoGatherErrorReporterFrame extends JFrame implements ErrorReporte
 			@Override
 			public void callModel() throws SwingObjectException {
 				EmailDetailsDto dto=new EmailDetailsDto();
-				dto.setBody(SwingObjProps.getProperty("swingobj.infogather.emailbody"
+				dto.setBody(SwingObjProps.getApplicationProperty("swingobj.infogather.emailbody"
 								,HTMLUtils.convertAllLineBreaksToHtml(txtArea.getText()),
 								((SwingObjectsExceptions)info.getErrorException()).getDetailedMessage(false).replaceAll("<html>|</html>","")));
-				dto.setEmailID(SwingObjProps.getProperty("sendemailto"));
-				dto.setPassword(SwingObjProps.getProperty("emailpassword"));
-				dto.setTo(SwingObjProps.getProperty("sendemailto"));
+				dto.setEmailID(SwingObjProps.getSwingObjProperty("sendemailto"));
+				dto.setPassword(SwingObjProps.getSwingObjProperty("emailpassword"));
+				dto.setTo(SwingObjProps.getSwingObjProperty("sendemailto"));
 				dto.setFromName("Error In Application");
 				dto.setSubj("Error in Application");
 				EmailHelper.sendMail(dto);
@@ -89,7 +89,7 @@ public class InfoGatherErrorReporterFrame extends JFrame implements ErrorReporte
 
 			@Override
 			public void callConnector() {
-				JOptionPane.showMessageDialog(InfoGatherErrorReporterFrame.this, SwingObjProps.getProperty("swingobj.errorreport.sent"));
+				JOptionPane.showMessageDialog(InfoGatherErrorReporterFrame.this, SwingObjProps.getApplicationProperty("swingobj.errorreport.sent"));
 				InfoGatherErrorReporterFrame.this.dispose();
 			}
 		};

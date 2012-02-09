@@ -25,7 +25,7 @@ public class TimePicker extends JSpinner {
 	private void constructObj(Date date) {
 		sm = new SpinnerDateModel(date==null?new Date():date, null, null, Calendar.HOUR_OF_DAY);
 	    this.setModel(sm);
-	    JSpinner.DateEditor de = new JSpinner.DateEditor(this, SwingObjProps.getProperty("timepicker.timeformat"));
+	    JSpinner.DateEditor de = new JSpinner.DateEditor(this, SwingObjProps.getSwingObjProperty("timepicker.timeformat"));
 	    this.setEditor(de);
 	}
 

@@ -220,7 +220,7 @@ public class ActionProcessor {
 				if(trim.value()==YesNo.YES) {
 					txtComp.setText(txtComp.getText()==null?null:txtComp.getText().trim());
 				}
-			}else if("true".equals(SwingObjProps.getProperty("guielements.texttrim"))){
+			}else if("true".equals(SwingObjProps.getSwingObjProperty("guielements.texttrim"))){
 				txtComp.setText(txtComp.getText()==null?null:txtComp.getText().trim());
 			}
 		}

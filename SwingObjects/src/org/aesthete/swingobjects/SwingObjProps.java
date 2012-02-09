@@ -1,6 +1,7 @@
 package org.aesthete.swingobjects;
 
-import java.util.Properties;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,26 +17,24 @@ import org.aesthete.swingobjects.exceptions.SwingObjectException;
  */
 public class SwingObjProps {
 
-	private static Properties swingObjProps;
-	private static Properties errorProps;
+	private static ResourceBundle swingObjProps;
+	private static ResourceBundle errorProps;
 
-	public static void init(String swingObjPropsFile, String errorPropsFile) throws SwingObjectException {
+	public static void init(String swingObjPropsFile, String errorPropsFile,Locale locale) throws SwingObjectException {
 		try {
-			swingObjProps = new Properties();
-			swingObjProps.load(SwingObjProps.class.getResourceAsStream(swingObjPropsFile));
-			errorProps = new Properties();
-			errorProps.load(SwingObjProps.class.getResourceAsStream(errorPropsFile));
+			swingObjProps = ResourceBundle.getBundle(swingObjPropsFile, locale);
+			errorProps = ResourceBundle.getBundle(errorPropsFile, locale);
 		} catch (Exception e) {
 			throw new SwingObjectException("Error loading swingobjects properties", e, ErrorSeverity.SEVERE, SwingObjProps.class);
 		}
 	}
 
-	public static String getProperty(String key,String... placeHolderValues) {
-		return replacePlaceHolders(swingObjProps.getProperty(key),placeHolderValues);
+	public static String getSwingObjProperty(String key,String... placeHolderValues) {
+		return replacePlaceHolders(swingObjProps.getString(key),placeHolderValues);
 	}
 
-	public static String getErrorProperty(String key,String... placeholderValues){
-		return replacePlaceHolders(errorProps.getProperty(key),placeholderValues);
+	public static String getApplicationProperty(String key,String... placeholderValues){
+		return replacePlaceHolders(errorProps.getString(key),placeholderValues);
 	}
 
 	public static String replacePlaceHolders(String property,String[] params) {

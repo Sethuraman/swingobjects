@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -141,7 +142,7 @@ public class CompTest extends JFrame {
 	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			SwingObjectsInit.init("/swingobjects.properties","/error.properties");
+			SwingObjectsInit.init("swingobjects","application");
 			CompTest test = FrameFactory.getNewContainer("test", CompTest.class);
 			test.pack();
 			test.setVisible(true);

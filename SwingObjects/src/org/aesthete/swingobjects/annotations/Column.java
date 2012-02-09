@@ -9,7 +9,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Column {
 	public int index();
-	public String name();
+	public String name() default "COLUMN_NAME_USE_KEY";
+	public String key() default "";
 	public boolean editable() default false;
 	public Class<?> type() default Class.class;
 }

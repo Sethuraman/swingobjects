@@ -174,7 +174,7 @@ public class CommonUI {
     }
 
     public static void setIconImageForContainer(Window window){
-    	String iconimg = SwingObjProps.getProperty("application-icon");
+    	String iconimg = SwingObjProps.getSwingObjProperty("application-icon");
 		if(StringUtils.isNotEmpty(iconimg)){
 			window.setIconImage(new ImageIcon(CommonUI.class.getResource(iconimg)).getImage());
 

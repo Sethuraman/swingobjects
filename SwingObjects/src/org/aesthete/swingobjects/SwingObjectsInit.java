@@ -2,6 +2,7 @@ package org.aesthete.swingobjects;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.Properties;
 
 import javax.swing.JComboBox;
@@ -20,10 +21,10 @@ import org.apache.log4j.PropertyConfigurator;
 
 public class SwingObjectsInit {
 
-	public static void init(String swingObjPropsFromClasspath,String errorPropsFromClasspath) throws SwingObjectException {
+	public static void init(String swingObjPropsBundleBaseName,String applicationPropsBundleBaseName,Locale locale) throws SwingObjectException {
 		try {
 			configureLog4j();
-			SwingObjProps.init(swingObjPropsFromClasspath,errorPropsFromClasspath);
+			SwingObjProps.init(swingObjPropsBundleBaseName,applicationPropsBundleBaseName,locale);
 			FormLayoutConfig.init();
 			initConverters();
 		}catch(SwingObjectException e){
@@ -31,6 +32,10 @@ public class SwingObjectsInit {
 		} catch (Exception e) {
 			throw new SwingObjectException(e,ErrorSeverity.SEVERE, SwingObjectsInit.class);
 		}
+	}
+
+	public static void init(String swingObjPropsBundleBaseName,String applicationPropsBundleBaseName) throws SwingObjectException {
+		init(swingObjPropsBundleBaseName,applicationPropsBundleBaseName,Locale.getDefault());
 	}
 
 	private static void initConverters() {

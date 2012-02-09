@@ -9,6 +9,8 @@ import java.util.Map;
 
 import javax.swing.table.AbstractTableModel;
 
+import org.aesthete.swingobjects.SwingObjProps;
+import org.aesthete.swingobjects.annotations.AnnotationConstants;
 import org.aesthete.swingobjects.annotations.Column;
 import org.aesthete.swingobjects.exceptions.ErrorSeverity;
 import org.aesthete.swingobjects.exceptions.SwingObjectRunException;
@@ -46,7 +48,11 @@ public class SwingObjTableModel<T extends RowDataBean> extends AbstractTableMode
 				ColumnInfo info=new ColumnInfo();
 				info.setFieldName(field.getName());
 				info.setIndex(column.index());
-				info.setHeading(column.name());
+				if(AnnotationConstants.COLUMN_NAME_USE_KEY.name().equals(column.name())) {
+					info.setHeading(SwingObjProps.getApplicationProperty(column.key()));
+				}else {
+					info.setHeading(column.name());
+				}
 				info.setEditable(column.editable());
 				if(column.editable()) {
 					isTableEditable=true;

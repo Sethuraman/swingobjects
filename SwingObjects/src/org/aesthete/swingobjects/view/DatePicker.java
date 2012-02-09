@@ -501,7 +501,7 @@ public class DatePicker extends Observable implements Runnable, WindowFocusListe
 
 
 	public String getString(String key, String dv) {
-		return SwingObjProps.getProperty(key);
+		return SwingObjProps.getApplicationProperty(key);
 	}
 
 	public boolean isCloseOnSelect() {
