@@ -37,6 +37,10 @@ import org.aesthete.swingobjects.view.validator.Validator;
 import org.aesthete.swingobjects.workers.SwingWorkerInterface;
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * 
+ * @author sethu
+ */
 public class ActionProcessor {
 
 	public enum CLIENT_PROPS{BORDER,ENABLED,TOOLTIP};

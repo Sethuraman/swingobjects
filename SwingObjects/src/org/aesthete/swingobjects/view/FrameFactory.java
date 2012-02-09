@@ -19,6 +19,17 @@ import org.aesthete.swingobjects.util.ReflectionUtils;
 import org.apache.commons.beanutils.ConstructorUtils;
 import org.apache.commons.beanutils.MethodUtils;
 
+/**
+ * It all starts here. You will use the FrameFactory, to instantiate your Dialogs or Frames that you wish to show on screen.
+ * To create a new Frame you will have to call {@link FrameFactory#getNewContainer(String, Class, Object...)}
+ * <pre>
+ *        MyFirstFrame frame=FrameFactory.getNewContainer("myfirstframe",MyFirstFrame.class,<constructor args for MyFirstFrame>);
+ * </pre>
+ *
+ *
+ * @author sethu
+ *
+ */
 public class FrameFactory {
 
 	private static Map<Component,String> framesetidsmap=new ConcurrentHashMap<Component,String>();
@@ -37,6 +48,7 @@ public class FrameFactory {
 		}
 		return (T)comp;
 	}
+
 
 	private static void registerActionlistener(final Object comp) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		final GlobalListener listener=new GlobalListener(comp);

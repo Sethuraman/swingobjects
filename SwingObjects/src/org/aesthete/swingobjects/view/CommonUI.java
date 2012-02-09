@@ -17,6 +17,7 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
 import org.aesthete.swingobjects.ActionProcessor.CLIENT_PROPS;
@@ -148,16 +149,36 @@ public class CommonUI {
 	}
 
 
-	public static void showOnScreen(JFrame frame) {
-		frame.pack();
-		locateOnOpticalScreenCenter(frame);
-		frame.setVisible(true);
+	public static void showOnScreen(final JFrame frame) {
+		if(SwingUtilities.isEventDispatchThread()) {
+			frame.pack();
+			locateOnOpticalScreenCenter(frame);
+			frame.setVisible(true);
+		}else {
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					frame.pack();
+					locateOnOpticalScreenCenter(frame);
+					frame.setVisible(true);
+				}
+			});
+		}
 	}
 
-	public static void showOnScreen(JDialog frame) {
-		frame.pack();
-		locateOnOpticalScreenCenter(frame);
-		frame.setVisible(true);
+	public static void showOnScreen(final JDialog frame) {
+		if(SwingUtilities.isEventDispatchThread()) {
+			frame.pack();
+			locateOnOpticalScreenCenter(frame);
+			frame.setVisible(true);
+		}else {
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					frame.pack();
+					locateOnOpticalScreenCenter(frame);
+					frame.setVisible(true);
+				}
+			});
+		}
 	}
 
 	 /**
