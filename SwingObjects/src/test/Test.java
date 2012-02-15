@@ -1,90 +1,82 @@
 package test;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.event.ActionEvent;
 
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 
-import org.aesthete.swingobjects.SwingObjectsInit;
-import org.aesthete.swingobjects.view.CommonUI;
-import org.aesthete.swingobjects.view.SwingObjFormBuilder;
-import org.jdesktop.swingx.JXBusyLabel;
-import org.jdesktop.swingx.JXFrame;
+import org.aesthete.swingobjects.annotations.Action;
+import org.aesthete.swingobjects.view.FrameFactory;
 
-import com.jgoodies.forms.layout.FormLayout;
 
 public class Test {
-
-	public static class BackgroundImg extends JPanel {
-		private Image img;
-
-		public BackgroundImg(String img) {
-			this(new ImageIcon(BackgroundImg.class.getResource(img)).getImage());
-		}
-
-		public BackgroundImg(Image img) {
-			this.img = img;
-			Dimension size = new Dimension(img.getWidth(null), img.getHeight(null));
-			setPreferredSize(size);
-			setMinimumSize(size);
-			setMaximumSize(size);
-			setSize(size);
-			// setLayout(null);
-		}
-
-		@Override
-		public void paintComponent(Graphics g) {
-			super.paintComponent(g);
-			g.drawImage(img, 0, 0, null);
+	public static class MyFrame extends JFrame{
+		private JPanel panel;
+		public MyFrame() {
+			//create a new panel
+			panel=FrameFactory.getNewContainer("TestSetOfContainers", MyPanel.class, "Test");
+			panel.setName("testpanel");
+			setContentPane(panel);
 		}
 	}
-
-	public static void main(String[] args) {
-		try {
-
-			SwingObjectsInit.init("/swingobjects.properties", "/error.properties");
-
-			JXFrame frame = new JXFrame();
-
-			BackgroundImg img=new BackgroundImg("/images/waitdialog.png");
-
-			SwingObjFormBuilder builder = new SwingObjFormBuilder(new FormLayout("10dlu:grow,fill:400px,10dlu:grow",
-					"10dlu:grow,center:30dlu,20dlu,fill:200dlu:grow,10dlu:grow"),img);
-
-			JXBusyLabel label = new JXBusyLabel();
-			label.setText("Please wait");
-			label.setBusy(true);
-			label.setForeground(Color.white);
-
-			builder.addComponent(label);
-			builder.nextLine();
-
-			JTextArea textarea = new JTextArea("Please wait...\nSome processing happening....\n");
-			textarea.setForeground(Color.white);
-			textarea.setOpaque(false);
-			textarea.setBorder(BorderFactory.createLineBorder(Color.white));
-			builder.addComponent(textarea);
-			//
-			// JPanel panel = builder.getPanel();
-			// panel.setOpaque(true);
-			// layeredPane.add(panel, 1);
-
-			// frame.setUndecorated(true);
-			frame.setContentPane(img);
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			frame.setSize(500, 300);
-			CommonUI.locateOnOpticalScreenCenter(frame);
-			frame.setVisible(true);
-
-		} catch (Exception e) {
-			e.printStackTrace();
+	
+	public static class MyPanel extends JPanel{
+		private JButton btnTest;
+		private JButton btnTest2;
+		public MyPanel(String data) {
+			btnTest=new JButton("Test");
+			btnTest2=new JButton("Test2");
+			btnTest2.setActionCommand("dosomething");
 		}
+		
+		/*
+		 * This method is automatically invoked when btnTest is clicked. The String inside action is 
+		 * the label/text set in the buttonAction based on Label
+		 */
+		@Action("Test")
+		public void dotestwork(ActionEvent e) {
+			//handle Test
+		}
+		
+		/*
+		 * This method is invoked when btnTest2 is clicked. The String inside action is 
+		 * the action command set in the buttonAction based on Label
+		 */
+		@Action("dosomething")
+		public void handleSomething(ActionEvent e) {
+			// handle do something
+		}
+		
+	}
+	public static void main(String[] args) {
+		//create a new frame
+		MyFrame frame=FrameFactory.getNewContainer("TestSetOfContainers", MyFrame.class);
+		frame.setName("frame");
+		
+		
+		//get hold of the panel in it
+		MyPanel panel=FrameFactory.getContainer("TestSetOfContainers", MyPanel.class);
+		
+		// or get hold with the name
+		panel=FrameFactory.getContainer("TestSetOfContainers", "testpanel");
+		
+
+		// do other work...
+		
+		
+		//when you are finished dispose all the containers as below in one shot :
+		FrameFactory.dispose("TestSetOfContainers");
+		
+		//=========>OR dispose individually<==========
+		
+		FrameFactory.dispose("TestSetOfContainers", MyPanel.class);
+		FrameFactory.dispose("TestSetOfContainers", MyFrame.class);
+		
+		
+		//=========>OR dispose individually with name<==========
+		FrameFactory.dispose("TestSetOfContainers", "testpanel");
+		FrameFactory.dispose("TestSetOfContainers", "frame");
+		
 	}
 }
