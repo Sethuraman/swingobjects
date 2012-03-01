@@ -1,5 +1,6 @@
 package org.aesthete.swingobjects.view;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -10,6 +11,8 @@ import java.awt.Toolkit;
 import java.awt.Window;
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -208,5 +211,17 @@ public class CommonUI {
 		icon=new ImageIcon(scaledImage);
 		return icon;
 	}
+
+    public static void setErrorBorderAndTooltip(JComponent jcomponent,String errortooltip) {
+    	String tooltip=jcomponent.getToolTipText();
+		if(StringUtils.isEmpty(tooltip)){
+			tooltip="<html>"+errortooltip+"</html>";
+		}else{
+			tooltip=tooltip.replace(Pattern.quote("<html>"),
+					Matcher.quoteReplacement("<html>"+errortooltip+"<br/>"));
+		}
+		jcomponent.setToolTipText(tooltip);
+		jcomponent.setBorder(BorderFactory.createLineBorder(Color.red));
+    }
 
 }

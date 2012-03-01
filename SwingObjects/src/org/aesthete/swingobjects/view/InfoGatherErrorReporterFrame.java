@@ -14,6 +14,7 @@ import org.aesthete.swingobjects.ActionProcessor;
 import org.aesthete.swingobjects.SwingObjProps;
 import org.aesthete.swingobjects.exceptions.SwingObjectException;
 import org.aesthete.swingobjects.exceptions.SwingObjectsExceptions;
+import org.aesthete.swingobjects.scope.RequestScopeObject;
 import org.aesthete.swingobjects.util.EmailHelper.EmailDetailsDto;
 import org.aesthete.swingobjects.util.EmailHelper;
 import org.aesthete.swingobjects.util.HTMLUtils;
@@ -72,9 +73,9 @@ public class InfoGatherErrorReporterFrame extends JFrame implements ErrorReporte
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		CommonSwingWorker worker =new CommonSwingWorker() {
+		CommonSwingWorker worker =new CommonSwingWorker("") {
 			@Override
-			public void callModel() throws SwingObjectException {
+			public void callModel(RequestScopeObject scopeObj) throws SwingObjectException {
 				EmailDetailsDto dto=new EmailDetailsDto();
 				dto.setBody(SwingObjProps.getApplicationProperty("swingobj.infogather.emailbody"
 								,HTMLUtils.convertAllLineBreaksToHtml(txtArea.getText()),
@@ -88,7 +89,7 @@ public class InfoGatherErrorReporterFrame extends JFrame implements ErrorReporte
 			}
 
 			@Override
-			public void callConnector() {
+			public void callConnector(RequestScopeObject scopeObj) {
 				JOptionPane.showMessageDialog(InfoGatherErrorReporterFrame.this, SwingObjProps.getApplicationProperty("swingobj.errorreport.sent"));
 				InfoGatherErrorReporterFrame.this.dispose();
 			}

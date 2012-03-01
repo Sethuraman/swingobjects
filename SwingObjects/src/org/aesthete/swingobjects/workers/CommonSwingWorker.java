@@ -26,25 +26,23 @@ public abstract class CommonSwingWorker extends SwingWorker<Void, Void> implemen
 	private static final int WAIT_DELAY=Integer.parseInt(SwingObjProps.getSwingObjProperty("waitdialogopentime"));
 	private RequestScopeObject scopeObj;
 
-
 	public CommonSwingWorker() {
-		super();
 		this.action = "";
 		scopeObj=RequestScope.getRequestObj();
 	}
 
 	public CommonSwingWorker(String action) {
-		super();
 		this.action = action;
 		scopeObj=RequestScope.getRequestObj();
 	}
+
 
 	@Override
 	protected Void doInBackground() throws Exception {
 		startTimerForWaitDialog();
 
 		try {
-			callModel();
+			callModel(scopeObj);
 		}catch(SwingObjectException e) {
 			scopeObj.setErrorObj(e);
 		}catch(SwingObjectRunException e) {
@@ -106,7 +104,7 @@ public abstract class CommonSwingWorker extends SwingWorker<Void, Void> implemen
 
 		if(isCall) {
 			DataMapper.mapGUI(scopeObj.getContainer());
-			callConnector();
+			callConnector(scopeObj);
 		}
 	}
 
@@ -116,6 +114,11 @@ public abstract class CommonSwingWorker extends SwingWorker<Void, Void> implemen
 
 	public void setAction(String action) {
 		this.action = action;
+	}
+
+	@Override
+	public boolean validateAndPopulate(RequestScopeObject scopeObj) {
+		return true;
 	}
 
 }

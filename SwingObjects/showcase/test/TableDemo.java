@@ -52,16 +52,16 @@ public class TableDemo {
 
 	public static class Row extends RowDataBean{
 
-		@Column(index=0,key="test.column1",editable=true)
+		@Column(index=0,name="Column1",editable=true)
 		private String column1;
 
-		@Column(index=1,key="test.column2",editable=true)
+		@Column(index=1,name="Column2",editable=true)
 		private String column2;
 
-		@Column(index=2,key="test.column3",editable=true)
+		@Column(index=2,name="Column3",editable=true)
 		private String column3;
 
-		@Column(index=3,key="test.column4",editable=true)
+		@Column(index=3,name="Column4",editable=true)
 		private boolean column4;
 
 		public Row(String column1, String column2, String column3, boolean column4) {

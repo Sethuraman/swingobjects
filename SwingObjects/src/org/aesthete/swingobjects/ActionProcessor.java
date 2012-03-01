@@ -1,16 +1,10 @@
 package org.aesthete.swingobjects;
 
-import java.awt.Color;
 import java.awt.Container;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -33,19 +27,17 @@ import org.aesthete.swingobjects.util.ReflectionUtils;
 import org.aesthete.swingobjects.view.CommonUI;
 import org.aesthete.swingobjects.view.Components;
 import org.aesthete.swingobjects.view.FrameFactory;
-import org.aesthete.swingobjects.view.validator.Validator;
 import org.aesthete.swingobjects.workers.SwingWorkerInterface;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * 
+ *
  * @author sethu
  */
 public class ActionProcessor {
 
 	public enum CLIENT_PROPS{BORDER,ENABLED,TOOLTIP};
 	boolean isError=false;
-	private Set<Validator> validators;
 	private RequestScopeObject scopeObj;
 	private List<JComponent> fieldsOfContainer;
 
@@ -57,19 +49,22 @@ public class ActionProcessor {
 	public static void processAction(Object container,SwingWorkerInterface swingworker){
 		ActionProcessor processor=new ActionProcessor();
 		try{
-			processor.initCompsAndValidate(container,swingworker);
-			if(!processor.isError) {
-				DataMapper.mapData(container);
-
-				if(!processor.performUserValidations(swingworker, processor)) {
-					processor.scopeObj.setContainer(container);
-					processor.scopeObj.setFieldsOfTheContainer(processor.fieldsOfContainer);
-					swingworker.execute();
+			try {
+				processor.initCompsAndValidate(container,swingworker);
+				if(!processor.isError) {
+					DataMapper.mapData(container);
+					if(swingworker.validateAndPopulate(processor.scopeObj)) {
+						processor.scopeObj.setContainer(container);
+						processor.scopeObj.setFieldsOfTheContainer(processor.fieldsOfContainer);
+						swingworker.execute();
+					}else{
+						processor.showErrorDialog();
+					}
+				}else {
+					processor.showErrorDialog();
 				}
-
-			}else{
+			}finally {
 				CommonUI.restoreComponentsToInitialState(processor.fieldsOfContainer);
-				processor.showErrorDialog();
 			}
 		}
 		catch(Exception e){
@@ -80,25 +75,6 @@ public class ActionProcessor {
 				CommonUI.showErrorDialogForComponent(new SwingObjectRunException(e,ErrorSeverity.SEVERE, FrameFactory.class));
 			}
 		}
-	}
-
-	private boolean performUserValidations(SwingWorkerInterface swingworker, ActionProcessor processor) {
-		boolean isError=false;
-		if(processor.validators!=null) {
-			for(Validator validator : processor.validators) {
-				boolean isOk=validator.validate(swingworker.getAction());
-				if(!isOk) {
-					isError=true;
-					if(!validator.continueIfError(swingworker.getAction())) {
-						break;
-					}
-				}
-			}
-		}
-		if(isError) {
-			processor.showErrorDialog();
-		}
-		return isError;
 	}
 
 	private void showErrorDialog() {
@@ -119,14 +95,6 @@ public class ActionProcessor {
 			@Override
 			public void consume(Field field) {
 				try {
-					if (Validator.class.isAssignableFrom(field.getType())) {
-						if(validators==null) {
-							validators=new HashSet<Validator>();
-						}
-						validators.add((Validator) field.get(container));
-					}
-
-
 					if (Components.class.isAssignableFrom(field.getType())) {
 						initCompsAndValidate(field.get(container), swingworker);
 					}else if(JComponent.class.isAssignableFrom(field.getType())) {
@@ -199,15 +167,7 @@ public class ActionProcessor {
 				}
 
 				if(isError){
-					String tooltip=jcomponent.getToolTipText();
-					if(StringUtils.isEmpty(tooltip)){
-						tooltip="<html>"+msg+"</html>";
-					}else{
-						tooltip=tooltip.replace(Pattern.quote("<html>"),
-								Matcher.quoteReplacement("<html>"+msg+"<br/>"));
-					}
-					jcomponent.setToolTipText(tooltip);
-					jcomponent.setBorder(BorderFactory.createLineBorder(Color.red));
+					CommonUI.setErrorBorderAndTooltip(jcomponent, msg);
 					return true;
 				}
 			}
@@ -229,7 +189,4 @@ public class ActionProcessor {
 			}
 		}
 	}
-
-
-
 }

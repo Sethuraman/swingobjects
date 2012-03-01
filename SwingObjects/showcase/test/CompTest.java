@@ -1,12 +1,8 @@
 package test;
 
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -22,25 +18,23 @@ import org.aesthete.swingobjects.SwingObjectsInit;
 import org.aesthete.swingobjects.YesNo;
 import org.aesthete.swingobjects.annotations.Action;
 import org.aesthete.swingobjects.annotations.DataBeanName;
-import org.aesthete.swingobjects.annotations.Listener;
-import org.aesthete.swingobjects.annotations.Listeners;
 import org.aesthete.swingobjects.annotations.Required;
-import org.aesthete.swingobjects.annotations.ShouldBeEmpty;
 import org.aesthete.swingobjects.annotations.Trim;
 import org.aesthete.swingobjects.datamap.SwingObjData;
 import org.aesthete.swingobjects.exceptions.SwingObjectException;
-import org.aesthete.swingobjects.scope.RequestScope;
 import org.aesthete.swingobjects.scope.RequestScopeObject;
+import org.aesthete.swingobjects.view.CommonUI;
 import org.aesthete.swingobjects.view.FrameFactory;
 import org.aesthete.swingobjects.view.SwingObjFormBuilder;
 import org.aesthete.swingobjects.view.SwingObjFormBuilder.ButtonBarPos;
 import org.aesthete.swingobjects.view.table.SwingObjTable;
+import org.aesthete.swingobjects.view.validator.Validator;
 import org.aesthete.swingobjects.workers.CommonSwingWorker;
 
 import com.jgoodies.forms.layout.FormLayout;
 
 @DataBeanName("CompTest")
-public class CompTest extends JFrame {
+public class CompTest extends JFrame implements Validator{
 
 	private static final long serialVersionUID = 1L;
 
@@ -73,10 +67,7 @@ public class CompTest extends JFrame {
 			table = new SwingObjTable<TestData>(TestData.class);
 			List<TestData> list = new ArrayList<TestData>() {
 				{
-					add(new TestData(
-							"test1",
-							"test2asfsdfsdfasfdsaf asdfasdflaslj ahfsadlkjal akjhfalkhas afkljhadf lkafl afhalhfal alskjhfad slkfhaasfdk fafsdlkh adfs",
-							"No", true));
+					add(new TestData("test1","test2","No", true));
 					add(new TestData("test1", "test2", "Yes", true));
 					add(new TestData("test1", "test2", "No", true));
 					add(new TestData("test1", "test2", "Yes", true));
@@ -84,10 +75,7 @@ public class CompTest extends JFrame {
 				}
 			};
 			table.setData(list);
-			table.makeColumnsIntoTextArea(1);
 			table.makeColumnsIntoComboBox(new String[]{"Yes","No"}, 2);
-
-
 			cbCombo = new JComboBox(new String[] { "Yes", "No" });
 			chkBx = new JCheckBox("Is to be checked?");
 			SwingObjFormBuilder builder=new SwingObjFormBuilder(new FormLayout("5dlu,100dlu:grow,2dlu,100dlu,2dlu,50dlu,2dlu,100dlu,5dlu"));
@@ -103,7 +91,7 @@ public class CompTest extends JFrame {
 
 	}
 
-	@Action("tftest")
+	@Action(value="tftest")
 	public void test1(ActionEvent e) {
 		System.out.println(tftest.getText());
 	}
@@ -112,14 +100,26 @@ public class CompTest extends JFrame {
 	public void test2(ActionEvent e) {
 		System.out.println("button clicked");
 		CommonSwingWorker worker=new CommonSwingWorker("btntest") {
+
 			@Override
-			public void callModel() throws SwingObjectException {
+			public boolean validateAndPopulate(RequestScopeObject scopeObj) {
+				SwingObjData objData = (SwingObjData) scopeObj.getObjectFromMap("CompTest");
+				if(!"I like sugar".equals(objData.getValue("tftest").asString())) {
+					CommonUI.setErrorBorderAndTooltip(tftest,"Has to be \"I like sugar\"");
+					return false;
+				}
+				return true;
+			}
+
+			@Override
+			public void callModel(RequestScopeObject scopeObj) throws SwingObjectException {
+
+				// sleep to simulate long running task
 				try {
 					Thread.sleep(2000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				RequestScopeObject scopeObj = RequestScope.getRequestObj();
 				SwingObjData objData = (SwingObjData) scopeObj.getObjectFromMap("CompTest");
 				System.out.println(objData.getValue("tftest").asString());
 				List<TestData> testdata=(List<TestData>)objData.getValue("table").getValue();
@@ -130,7 +130,7 @@ public class CompTest extends JFrame {
 			}
 
 			@Override
-			public void callConnector() {
+			public void callConnector(RequestScopeObject scopeObj) {
 				JOptionPane.showMessageDialog(CompTest.this, "Connector called successfully");
 			}
 		};
@@ -144,14 +144,23 @@ public class CompTest extends JFrame {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			SwingObjectsInit.init("swingobjects","application");
 			CompTest test = FrameFactory.getNewContainer("test", CompTest.class);
-			test.pack();
-			test.setVisible(true);
-			test.setPreferredSize(new Dimension(1200, 1200));
+			CommonUI.showOnScreen(test);
 		} catch (SwingObjectException e) {
 			e.printStackTrace();
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 
+	}
+
+	@Override
+	public boolean validate(String action) {
+
+		return false;
+	}
+
+	@Override
+	public boolean continueIfError(String action) {
+		return false;
 	}
 }
