@@ -224,4 +224,15 @@ public class CommonUI {
 		jcomponent.setBorder(BorderFactory.createLineBorder(Color.red));
     }
 
+    public static void runInEDT(final Runnable run) {
+    	if(SwingUtilities.isEventDispatchThread()) {
+    		run.run();
+    	}else {
+    		SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					run.run();
+				}
+			});
+    	}
+    }
 }

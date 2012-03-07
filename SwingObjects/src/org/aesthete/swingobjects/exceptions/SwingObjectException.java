@@ -25,6 +25,11 @@ public class SwingObjectException extends Exception implements SwingObjectsExcep
 		this("swingobj.severe",e,errorSeverity,classFromWhereThrown);
 	}
 
+	public SwingObjectException(String errorCode,ErrorSeverity errorSeverity,Class<?> clz,String... placeholders){
+		this(errorCode,null,errorSeverity,clz,placeholders);
+	}
+
+
 	public SwingObjectException(String errorCode,Throwable e, ErrorSeverity errorSeverity,Class<?> clz,String... placeholders){
 		super(e);
 		this.errorCode=errorCode;
@@ -118,5 +123,13 @@ public class SwingObjectException extends Exception implements SwingObjectsExcep
 				.append("</html>");
 
 		return builder2.toString();
+	}
+
+	public String[] getPlaceHolderValues() {
+		return placeHolderValues;
+	}
+
+	public void setPlaceHolderValues(String[] placeHolderValues) {
+		this.placeHolderValues = placeHolderValues;
 	}
 }

@@ -11,26 +11,30 @@ import org.apache.log4j.Logger;
 public class SwingObjectRunException extends RuntimeException implements SwingObjectsExceptions {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private String errorCode;
 	private ErrorSeverity errorSeverity;
     private String message;
     private String[] placeHolderValues;
-    
+
 
     public SwingObjectRunException(ErrorSeverity errorSeverity,Object objFromWhereExpIsThrown){
 		this("swingobj.severe",null,errorSeverity,objFromWhereExpIsThrown.getClass());
 	}
-    
+
     public SwingObjectRunException(ErrorSeverity errorSeverity,String errorMsg,Object objFromWhereExpIsThrown){
 		this("swingobj.severe",null,errorSeverity,objFromWhereExpIsThrown.getClass());
 		this.message=errorMsg;
 	}
-    
+
 	public SwingObjectRunException(Throwable e, ErrorSeverity errorSeverity,Object objFromWhereExpIsThrown){
 		this("swingobj.severe",e,errorSeverity,objFromWhereExpIsThrown.getClass());
 	}
-	
+
+	public SwingObjectRunException(Throwable e, ErrorSeverity errorSeverity,Class<?> clz){
+		this("swingobj.severe",e,errorSeverity,clz);
+	}
+
 	public SwingObjectRunException(String errorCode,Throwable e, ErrorSeverity errorSeverity,Class<?> clz,String... placeholders){
 		super(e);
 		this.errorCode=errorCode;
@@ -39,11 +43,11 @@ public class SwingObjectRunException extends RuntimeException implements SwingOb
 		Logger logger=Logger.getLogger(clz);
 		logger.error(formatMessage(), e);
 	}
-	
+
 	public String getMessage(String errorCode,String[] placeholders) {
         return SwingObjProps.getApplicationProperty(errorCode, placeHolderValues);
     }
-	
+
 	public String formatMessage(){
         StringBuilder builder=new StringBuilder();
         builder.append("\n");
@@ -89,15 +93,15 @@ public class SwingObjectRunException extends RuntimeException implements SwingOb
 	public void setPlaceHolderValues(String[] placeHolderValues) {
 		this.placeHolderValues = placeHolderValues;
 	}
-	
+
 	public String getDetailedMessage(boolean isBasic) {
 		StringWriter writer=new StringWriter();
 		if(getCause()!=null) {
-			getCause().printStackTrace(new PrintWriter(writer,true));	
+			getCause().printStackTrace(new PrintWriter(writer,true));
 		}else {
 			printStackTrace(new PrintWriter(writer,true));
 		}
-		
+
 		writer.flush();
 		StringBuilder builder=new StringBuilder("<b>");
 		builder.append(HTMLUtils.convertAllLineBreaksToHtml(SwingObjProps.getApplicationProperty(getErrorCode(),getPlaceHolderValues())));
@@ -114,7 +118,7 @@ public class SwingObjectRunException extends RuntimeException implements SwingOb
 				.append("<br/> <br/>")
 				.append(HTMLUtils.convertAllLineBreaksToHtml(writer.getBuffer().toString()))
 				.append("</html>");
-		
+
 		return builder2.toString();
 	}
 }

@@ -18,7 +18,7 @@ import java.util.Stack;
 public class RequestScope {
 	public static final Stack<RequestScopeObject> REQUEST_SCOPE=new Stack<RequestScopeObject>();
 
-	public static RequestScopeObject getNewRequestObj(){
+	private static RequestScopeObject getNewRequestObj(){
 		RequestScopeObject scopeObj=new RequestScopeObject();
 		REQUEST_SCOPE.add(scopeObj);
 		return scopeObj;
@@ -35,4 +35,9 @@ public class RequestScope {
 			return REQUEST_SCOPE.peek();
 		}
 	}
-}
+
+	@SuppressWarnings("unchecked")
+	public static <T> T getObjectFromScope(String key) {
+		return (T)getRequestObj().getObjectFromMap(key);
+	}
+ }

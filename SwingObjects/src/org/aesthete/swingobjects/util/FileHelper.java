@@ -18,6 +18,7 @@ import javax.swing.SwingUtilities;
 
 import org.aesthete.swingobjects.exceptions.ErrorSeverity;
 import org.aesthete.swingobjects.exceptions.SwingObjectException;
+import org.aesthete.swingobjects.exceptions.SwingObjectRunException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 
@@ -143,7 +144,7 @@ public class FileHelper {
 	}
 
 
-	public static String getFileResource(String relativepath) throws SwingObjectException {
+	public static String getFileResource(String relativepath) {
 		URL resource = FileHelper.class.getResource(relativepath);
 		if(resource==null) {
 			return null;
@@ -152,7 +153,7 @@ public class FileHelper {
 		try {
 			file=URLDecoder.decode(file,"UTF-8");
 		} catch (UnsupportedEncodingException e) {
-			throw new SwingObjectException("Error while obtaining file resource",e, ErrorSeverity.SEVERE,FileHelper.class);
+			throw new SwingObjectRunException(e,ErrorSeverity.SEVERE,FileHelper.class);
 		}
 		return file;
 	}

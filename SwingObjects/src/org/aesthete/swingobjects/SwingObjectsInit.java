@@ -16,6 +16,8 @@ import org.aesthete.swingobjects.datamap.converters.ConverterUtils.JToggleButton
 import org.aesthete.swingobjects.datamap.converters.ConverterUtils.SwingObjTableConverter;
 import org.aesthete.swingobjects.exceptions.ErrorSeverity;
 import org.aesthete.swingobjects.exceptions.SwingObjectException;
+import org.aesthete.swingobjects.view.CommonUI;
+import org.aesthete.swingobjects.view.WaitDialog;
 import org.aesthete.swingobjects.view.table.SwingObjTable;
 import org.apache.log4j.PropertyConfigurator;
 
@@ -27,11 +29,25 @@ public class SwingObjectsInit {
 			SwingObjProps.init(swingObjPropsBundleBaseName,applicationPropsBundleBaseName,locale);
 			FormLayoutConfig.init();
 			initConverters();
+			initWaitDialog();
 		}catch(SwingObjectException e){
 			throw e;
 		} catch (Exception e) {
 			throw new SwingObjectException(e,ErrorSeverity.SEVERE, SwingObjectsInit.class);
 		}
+	}
+
+	private static void initWaitDialog() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+		CommonUI.runInEDT(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					WaitDialog.setInstance((WaitDialog)Class.forName(SwingObjProps.getSwingObjProperty("waitdialog.classname")).newInstance());
+				} catch (Exception e) {
+					new SwingObjectException(e,ErrorSeverity.SEVERE, SwingObjectsInit.class);
+				}
+			}
+		});
 	}
 
 	public static void init(String swingObjPropsBundleBaseName,String applicationPropsBundleBaseName) throws SwingObjectException {

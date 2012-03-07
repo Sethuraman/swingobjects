@@ -128,7 +128,6 @@ public class ConverterUtils {
 				List<?> dataList=(List<?>)data.getValue();
 				((SwingObjTable<?>)component).setData(dataList);
 			}
-			((JToggleButton)component).setSelected(data.asBoolean());
 		}
 
 	}

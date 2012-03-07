@@ -1,13 +1,7 @@
 package org.aesthete.swingobjects.workers;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
-import javax.swing.Timer;
 
-import org.aesthete.swingobjects.SwingObjProps;
 import org.aesthete.swingobjects.datamap.DataMapper;
 import org.aesthete.swingobjects.datamap.SwingObjData;
 import org.aesthete.swingobjects.exceptions.ErrorSeverity;
@@ -22,8 +16,6 @@ import org.aesthete.swingobjects.view.WaitDialog;
 public abstract class CommonSwingWorker extends SwingWorker<Void, Void> implements SwingWorkerInterface{
 
 	private String action;
-	private Timer timer;
-	private static final int WAIT_DELAY=Integer.parseInt(SwingObjProps.getSwingObjProperty("waitdialogopentime"));
 	private RequestScopeObject scopeObj;
 
 	public CommonSwingWorker() {
@@ -39,8 +31,7 @@ public abstract class CommonSwingWorker extends SwingWorker<Void, Void> implemen
 
 	@Override
 	protected Void doInBackground() throws Exception {
-		startTimerForWaitDialog();
-
+		WaitDialog.displayWaitDialog();
 		try {
 			callModel(scopeObj);
 		}catch(SwingObjectException e) {
@@ -54,20 +45,7 @@ public abstract class CommonSwingWorker extends SwingWorker<Void, Void> implemen
 		return null;
 	}
 
-	private void startTimerForWaitDialog() {
-		timer=new Timer(WAIT_DELAY, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				SwingUtilities.invokeLater(new Runnable() {
-					public void run() {
-						WaitDialog.displayWaitDialog();
-					}
-				});
-			}
-		});
-		timer.setRepeats(false);
-		timer.start();
-	}
+
 
 	@Override
 	protected void done() {
@@ -120,5 +98,24 @@ public abstract class CommonSwingWorker extends SwingWorker<Void, Void> implemen
 	public boolean validateAndPopulate(RequestScopeObject scopeObj) {
 		return true;
 	}
+
+	/**
+	 * Override to provide your implementation. This does not execute in the EDT. Its called from the SwingWorker's doInBackground()
+	 * method. This is where a call to your model should go.
+	 */
+	@Override
+	public void callModel(RequestScopeObject scopeObj) throws SwingObjectException {
+	}
+
+	/**
+	 * Override to provide your implementation. This executed in the EDT. Its called from the SwingWorker's done() method.
+	 * In this method you would have to update your UI. If in model you have set your UI details into the SwingObjData class,
+	 * then this method will be called after the data from the SwingObjData is set into your UI elements. Use this method
+	 * to update additional UI elements. Like closing a frame, for example.
+	 */
+	@Override
+	public void callConnector(RequestScopeObject scopeObj) {
+	}
+
 
 }

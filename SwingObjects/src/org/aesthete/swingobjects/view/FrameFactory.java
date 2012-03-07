@@ -1,11 +1,16 @@
 package org.aesthete.swingobjects.view;
 
 import java.awt.Component;
+import java.awt.Window;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.MissingResourceException;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -13,12 +18,15 @@ import javax.swing.AbstractButton;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
+import org.aesthete.swingobjects.SwingObjProps;
+import org.aesthete.swingobjects.annotations.TitleIconImage;
 import org.aesthete.swingobjects.exceptions.ErrorSeverity;
 import org.aesthete.swingobjects.exceptions.SwingObjectRunException;
 import org.aesthete.swingobjects.util.FieldCallback;
 import org.aesthete.swingobjects.util.ReflectionUtils;
 import org.apache.commons.beanutils.ConstructorUtils;
 import org.apache.commons.beanutils.MethodUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * It all starts here. You will use the FrameFactory, to instantiate your
@@ -132,11 +140,12 @@ public class FrameFactory {
 	 * @throws SwingObjectRunException Runtime exception that you don't need to catch.
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T extends Component> T getNewContainer(String framesetid, Class<T> clz, Object... objs)
+	public static <T extends Component> T getNewContainer(String framesetid, Class<? extends Component> clz, Object... objs)
 			throws SwingObjectRunException {
 		Component comp = null;
 		try {
 			comp = (Component) ConstructorUtils.invokeConstructor(clz, objs);
+			handleWindows(framesetid,clz, comp);
 			putContainerInMap(framesetid, comp);
 		} catch (SwingObjectRunException e) {
 			throw e;
@@ -144,6 +153,56 @@ public class FrameFactory {
 			throw new SwingObjectRunException(e, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 		return (T) comp;
+	}
+
+	private static <T> void handleWindows(final String framesetid,final Class<? extends Component> clz, Component comp) {
+		if(comp instanceof Window) {
+			TitleIconImage title=clz.getAnnotation(TitleIconImage.class);
+			if(title!=null) {
+				setWindowTitle(comp, title);
+				setIconImage(comp, title);
+			}
+			((Window)comp).addWindowListener(new WindowAdapter() {
+				@Override
+				public void windowClosing(WindowEvent e) {
+					FrameFactory.dispose(framesetid,clz);
+					super.windowClosing(e);
+				}
+			});
+		}
+	}
+
+	private static void setIconImage(Component comp, TitleIconImage title) {
+		String icon=null;
+		if("DEFAULT".equals(title.iconPath())) {
+			try {
+				icon=SwingObjProps.getSwingObjProperty("application-icon");
+			}catch(MissingResourceException e) {
+
+			}
+		}else {
+			icon=title.iconPath();
+		}
+		if(StringUtils.isNotEmpty(icon)) {
+			((Window)comp).setIconImage(new javax.swing.ImageIcon(FrameFactory.class.getResource(icon)).getImage());
+		}
+	}
+
+	private static void setWindowTitle(Component comp, TitleIconImage title) {
+		String compTitle=null;
+		if(StringUtils.isNotEmpty(title.value())) {
+			compTitle=title.value();
+
+		}else if(StringUtils.isNotEmpty(title.key())){
+			compTitle=SwingObjProps.getApplicationProperty(title.key());
+		}
+		if(compTitle!=null) {
+			try {
+				MethodUtils.invokeMethod(comp, "setTitle",title.value());
+			}catch(Exception e) {
+
+			}
+		}
 	}
 
 	/**
@@ -339,6 +398,24 @@ public class FrameFactory {
 	public static synchronized String getNewFrameSetId() {
 		SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyhhmmssSSSSS" + frameno++);
 		return sdf.format(new Date());
+	}
+
+	public static Iterator<Component> iterate(String framesetid) {
+		Set<Component> frameSet=frames.get(framesetid);
+		if(frameSet==null) {
+			return new HashSet<Component>().iterator();
+		}else {
+			return frameSet.iterator();
+		}
+	}
+
+	public static Set<Component> getComponentsForFrameset(String framesetid) {
+		Set<Component> frameSet=frames.get(framesetid);
+		if(frameSet==null) {
+			return new HashSet<Component>();
+		}else {
+			return frameSet;
+		}
 	}
 
 }

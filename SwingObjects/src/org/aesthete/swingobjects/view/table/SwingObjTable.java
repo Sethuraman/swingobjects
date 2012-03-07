@@ -151,22 +151,27 @@ public class SwingObjTable<T extends RowDataBean> extends JXTable {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void setData(List data) {
 		model.setData(data);
+		packAll();
 	}
 
 	public void addRow(T row) {
 		model.addRow(row);
+		packAll();
 	}
 
 	public void addRows(List<T> rows) {
 		model.addRows(rows);
+		packAll();
 	}
 
 	public void delRows(int... rows) {
 		model.deleteRows(rows);
+		packAll();
 	}
 
 	public void setRow(int row, T data) {
 		model.setRow(row, data);
+		packAll();
 	}
 
 	public List<T> getData() {

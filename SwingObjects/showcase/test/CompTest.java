@@ -19,6 +19,7 @@ import org.aesthete.swingobjects.YesNo;
 import org.aesthete.swingobjects.annotations.Action;
 import org.aesthete.swingobjects.annotations.DataBeanName;
 import org.aesthete.swingobjects.annotations.Required;
+import org.aesthete.swingobjects.annotations.TitleIconImage;
 import org.aesthete.swingobjects.annotations.Trim;
 import org.aesthete.swingobjects.datamap.SwingObjData;
 import org.aesthete.swingobjects.exceptions.SwingObjectException;
@@ -27,6 +28,7 @@ import org.aesthete.swingobjects.view.CommonUI;
 import org.aesthete.swingobjects.view.FrameFactory;
 import org.aesthete.swingobjects.view.SwingObjFormBuilder;
 import org.aesthete.swingobjects.view.SwingObjFormBuilder.ButtonBarPos;
+import org.aesthete.swingobjects.view.WaitDialog;
 import org.aesthete.swingobjects.view.table.SwingObjTable;
 import org.aesthete.swingobjects.view.validator.Validator;
 import org.aesthete.swingobjects.workers.CommonSwingWorker;
@@ -34,6 +36,7 @@ import org.aesthete.swingobjects.workers.CommonSwingWorker;
 import com.jgoodies.forms.layout.FormLayout;
 
 @DataBeanName("CompTest")
+@TitleIconImage("Component Test")
 public class CompTest extends JFrame implements Validator{
 
 	private static final long serialVersionUID = 1L;
@@ -57,7 +60,7 @@ public class CompTest extends JFrame implements Validator{
 	public CompTest() {
 		try {
 			btntest = new JButton("Test");
-			tftest = new JTextField("Check this out");
+			tftest = new JTextField("I like sugar");
 			tftest.setColumns(20);
 			tftest.setActionCommand("tftest");
 			btntest.setActionCommand("btntest");
@@ -113,7 +116,7 @@ public class CompTest extends JFrame implements Validator{
 
 			@Override
 			public void callModel(RequestScopeObject scopeObj) throws SwingObjectException {
-
+				WaitDialog.appendWaitDialogMessage("\nReplaced text with this");
 				// sleep to simulate long running task
 				try {
 					Thread.sleep(2000);

@@ -87,18 +87,23 @@ public class ActionProcessor {
 
 	private void initCompsAndValidate(final Object container, final SwingWorkerInterface swingworker) throws IllegalArgumentException, IllegalAccessException {
 		ReflectionUtils.iterateOverFields(container.getClass(), Container.class, new FieldCallback() {
+			private Object prop=null;
 			@Override
 			public boolean filter(Field field) {
-				return true;
+				try {
+					prop=field.get(container);
+					return prop!=null;
+				}catch(Exception e){
+					throw new SwingObjectRunException(e, ErrorSeverity.SEVERE, DataMapper.class);
+				}
 			}
 
 			@Override
 			public void consume(Field field) {
 				try {
 					if (Components.class.isAssignableFrom(field.getType())) {
-						initCompsAndValidate(field.get(container), swingworker);
+						initCompsAndValidate(prop, swingworker);
 					}else if(JComponent.class.isAssignableFrom(field.getType())) {
-						Object prop=field.get(container);
 						fieldsOfContainer.add((JComponent)prop);
 						CommonUI.initComponent(prop);
 						trimTexts(field, prop);

@@ -8,6 +8,7 @@ import java.util.Calendar;
 import org.aesthete.swingobjects.exceptions.ErrorSeverity;
 import org.aesthete.swingobjects.exceptions.SwingObjectRunException;
 import org.aesthete.swingobjects.view.FrameFactory;
+import org.apache.commons.lang3.StringUtils;
 
 public class DataWrapper {
 
@@ -229,7 +230,7 @@ public class DataWrapper {
 				throw new SwingObjectRunException(null, ErrorSeverity.SEVERE, FrameFactory.class);
 			}
 		} catch (Exception e) {
-			throw new SwingObjectRunException(null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException(e, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 
@@ -266,7 +267,7 @@ public class DataWrapper {
 				return Integer.valueOf(asString()).byteValue();
 			}
 		} catch (Exception e) {
-			throw new SwingObjectRunException(null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException(e, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 
@@ -291,7 +292,7 @@ public class DataWrapper {
 				throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
 			}
 		} catch (Exception e) {
-			throw new SwingObjectRunException(null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException(e, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 
@@ -313,7 +314,7 @@ public class DataWrapper {
 				return ((String) value).getBytes();
 			}
 		} catch (Exception e) {
-			throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( e, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 
 		return new byte[0];
@@ -349,7 +350,7 @@ public class DataWrapper {
 				return Integer.valueOf(asString()).shortValue();
 			}
 		} catch (Exception e) {
-			throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( e, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 
@@ -373,7 +374,7 @@ public class DataWrapper {
 				throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
 			}
 		} catch (Exception e) {
-			throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( e, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 
@@ -407,7 +408,7 @@ public class DataWrapper {
 				return Integer.valueOf(asString()).longValue();
 			}
 		} catch (Exception e) {
-			throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( e, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 
@@ -431,7 +432,7 @@ public class DataWrapper {
 				throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
 			}
 		} catch (Exception e) {
-			throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( e, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 
@@ -466,7 +467,7 @@ public class DataWrapper {
 				return Integer.valueOf(asString()).doubleValue();
 			}
 		} catch (Exception e) {
-			throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( e, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 
@@ -490,7 +491,7 @@ public class DataWrapper {
 				throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
 			}
 		} catch (Exception e) {
-			throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( e, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 
@@ -524,7 +525,7 @@ public class DataWrapper {
 				return Integer.valueOf(asString()).floatValue();
 			}
 		} catch (Exception e) {
-			throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( e, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 
@@ -548,7 +549,7 @@ public class DataWrapper {
 				throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
 			}
 		} catch (Exception e) {
-			throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( e, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 
@@ -584,9 +585,9 @@ public class DataWrapper {
 				return Time.valueOf(asString());
 			}
 		} catch (IllegalArgumentException a) {
-			throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( a, ErrorSeverity.SEVERE, FrameFactory.class);
 		} catch (Exception b) {
-			throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( b, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 
@@ -620,9 +621,9 @@ public class DataWrapper {
 				return Timestamp.valueOf(asString());
 			}
 		} catch (IllegalArgumentException a) {
-			throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( a, ErrorSeverity.SEVERE, FrameFactory.class);
 		} catch (Exception b) {
-			throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( b, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 
@@ -667,9 +668,9 @@ public class DataWrapper {
 				return java.sql.Date.valueOf(asString());
 			}
 		} catch (IllegalArgumentException a) {
-			throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( a, ErrorSeverity.SEVERE, FrameFactory.class);
 		} catch (Exception b) {
-			throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( b, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 
@@ -723,9 +724,9 @@ public class DataWrapper {
 				return null;
 			}
 		} catch (IllegalArgumentException a) {
-			throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( a, ErrorSeverity.SEVERE, FrameFactory.class);
 		} catch (Exception b) {
-			throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
+			throw new SwingObjectRunException( b, ErrorSeverity.SEVERE, FrameFactory.class);
 		}
 	}
 
@@ -825,7 +826,7 @@ public class DataWrapper {
 	 * @return true if is null
 	 */
 	public boolean isNull() {
-		return value == null;
+		return value == null || (isString() && StringUtils.isEmpty((String)value));
 	}
 
 	/**
