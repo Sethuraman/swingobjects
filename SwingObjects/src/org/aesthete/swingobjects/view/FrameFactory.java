@@ -125,6 +125,9 @@ public class FrameFactory {
 	 *
 	 */
 	private static final ConcurrentHashMap<String, Set<Component>> frames = new ConcurrentHashMap<String, Set<Component>>();
+	private static final ConcurrentHashMap<Component, String> framesetIDs=new ConcurrentHashMap<Component, String>();
+
+	private static String frameSetIDInUse;
 
 	/**
 	 * This will instantiate a new container. The class passed in must extend from Container at the minimum. You
@@ -144,9 +147,11 @@ public class FrameFactory {
 			throws SwingObjectRunException {
 		Component comp = null;
 		try {
+			frameSetIDInUse=framesetid;
 			comp = (Component) ConstructorUtils.invokeConstructor(clz, objs);
 			handleWindows(framesetid,clz, comp);
 			putContainerInMap(framesetid, comp);
+			frameSetIDInUse=null;
 		} catch (SwingObjectRunException e) {
 			throw e;
 		} catch (Exception e) {
@@ -217,12 +222,11 @@ public class FrameFactory {
 	public static void putContainerInMap(String framesetid, Component comp) throws IllegalAccessException, InvocationTargetException,
 			NoSuchMethodException {
 		try {
-			Set<Component> setOfComps = null;
-			if (frames.containsKey(framesetid)) {
-				setOfComps = new HashSet<Component>();
-			} else {
+			Set<Component> setOfComps = frames.get(framesetid);
+			if (setOfComps==null) {
 				frames.put(framesetid, setOfComps = new HashSet<Component>());
 			}
+			framesetIDs.put(comp, framesetid);
 			setOfComps.add(comp);
 			registerActionlistener(comp);
 		} catch (Exception e) {
@@ -277,6 +281,7 @@ public class FrameFactory {
 		Set<Component> comps = frames.remove(framesetid);
 		if (comps != null) {
 			for (Component comp : comps) {
+				framesetIDs.remove(comp);
 				try {
 					MethodUtils.invokeMethod(comp, "dispose", null);
 				} catch (NoSuchMethodException e) {
@@ -300,6 +305,7 @@ public class FrameFactory {
 			Set<Component> toRemove=new HashSet<Component>();
 			for (Component comp : comps) {
 				if (comp.getClass() == clz) {
+					framesetIDs.remove(comp);
 					try {
 						toRemove.add(comp);
 						MethodUtils.invokeMethod(comp, "dispose", null);
@@ -325,6 +331,7 @@ public class FrameFactory {
 		if (comps != null) {
 			for (Component comp : comps) {
 				if (name.equals(comp.getName())) {
+					framesetIDs.remove(comp);
 					try {
 						MethodUtils.invokeMethod(comp, "dispose", null);
 					} catch (NoSuchMethodException e) {
@@ -418,4 +425,15 @@ public class FrameFactory {
 		}
 	}
 
+	public static String getFramesetIDForComponent(Component component) {
+		return framesetIDs.get(component);
+	}
+
+	public static String getFrameSetIDInUse() {
+		return frameSetIDInUse;
+	}
+
+	public static void setFrameSetIDInUse(String frameSetIDInUse) {
+		FrameFactory.frameSetIDInUse = frameSetIDInUse;
+	}
 }

@@ -72,11 +72,7 @@ public class DataWrapper {
 				return null;
 			} else if (isBigDecimal()) {
 				return (BigDecimal) value;
-			} else if (isDouble()) {
-				return new BigDecimal(((Double) value).doubleValue());
-			} else if (isFloat()) {
-				return new BigDecimal(((Float) value).doubleValue());
-			} else if (isString() || isInt() || isLong() || isShort() || isByte()) {
+			} else if (isString() || isInt() || isLong() || isShort() || isByte() || isDouble() || isFloat()) {
 				return new BigDecimal(asString());
 			} else {
 				return null;
@@ -103,11 +99,7 @@ public class DataWrapper {
 				return null;
 			} else if (isBigDecimal()) {
 				return ((BigDecimal) value).setScale(scale);
-			} else if (isDouble()) {
-				return new BigDecimal(((Double) value).doubleValue()).setScale(scale);
-			} else if (isFloat()) {
-				return new BigDecimal(((Float) value).doubleValue()).setScale(scale);
-			} else if (isString() || isInt() || isLong() || isShort() || isByte()) {
+			} else if (isString() || isInt() || isLong() || isShort() || isByte() || isDouble() || isFloat()) {
 				return new BigDecimal(asString()).setScale(scale);
 			} else {
 				return null;
@@ -335,7 +327,7 @@ public class DataWrapper {
 			} else if (isShort()) {
 				return ((Short) value).shortValue();
 			} else if (isString()) {
-				return Integer.valueOf((String) value).shortValue();
+				return Short.valueOf((String) value).shortValue();
 			} else if (isInt()) {
 				return ((Integer) value).shortValue();
 			} else if (isLong()) {
@@ -393,7 +385,7 @@ public class DataWrapper {
 			} else if (isLong()) {
 				return ((Long) value).longValue();
 			} else if (isString()) {
-				return Integer.valueOf((String) value).longValue();
+				return Long.valueOf((String) value).longValue();
 			} else if (isShort()) {
 				return ((Short) value).longValue();
 			} else if (isInt()) {
@@ -452,7 +444,7 @@ public class DataWrapper {
 			} else if (isDouble()) {
 				return ((Double) value).doubleValue();
 			} else if (isString()) {
-				return Integer.valueOf((String) value).doubleValue();
+				return Double.valueOf((String) value).doubleValue();
 			} else if (isShort()) {
 				return ((Short) value).doubleValue();
 			} else if (isInt()) {
@@ -510,7 +502,7 @@ public class DataWrapper {
 			} else if (isFloat()) {
 				return ((Float) value).floatValue();
 			} else if (isString()) {
-				return Integer.valueOf((String) value).floatValue();
+				return Float.valueOf((String) value).floatValue();
 			} else if (isShort()) {
 				return ((Short) value).floatValue();
 			} else if (isInt()) {

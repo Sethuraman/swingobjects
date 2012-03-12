@@ -112,7 +112,11 @@ public class GlobalListener implements ActionListener{
 			Method m = actions.get(action);
 			if(m!=null){
 				try {
-					m.invoke(comp, e);
+					if(m.getGenericParameterTypes().length==1) {
+						m.invoke(comp, e);
+					}else {
+						m.invoke(comp);
+					}
 				} catch (Exception exp) {
 					throw new SwingObjectRunException(exp.getCause(),ErrorSeverity.SEVERE, FrameFactory.class);
 				}
@@ -123,13 +127,11 @@ public class GlobalListener implements ActionListener{
 
 	private void init() {
 		if(!isInited){
+			actions=new HashMap<String, Method>();
 			Method[] methods = comp.getClass().getMethods();
 			for(Method method : methods){
 				Action a=method.getAnnotation(Action.class);
 				if(a!=null){
-					if(actions==null){
-						actions=new HashMap<String, Method>();
-					}
 					for(String s : a.value()){
 						actions.put(s, method);
 					}

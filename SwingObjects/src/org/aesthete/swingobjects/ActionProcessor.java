@@ -53,7 +53,8 @@ public class ActionProcessor {
 				processor.initCompsAndValidate(container,swingworker);
 				if(!processor.isError) {
 					DataMapper.mapData(container);
-					if(swingworker.validateAndPopulate(processor.scopeObj)) {
+					processor.isError=!swingworker.validateAndPopulate(processor.scopeObj);
+					if(!processor.isError) {
 						processor.scopeObj.setContainer(container);
 						processor.scopeObj.setFieldsOfTheContainer(processor.fieldsOfContainer);
 						swingworker.execute();
@@ -65,6 +66,9 @@ public class ActionProcessor {
 				}
 			}finally {
 				CommonUI.restoreComponentsToInitialState(processor.fieldsOfContainer);
+				if(processor.isError) {
+					RequestScope.endOfRequest();
+				}
 			}
 		}
 		catch(Exception e){

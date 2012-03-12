@@ -9,19 +9,26 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.Window;
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
+import java.text.ParseException;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
+import javax.swing.text.MaskFormatter;
 
 import org.aesthete.swingobjects.ActionProcessor.CLIENT_PROPS;
 import org.aesthete.swingobjects.SwingObjProps;
@@ -32,6 +39,7 @@ import org.apache.commons.beanutils.MethodUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jdesktop.swingx.JXErrorPane;
 import org.jdesktop.swingx.error.ErrorInfo;
+import org.jdesktop.swingx.painter.ImagePainter;
 
 public class CommonUI {
 
@@ -153,35 +161,24 @@ public class CommonUI {
 
 
 	public static void showOnScreen(final JFrame frame) {
-		if(SwingUtilities.isEventDispatchThread()) {
-			frame.pack();
-			locateOnOpticalScreenCenter(frame);
-			frame.setVisible(true);
-		}else {
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					frame.pack();
-					locateOnOpticalScreenCenter(frame);
-					frame.setVisible(true);
-				}
-			});
-		}
+		runInEDT(new Runnable() {
+			@Override
+			public void run() {
+				frame.pack();
+				locateOnOpticalScreenCenter(frame);
+				frame.setVisible(true);
+			}
+		});
 	}
 
 	public static void showOnScreen(final JDialog frame) {
-		if(SwingUtilities.isEventDispatchThread()) {
-			frame.pack();
-			locateOnOpticalScreenCenter(frame);
-			frame.setVisible(true);
-		}else {
-			SwingUtilities.invokeLater(new Runnable() {
-				public void run() {
-					frame.pack();
-					locateOnOpticalScreenCenter(frame);
-					frame.setVisible(true);
-				}
-			});
-		}
+		runInEDT(new Runnable() {
+			public void run() {
+				frame.pack();
+				locateOnOpticalScreenCenter(frame);
+				frame.setVisible(true);
+			}
+		});
 	}
 
 	 /**
@@ -234,5 +231,23 @@ public class CommonUI {
 				}
 			});
     	}
+    }
+
+    public static ImagePainter getImagePainter(String imageLocation) {
+		ImagePainter imgPainter=null;
+		try {
+			imgPainter = new ImagePainter(ImageIO.read(new File(imageLocation)));
+		} catch (IOException e) {
+			throw new SwingObjectRunException(e, ErrorSeverity.SEVERE, CommonUI.class);
+		}
+		return imgPainter;
+	}
+
+    public static JTextField getMaskFormattedTextField(String format) {
+    	try {
+			return new JFormattedTextField(new MaskFormatter(format));
+		} catch (ParseException e) {
+			throw new SwingObjectRunException(e, CommonUI.class);
+		}
     }
 }

@@ -40,7 +40,7 @@ public class DataMapper {
 		if (dataClass != null) {
 			String beanName = dataClass.value();
 			RequestScopeObject scopeObj=RequestScope.getRequestObj();
-			SwingObjData objData=(SwingObjData)scopeObj.getRequestMap().get(beanName);
+			SwingObjData objData=(SwingObjData)scopeObj.getObjectFromMap(beanName);
 			populateObject(container,objData,false);
 		}
 	}

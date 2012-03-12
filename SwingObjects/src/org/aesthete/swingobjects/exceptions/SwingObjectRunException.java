@@ -31,6 +31,10 @@ public class SwingObjectRunException extends RuntimeException implements SwingOb
 		this("swingobj.severe",e,errorSeverity,objFromWhereExpIsThrown.getClass());
 	}
 
+	public SwingObjectRunException(Throwable e,Class<?> clz){
+		this("swingobj.severe",e,ErrorSeverity.SEVERE,clz);
+	}
+
 	public SwingObjectRunException(Throwable e, ErrorSeverity errorSeverity,Class<?> clz){
 		this("swingobj.severe",e,errorSeverity,clz);
 	}

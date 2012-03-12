@@ -49,10 +49,13 @@ public abstract class CommonSwingWorker extends SwingWorker<Void, Void> implemen
 
 	@Override
 	protected void done() {
-		WaitDialog.hideWaitDialog();
-		CommonUI.restoreComponentsToInitialState(scopeObj.getFieldsOfTheContainer());
-		handleErrorAndCallConnector();
-		RequestScope.endOfRequest();
+		try {
+			WaitDialog.hideWaitDialog();
+			CommonUI.restoreComponentsToInitialState(scopeObj.getFieldsOfTheContainer());
+			handleErrorAndCallConnector();
+		}finally {
+			RequestScope.endOfRequest();
+		}
 	}
 
 	/**
@@ -68,21 +71,27 @@ public abstract class CommonSwingWorker extends SwingWorker<Void, Void> implemen
 	 * </pre>
 	 */
 	protected void handleErrorAndCallConnector() {
-		SwingObjectsExceptions e = scopeObj.getErrorObj();
-		boolean isCall=true;
-		if(e!=null) {
-			CommonUI.showErrorDialogForComponent(e);
-			switch(e.getErrorSeverity()) {
+		try {
+			SwingObjectsExceptions e = scopeObj.getErrorObj();
+			boolean isCall=true;
+			if(e!=null) {
+				CommonUI.showErrorDialogForComponent(e);
+				switch(e.getErrorSeverity()) {
 				case ERROR:
 				case SEVERE: isCall=false; break;
 				default: // call connector
-							break;
+					break;
+				}
 			}
-		}
 
-		if(isCall) {
-			DataMapper.mapGUI(scopeObj.getContainer());
-			callConnector(scopeObj);
+			if(isCall) {
+				DataMapper.mapGUI(scopeObj.getContainer());
+				callConnector(scopeObj);
+			}
+		}catch(SwingObjectRunException e) {
+			CommonUI.showErrorDialogForComponent(e);
+		}catch(Exception e) {
+			CommonUI.showErrorDialogForComponent(new SwingObjectRunException(e, this.getClass()));
 		}
 	}
 
