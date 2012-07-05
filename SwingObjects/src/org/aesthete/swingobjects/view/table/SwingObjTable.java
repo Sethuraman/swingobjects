@@ -201,4 +201,12 @@ public class SwingObjTable<T extends RowDataBean> extends JXTable {
 	public void setPrototypeData(T prototypeData) {
 		this.prototypeData = prototypeData;
 	}
+
+    public int getSelectedRowAfterModelConversion(){
+        int selectedRow = getSelectedRow();
+        if(selectedRow>-1){
+            return convertRowIndexToModel(selectedRow);
+        }
+        return -1;
+    }
 }

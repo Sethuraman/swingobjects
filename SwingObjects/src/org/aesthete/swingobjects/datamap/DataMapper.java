@@ -36,7 +36,7 @@ public class DataMapper {
 	}
 
 	public static void mapGUI(Object container) {
-		DataBeanName dataClass = container.getClass().getAnnotation(DataBeanName.class);
+   		DataBeanName dataClass = container.getClass().getAnnotation(DataBeanName.class);
 		if (dataClass != null) {
 			String beanName = dataClass.value();
 			RequestScopeObject scopeObj=RequestScope.getRequestObj();

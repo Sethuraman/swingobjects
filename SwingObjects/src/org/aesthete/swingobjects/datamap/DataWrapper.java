@@ -63,7 +63,6 @@ public class DataWrapper {
 	 *
 	 * @return a BigDecimal
 	 *
-	 * @exception DataSetException
 	 */
 	public BigDecimal asBigDecimal()
 	{
@@ -86,11 +85,9 @@ public class DataWrapper {
 	 * Get the value as a BigDecimal
 	 *
 	 * @param scale
-	 *            TODO: DOCUMENT ME!
 	 *
 	 * @return a BigDecimal
 	 *
-	 * @exception DataSetException
 	 */
 	public BigDecimal asBigDecimal(int scale)
 	{
@@ -114,7 +111,6 @@ public class DataWrapper {
 	 *
 	 * @return a boolean
 	 *
-	 * @exception DataSetException
 	 */
 	public boolean asBoolean()
 	{
@@ -145,7 +141,6 @@ public class DataWrapper {
 	 *
 	 * @return a Boolean
 	 *
-	 * @exception DataSetException
 	 */
 	public Boolean asBooleanObj()
 	{
@@ -175,7 +170,6 @@ public class DataWrapper {
 	 *
 	 * @return an int
 	 *
-	 * @exception DataSetException
 	 */
 	public int asInt()
 	{
@@ -185,7 +179,9 @@ public class DataWrapper {
 			} else if (isInt()) {
 				return ((Integer) value).intValue();
 			} else if (isString()) {
-				return Integer.valueOf((String) value).intValue();
+                String s = (String) value;
+                s=s.replaceAll(",","");
+                return Integer.valueOf(s).intValue();
 			} else if (isLong()) {
 				return ((Long) value).intValue();
 			} else if (isDouble()) {
@@ -207,7 +203,6 @@ public class DataWrapper {
 	 *
 	 * @return an Integer
 	 *
-	 * @exception DataSetException
 	 */
 	public Integer asIntegerObj()
 	{
@@ -216,7 +211,11 @@ public class DataWrapper {
 				return null;
 			} else if (isInt()) {
 				return ((Integer) value);
-			} else if (isString() || isDouble() || isFloat() || isBigDecimal() || isLong() || isShort() || isByte()) {
+			} else if(isString()){
+                String s = (String) value;
+                s=s.replaceAll(",","");
+                return Integer.valueOf(s);
+            } else if (isDouble() || isFloat() || isBigDecimal() || isLong() || isShort() || isByte()) {
 				return new Integer(asString());
 			} else {
 				throw new SwingObjectRunException(null, ErrorSeverity.SEVERE, FrameFactory.class);
@@ -231,7 +230,6 @@ public class DataWrapper {
 	 *
 	 * @return a byte
 	 *
-	 * @exception DataSetException
 	 */
 	public byte asByte()
 
@@ -268,7 +266,6 @@ public class DataWrapper {
 	 *
 	 * @return a Byte
 	 *
-	 * @exception DataSetException
 	 */
 	public Byte asByteObj()
 
@@ -293,7 +290,6 @@ public class DataWrapper {
 	 *
 	 * @return a byte array
 	 *
-	 * @exception DataSetException
 	 */
 	public byte[] asBytes()
 	{
@@ -317,7 +313,6 @@ public class DataWrapper {
 	 *
 	 * @return a short
 	 *
-	 * @exception DataSetException
 	 */
 	public short asShort()
 	{
@@ -327,7 +322,9 @@ public class DataWrapper {
 			} else if (isShort()) {
 				return ((Short) value).shortValue();
 			} else if (isString()) {
-				return Short.valueOf((String) value).shortValue();
+                String s = (String) value;
+                s=s.replaceAll(",","");
+				return Short.valueOf(s).shortValue();
 			} else if (isInt()) {
 				return ((Integer) value).shortValue();
 			} else if (isLong()) {
@@ -351,7 +348,6 @@ public class DataWrapper {
 	 *
 	 * @return a Short
 	 *
-	 * @exception DataSetException
 	 */
 	public Short asShortObj()
 	{
@@ -360,7 +356,11 @@ public class DataWrapper {
 				return null;
 			} else if (isShort()) {
 				return ((Short) value);
-			} else if (isString() || isDouble() || isFloat() || isInt() || isLong() || isBigDecimal() || isByte()) {
+			} else if(isString()){
+                String s = (String) value;
+                s=s.replaceAll(",","");
+                return new Short(s);
+            } else if (isDouble() || isFloat() || isInt() || isLong() || isBigDecimal() || isByte()) {
 				return new Short(asString());
 			} else {
 				throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
@@ -375,7 +375,6 @@ public class DataWrapper {
 	 *
 	 * @return a long
 	 *
-	 * @exception DataSetException
 	 */
 	public long asLong()
 	{
@@ -385,7 +384,9 @@ public class DataWrapper {
 			} else if (isLong()) {
 				return ((Long) value).longValue();
 			} else if (isString()) {
-				return Long.valueOf((String) value).longValue();
+                String s = (String) value;
+                s=s.replaceAll(",","");
+				return Long.valueOf(s).longValue();
 			} else if (isShort()) {
 				return ((Short) value).longValue();
 			} else if (isInt()) {
@@ -409,7 +410,6 @@ public class DataWrapper {
 	 *
 	 * @return a Long
 	 *
-	 * @exception DataSetException
 	 */
 	public Long asLongObj()
 	{
@@ -418,7 +418,11 @@ public class DataWrapper {
 				return null;
 			} else if (isLong()) {
 				return ((Long) value);
-			} else if (isString() || isDouble() || isFloat() || isInt() || isBigDecimal() || isShort() || isByte()) {
+			} else if(isString()){
+                String s = (String) value;
+                s=s.replaceAll(",","");
+                return Long.valueOf(s);
+            } else if ( isDouble() || isFloat() || isInt() || isBigDecimal() || isShort() || isByte()) {
 				return new Long(asString());
 			} else {
 				throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
@@ -433,7 +437,6 @@ public class DataWrapper {
 	 *
 	 * @return a double
 	 *
-	 * @exception DataSetException
 	 */
 	public double asDouble()
 
@@ -444,7 +447,9 @@ public class DataWrapper {
 			} else if (isDouble()) {
 				return ((Double) value).doubleValue();
 			} else if (isString()) {
-				return Double.valueOf((String) value).doubleValue();
+                String s = (String) value;
+                s=s.replaceAll(",","");
+				return Double.valueOf(s).doubleValue();
 			} else if (isShort()) {
 				return ((Short) value).doubleValue();
 			} else if (isInt()) {
@@ -468,7 +473,6 @@ public class DataWrapper {
 	 *
 	 * @return a Double
 	 *
-	 * @exception DataSetException
 	 */
 	public Double asDoubleObj()
 	{
@@ -477,7 +481,11 @@ public class DataWrapper {
 				return null;
 			} else if (isDouble()) {
 				return ((Double) value);
-			} else if (isString() || isBigDecimal() || isFloat() || isInt() || isLong() || isShort() || isByte()) {
+			} else if(isString()){
+                String s = (String) value;
+                s=s.replaceAll(",","");
+                return Double.valueOf(s);
+            } else if (isBigDecimal() || isFloat() || isInt() || isLong() || isShort() || isByte()) {
 				return new Double(asString());
 			} else {
 				throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
@@ -492,7 +500,6 @@ public class DataWrapper {
 	 *
 	 * @return a float
 	 *
-	 * @exception DataSetException
 	 */
 	public float asFloat()
 	{
@@ -502,7 +509,9 @@ public class DataWrapper {
 			} else if (isFloat()) {
 				return ((Float) value).floatValue();
 			} else if (isString()) {
-				return Float.valueOf((String) value).floatValue();
+                String s = (String) value;
+                s=s.replaceAll(",","");
+				return Float.valueOf(s).floatValue();
 			} else if (isShort()) {
 				return ((Short) value).floatValue();
 			} else if (isInt()) {
@@ -526,7 +535,6 @@ public class DataWrapper {
 	 *
 	 * @return a Float
 	 *
-	 * @exception DataSetException
 	 */
 	public Float asFloatObj()
 	{
@@ -535,7 +543,11 @@ public class DataWrapper {
 				return null;
 			} else if (isFloat()) {
 				return ((Float) value);
-			} else if (isString() || isDouble() || isBigDecimal() || isInt() || isLong() || isShort() || isByte()) {
+			} else if(isString()){
+                String s = (String) value;
+                s=s.replaceAll(",","");
+                return Float.valueOf(s);
+            } else if (isDouble() || isBigDecimal() || isInt() || isLong() || isShort() || isByte()) {
 				return new Float(asString());
 			} else {
 				throw new SwingObjectRunException( null, ErrorSeverity.SEVERE, FrameFactory.class);
@@ -550,7 +562,6 @@ public class DataWrapper {
 	 *
 	 * @return a Time
 	 *
-	 * @exception DataSetException
 	 */
 	public Time asTime()
 	{
@@ -588,7 +599,6 @@ public class DataWrapper {
 	 *
 	 * @return a Timestamp
 	 *
-	 * @exception DataSetException
 	 */
 	public Timestamp asTimestamp()
 
@@ -624,7 +634,6 @@ public class DataWrapper {
 	 *
 	 * @return a java.sql.Date
 	 *
-	 * @exception DataSetException
 	 */
 	public java.sql.Date asDate()
 
@@ -682,7 +691,6 @@ public class DataWrapper {
 	 *
 	 * @return a java.util.Date
 	 *
-	 * @exception DataSetException
 	 */
 	public java.util.Date asUtilDate()
 
