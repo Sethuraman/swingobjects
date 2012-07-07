@@ -203,7 +203,7 @@ public class CommonUI {
     }
 
     public static ImageIcon getScaledImage(int width, int height, String imageLoc){
-		ImageIcon icon=new ImageIcon(CommonUI.class.getResource(imageLoc));
+		ImageIcon icon=new ImageIcon(imageLoc);
 		Image scaledImage=icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
 		icon=new ImageIcon(scaledImage);
 		return icon;

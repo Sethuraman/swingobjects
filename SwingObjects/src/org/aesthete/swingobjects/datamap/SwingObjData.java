@@ -123,9 +123,6 @@ public class SwingObjData extends LazyDynaBean {
 	}
 
 	public DataWrapper wrapDataIfNot(Object o) {
-		if(o==null) {
-			return null;
-		}
 		if(o instanceof DataWrapper) {
 			return (DataWrapper)o;
 		}

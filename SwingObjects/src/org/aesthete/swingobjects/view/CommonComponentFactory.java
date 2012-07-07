@@ -53,10 +53,6 @@ public class CommonComponentFactory {
 		return button;
 	}
 
-	public static JButton getIconButton(String imageFile) {
-		JButton btn=new JButton(CommonUI.getScaledImage(19, 22,imageFile));
-		return btn;
-	}
 	public static JXTaskPaneContainer createCollapsibleContainer(JXTaskPane... taskPanes) {
 		JXTaskPaneContainer container=new JXTaskPaneContainer();
 		for(JXTaskPane taskPane : taskPanes) {
