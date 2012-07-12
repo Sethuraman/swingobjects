@@ -36,6 +36,16 @@ public class RequestScope {
 		}
 	}
 
+    /**
+     * This method needs to be called if you recursing another level of Model and then Connector.
+     * This will typically happen, when at the Connector you show up a screen and depending
+     * on the user selection, you want to call another model and start another request response cycle.
+     * In that case the current stack contents have to be pushed down one more level.
+     */
+    public static void pushDownOneLevel(){
+        getNewRequestObj();
+    }
+
 	@SuppressWarnings("unchecked")
 	public static <T> T getObjectFromScope(String key) {
 		return (T)getRequestObj().getObjectFromMap(key);
