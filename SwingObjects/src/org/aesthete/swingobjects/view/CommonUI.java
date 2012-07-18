@@ -93,7 +93,7 @@ public class CommonUI {
 					field.setAccessible(true);
 					if (field.get(obj) != null) {
 						String name = (String) MethodUtils.invokeMethod(field.get(obj), "getName", null);
-						if (StringUtils.isNotEmpty(name)) {
+						if (StringUtils.isEmpty(name)) {
 							MethodUtils.invokeMethod(field.get(obj), "setName", field.getName());
 						}
 					}
@@ -108,14 +108,6 @@ public class CommonUI {
 		if (!JComponent.class.isAssignableFrom(type)) {
 			return false;
 		}
-		if (JPanel.class.isAssignableFrom(type)) {
-			return false;
-		} else if (JDialog.class.isAssignableFrom(type)) {
-			return false;
-		} else if (JFrame.class.isAssignableFrom(type)) {
-			return false;
-		}
-
 		return true;
 	}
 
