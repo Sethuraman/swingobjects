@@ -35,6 +35,8 @@ import org.aesthete.swingobjects.SwingObjProps;
 import org.aesthete.swingobjects.exceptions.ErrorSeverity;
 import org.aesthete.swingobjects.exceptions.SwingObjectRunException;
 import org.aesthete.swingobjects.exceptions.SwingObjectsExceptions;
+import org.aesthete.swingobjects.util.FieldCallback;
+import org.aesthete.swingobjects.util.ReflectionUtils;
 import org.apache.commons.beanutils.MethodUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jdesktop.swingx.JXErrorPane;
@@ -85,7 +87,7 @@ public class CommonUI {
 
 	public static void nameComponents(Class<?> clz, Object obj) {
 		try {
-			Field[] fields = clz.getDeclaredFields();
+            Field[] fields = clz.getDeclaredFields();
 			for (Field field : fields) {
 				if (CommonUI.isNamedComponent(field.getType())) {
 					field.setAccessible(true);

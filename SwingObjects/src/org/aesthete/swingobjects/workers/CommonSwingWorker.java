@@ -54,7 +54,7 @@ public abstract class CommonSwingWorker extends SwingWorker<Void, Void> implemen
 			CommonUI.restoreComponentsToInitialState(scopeObj.getFieldsOfTheContainer());
 			handleErrorAndCallConnector();
 		}finally {
-			RequestScope.endOfRequest();
+			RequestScope.endOfRequest(scopeObj);
 		}
 	}
 

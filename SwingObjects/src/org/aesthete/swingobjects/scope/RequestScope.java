@@ -1,5 +1,7 @@
 package org.aesthete.swingobjects.scope;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Stack;
 
 /**
@@ -16,7 +18,7 @@ import java.util.Stack;
  *
  */
 public class RequestScope {
-	public static final Stack<RequestScopeObject> REQUEST_SCOPE=new Stack<RequestScopeObject>();
+	public static final LinkedList<RequestScopeObject> REQUEST_SCOPE=new LinkedList<RequestScopeObject>();
 
 	private static RequestScopeObject getNewRequestObj(){
 		RequestScopeObject scopeObj=new RequestScopeObject();
@@ -24,27 +26,22 @@ public class RequestScope {
 		return scopeObj;
 	}
 
-	public static RequestScopeObject endOfRequest(){
-		return REQUEST_SCOPE.pop();
+	public static void endOfRequest(RequestScopeObject scopeObject){
+		REQUEST_SCOPE.remove(scopeObject);
 	}
 
 	public static RequestScopeObject getRequestObj(){
 		if(REQUEST_SCOPE.isEmpty()) {
 			return getNewRequestObj();
 		}else {
-			return REQUEST_SCOPE.peek();
+			return REQUEST_SCOPE.getLast();
 		}
 	}
 
-    /**
-     * This method needs to be called if you recursing another level of Model and then Connector.
-     * This will typically happen, when at the Connector you show up a screen and depending
-     * on the user selection, you want to call another model and start another request response cycle.
-     * In that case the current stack contents have to be pushed down one more level.
-     */
-    public static void pushDownOneLevel(){
-        getNewRequestObj();
+    public static RequestScopeObject startNewIteration(){
+        return getNewRequestObj();
     }
+
 
 	@SuppressWarnings("unchecked")
 	public static <T> T getObjectFromScope(String key) {

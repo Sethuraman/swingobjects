@@ -67,7 +67,7 @@ public class ActionProcessor {
 			}finally {
 				CommonUI.restoreComponentsToInitialState(processor.fieldsOfContainer);
 				if(processor.isError) {
-					RequestScope.endOfRequest();
+					RequestScope.endOfRequest(processor.scopeObj);
 				}
 			}
 		}
