@@ -5,11 +5,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JList;
-import javax.swing.JToggleButton;
+import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
 import org.aesthete.swingobjects.annotations.Required;
@@ -142,7 +138,13 @@ public class ActionProcessor {
 			if(fieldObj instanceof JComponent){
 				JComponent jcomponent = (JComponent)fieldObj;
 				boolean isError=false;
-				if(fieldObj instanceof JTextComponent){
+                if(fieldObj instanceof JFormattedTextField){
+                    if(isRequired && StringUtils.isBlank(((JTextComponent)fieldObj).getText())){
+                        isError=true;
+                    }else if(!isRequired && StringUtils.isNotBlank(((JTextComponent)fieldObj).getText())){
+                        isError=true;
+                    }
+                }else if(fieldObj instanceof JTextComponent){
 					if(isRequired && StringUtils.isEmpty(((JTextComponent)fieldObj).getText())){
 						isError=true;
 					}else if(!isRequired && StringUtils.isNotEmpty(((JTextComponent)fieldObj).getText())){

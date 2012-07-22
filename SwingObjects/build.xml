@@ -23,5 +23,9 @@
         <jar destfile="${basedir}/build/swingobjects.jar" basedir="${basedir}/build/classes" />
     </target>
 
+    <target name="copy" depends="main">
+        <copy file="${basedir}/build/swingobjects.jar" tofile="/Users/Sethuram/Development/Csmart/workspaces/csmart/lib/swingobjects.jar" overwrite="true"/>
+    </target>
+
 
 </project>

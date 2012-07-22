@@ -239,7 +239,7 @@ public class CommonUI {
 
     public static JTextField getMaskFormattedTextField(String format) {
     	try {
-			return new JFormattedTextField(new MaskFormatter(format));
+			return new MaskTextfield(format);
 		} catch (ParseException e) {
 			throw new SwingObjectRunException(e, CommonUI.class);
 		}
