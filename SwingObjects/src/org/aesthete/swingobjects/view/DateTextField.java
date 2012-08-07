@@ -79,8 +79,8 @@ public class DateTextField extends JFormattedTextField implements Observer {
 		super.paint(g);
 		try {
 			BufferedImage img = ImageIO.read(DateTextField.class.getResourceAsStream("/images/calendar.png"));
-			int x=getWidth()-22;
-			g.drawImage(img,x,1,20,getHeight()-2,null);
+			int x=getWidth()-26;
+			g.drawImage(img,x,1,25,getHeight()-2,null);
 		}catch (IOException e) {
 			throw new SwingObjectRunException(e,ErrorSeverity.SEVERE, FrameFactory.class);
 		}

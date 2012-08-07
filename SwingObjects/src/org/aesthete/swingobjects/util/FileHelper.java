@@ -32,7 +32,7 @@ public class FileHelper {
 			destination = new FileOutputStream(toFile).getChannel();
 			destination.transferFrom(source, 0, source.size());
 		}catch(Exception e){
-			throw new SwingObjectException("Error while copying",e, ErrorSeverity.SEVERE,FileHelper.class);
+			throw new SwingObjectException(e, ErrorSeverity.SEVERE,FileHelper.class);
 		}finally {
 			try {
 				try {
@@ -45,7 +45,7 @@ public class FileHelper {
 					}
 				}
 			} catch (Exception e) {
-				throw new SwingObjectException("Error while copying",e, ErrorSeverity.SEVERE,FileHelper.class);
+				throw new SwingObjectException(e, ErrorSeverity.SEVERE,FileHelper.class);
 			}
 		}
 	}

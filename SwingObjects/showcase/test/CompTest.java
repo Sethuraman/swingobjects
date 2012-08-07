@@ -37,7 +37,7 @@ import com.jgoodies.forms.layout.FormLayout;
 
 @DataBeanName("CompTest")
 @TitleIconImage("Component Test")
-public class CompTest extends JFrame implements Validator{
+public class CompTest extends JFrame{
 
 	private static final long serialVersionUID = 1L;
 
@@ -126,15 +126,16 @@ public class CompTest extends JFrame implements Validator{
 				SwingObjData objData = (SwingObjData) scopeObj.getObjectFromMap("CompTest");
 				System.out.println(objData.getValue("tftest").asString());
 				List<TestData> testdata=(List<TestData>)objData.getValue("table").getValue();
-				testdata.get(0).setTftest1("Changed to short");
+				testdata.get(0).setTftest1("Changed row data");
 				objData.set("table", testdata);
 				System.out.println(testdata.size());
-				objData.set("tftest","12345");
+				objData.set("tftest","Changed tftest1");
+                objData.set("tftest1","Changed tftest2");
 			}
 
 			@Override
 			public void callConnector(RequestScopeObject scopeObj) {
-				JOptionPane.showMessageDialog(CompTest.this, "Connector called successfully");
+				JOptionPane.showMessageDialog(CompTest.this, "Model finished, now you can update your GUI");
 			}
 		};
 
@@ -147,6 +148,7 @@ public class CompTest extends JFrame implements Validator{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			SwingObjectsInit.init("swingobjects","application");
 			CompTest test = FrameFactory.getNewContainer("test", CompTest.class);
+            test.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			CommonUI.showOnScreen(test);
 		} catch (SwingObjectException e) {
 			e.printStackTrace();
@@ -154,16 +156,5 @@ public class CompTest extends JFrame implements Validator{
 			e.printStackTrace();
 		}
 
-	}
-
-	@Override
-	public boolean validate(String action) {
-
-		return false;
-	}
-
-	@Override
-	public boolean continueIfError(String action) {
-		return false;
 	}
 }

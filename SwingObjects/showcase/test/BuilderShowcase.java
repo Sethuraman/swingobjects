@@ -62,7 +62,8 @@ public class BuilderShowcase extends JFrame{
 	}
 
 	private void layoutComponents() {
-		SwingObjFormBuilder builder=new SwingObjFormBuilder("10dlu,fill:pref,10dlu,fill:150dlu:grow,20dlu:grow,fill:pref,10dlu,fill:150dlu:grow,5dlu,20dlu,10dlu");
+		SwingObjFormBuilder builder=new SwingObjFormBuilder(
+                "10dlu,fill:pref,10dlu,fill:150dlu:grow,20dlu:grow,fill:pref,10dlu,fill:150dlu:grow,5dlu,20dlu,10dlu");
 		builder.addComponentsToCenter(null, 9, 2, new JLabel("A Test for the SwingObjects Builder"));
 		builder.nextLine();
 		builder.addLblValAndComp("Text field 1", tfCol1Tf1);
@@ -72,11 +73,11 @@ public class BuilderShowcase extends JFrame{
 		builder.addLblValAndComp("Text Field 4", tfCol2Tf2);
 		builder.addLabeledSeparatorFromValue("There'll be a table below");
 		builder.nextFewLines("$rowgap",
-															"$row", // for add button and start of table
-															"$rowgap",
-															"$row",// for del button
-															"$rowgap",
-															"fill:100dlu:grow");// remaining space for the table
+                            "$row", // for add button and start of table
+                            "$rowgap",
+                            "$row",// for del button
+                            "$rowgap",
+                            "fill:100dlu:grow");// remaining space for the table
 
 		builder.addComponent(new JScrollPane(testTable),7,5);
 		builder.addComponent(btnAdd);
@@ -87,7 +88,6 @@ public class BuilderShowcase extends JFrame{
 		builder.goToLastRow();
 		builder.addButtonBar(9, ButtonBarPos.Center, null, btnSave);
 		builder.complete();
-
 		this.setContentPane(builder.getPanel());
 	}
 

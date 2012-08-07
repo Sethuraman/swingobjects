@@ -377,8 +377,7 @@ public class DatePicker extends Observable implements Runnable, WindowFocusListe
 		screen.setSize(200, 200);
 		screen.setResizable(false);
 		screen.setModal(true);
-		screen.setUndecorated(true);
-		screen.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
+		screen.getRootPane().setWindowDecorationStyle(JRootPane.QUESTION_DIALOG);
 		screen.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		screen.getContentPane().setLayout(new BorderLayout());
 
@@ -391,7 +390,7 @@ public class DatePicker extends Observable implements Runnable, WindowFocusListe
 		screen.getContentPane().add(navPanel, BorderLayout.NORTH);
 
 		screen.setTitle(getString("program.title", "Date Picker"));
-		screen.setIconImage(new javax.swing.ImageIcon(DatePicker.class.getResource("/images/csmart-icon.png")).getImage());
+		screen.setIconImage(new javax.swing.ImageIcon(DatePicker.class.getResource("/images/calendar.png")).getImage());
 	}
 
 	public void start(Component c) {
