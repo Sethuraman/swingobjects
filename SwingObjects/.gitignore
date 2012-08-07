@@ -17,3 +17,4 @@ bin/
 *.eml
 build/
 SwingObjects.iml
+out/
