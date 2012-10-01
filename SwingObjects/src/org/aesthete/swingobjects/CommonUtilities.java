@@ -9,4 +9,9 @@ public class CommonUtilities {
 	public static String getDateInddMMYYYYFormat(Date date){
 		return DateFormat.getDateInstance(DateFormat.MEDIUM).format(date);
 	}
+
+
+
+
+
 }

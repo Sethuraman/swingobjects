@@ -293,6 +293,25 @@ public class FrameFactory {
 		}
 	}
 
+
+    public static void dispose(Component component){
+        String framesetId=getFramesetIDForComponent(component);
+        if(framesetId!=null){
+            Set<Component> components = frames.get(framesetId);
+            if(component!=null){
+                framesetIDs.remove(component);
+                components.remove(component);
+                try {
+                    MethodUtils.invokeMethod(component, "dispose", null);
+                } catch (NoSuchMethodException e) {
+                    component.setVisible(false);
+                } catch (Exception e) {
+                    throw new SwingObjectRunException(e, ErrorSeverity.SEVERE, FrameFactory.class);
+                }
+            }
+        }
+
+    }
 	/**
 	 * Disposes of all the containers having the same frameset id and class. For an example see the class level docs.
 	 * @param framesetid the framesetid used to storing/creating the container with the methods - {@link FrameFactory#getNewContainer(String, Class, Object...)} or

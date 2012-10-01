@@ -30,7 +30,7 @@ public class WidgetShowcase extends JFrame{
     }
 
     public  WidgetShowcase(){
-        SwingObjFormBuilder builder=new SwingObjFormBuilder("10dlu,fill:200dlu:grow,10dlu");
+        SwingObjFormBuilder builder=new SwingObjFormBuilder("10dlu,fill:200dlu:grow,10dlu", new RoundedPanel());
         BlinkerLabel blinkerLabel=new BlinkerLabel(null,"This is a blinker label","/images/warning.png");
         DateTextField dateTextField=new DateTextField(new Date());
         builder.addComponent(dateTextField);

@@ -5,8 +5,10 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Calendar;
 
+import org.aesthete.swingobjects.CommonUtilities;
 import org.aesthete.swingobjects.exceptions.ErrorSeverity;
 import org.aesthete.swingobjects.exceptions.SwingObjectRunException;
+import org.aesthete.swingobjects.util.DateUtils;
 import org.aesthete.swingobjects.view.FrameFactory;
 import org.apache.commons.lang3.StringUtils;
 
@@ -664,7 +666,7 @@ public class DataWrapper {
 				return java.sql.Date.valueOf(cal.get(Calendar.YEAR) + "-" + leadingZero(cal.get(Calendar.MONTH) + 1) + "-"
 						+ leadingZero(cal.get(Calendar.DAY_OF_MONTH)));
 			} else if (isString()) {
-				return java.sql.Date.valueOf((String) value);
+				return new java.sql.Date(DateUtils.getDateFromFormatOfString((String) value).getTime());
 			} else {
 				return java.sql.Date.valueOf(asString());
 			}
@@ -720,7 +722,9 @@ public class DataWrapper {
 
 				return java.sql.Date.valueOf(cal.get(Calendar.YEAR) + "-" + leadingZero(cal.get(Calendar.MONTH) + 1) + "-"
 						+ leadingZero(cal.get(Calendar.DAY_OF_MONTH)));
-			} else {
+			} else if (isString()) {
+                return DateUtils.getDateFromFormatOfString((String) value);
+            } else {
 				return null;
 			}
 		} catch (IllegalArgumentException a) {

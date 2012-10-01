@@ -14,6 +14,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableCellRenderer;
 
 import org.aesthete.swingobjects.datamap.converters.ConverterUtils.SwingObjTableConverter;
 import org.aesthete.swingobjects.exceptions.ErrorSeverity;
@@ -101,6 +102,17 @@ public class SwingObjTable<T extends RowDataBean> extends JXTable {
 
 		public ComboBoxEditor(ComboBoxModel model) {
             super(new JComboBox(model));
+        }
+    }
+
+    public void makeColumnsIntoADate(int... cols) {
+        for(int col : cols) {
+            new TableCellDatePicker(this, col);
+            DefaultTableCellRenderer renderer =new DefaultTableCellRenderer();
+            renderer.setToolTipText("<html>Right click to launch the Calendar<br/>" +
+                    "Else enter date in dd/mm/yyyy format</html>");
+            getColumnExt(col).setCellRenderer(renderer);
+            this.getColumnModel().getColumn(col).setCellRenderer(renderer);
         }
     }
 
