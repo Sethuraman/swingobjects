@@ -10,6 +10,7 @@ import javax.swing.text.JTextComponent;
 
 import org.aesthete.swingobjects.annotations.Required;
 import org.aesthete.swingobjects.annotations.ShouldBeEmpty;
+import org.aesthete.swingobjects.annotations.TableSelectARow;
 import org.aesthete.swingobjects.annotations.Trim;
 import org.aesthete.swingobjects.datamap.DataMapper;
 import org.aesthete.swingobjects.exceptions.ErrorSeverity;
@@ -107,18 +108,8 @@ public class ActionProcessor {
 						fieldsOfContainer.add((JComponent)prop);
 						CommonUI.initComponent(prop);
 						trimTexts(field, prop);
-						Required reqAnno = field.getAnnotation(Required.class);
-						ShouldBeEmpty empty = field.getAnnotation(ShouldBeEmpty.class);
-
-						if (reqAnno != null || empty != null) {
-							boolean isError=checkForRequired(reqAnno!=null,
-									reqAnno!=null? reqAnno.errorMsg() : empty.errorMsg(),
-									reqAnno!=null? reqAnno.value() : empty.value(),
-											field,container,swingworker.getAction());
-							if(isError) {
-								ActionProcessor.this.isError=true;
-							}
-						}
+                        handleRequiredEmptyChecks(field, container, swingworker);
+                        handleTableSelectARow(field,container,swingworker);
 					}
 				}catch(Exception e){
 					throw new SwingObjectRunException(e, ErrorSeverity.SEVERE, DataMapper.class);
@@ -127,13 +118,39 @@ public class ActionProcessor {
 		});
 	}
 
+    private void handleTableSelectARow(Field field, Object container, SwingWorkerInterface swingworker) throws IllegalAccessException {
+        TableSelectARow selectARow = field.getAnnotation(TableSelectARow.class);
+        if(selectARow!=null && isCheckSupposedToExecuteBasedOnAction(selectARow.value(),swingworker.getAction())){
+            Object fieldObj = field.get(container);
+            if(fieldObj instanceof JTable){
+                JTable table=(JTable)fieldObj;
+                if(table.getSelectedRow()<0){
+                    scopeObj.setErrorObj(new SwingObjectException("swingobj.placeholdererror",ErrorSeverity.ERROR,ActionProcessor.class,selectARow.errorMsg()));
+                    this.isError=true;
+                }
+            }
+        }
+    }
 
-	private boolean checkForRequired(boolean isRequired, String msg, String[] actions,
+    private void handleRequiredEmptyChecks(Field field, Object container, SwingWorkerInterface swingworker) throws IllegalAccessException {
+        Required reqAnno = field.getAnnotation(Required.class);
+        ShouldBeEmpty empty = field.getAnnotation(ShouldBeEmpty.class);
+
+        if (reqAnno != null || empty != null) {
+            boolean isError=checkForRequired(reqAnno!=null,
+                    reqAnno!=null? reqAnno.errorMsg() : empty.errorMsg(),
+                    reqAnno!=null? reqAnno.value() : empty.value(),
+                            field,container,swingworker.getAction());
+            if(isError) {
+                this.isError=true;
+            }
+        }
+    }
+
+
+    private boolean checkForRequired(boolean isRequired, String msg, String[] actions,
 			Field field, Object container,String action) throws IllegalArgumentException, IllegalAccessException {
-		if(actions==null || actions.length==0
-			||	(actions.length>0 && "ALL".equals(actions[0]))
-			||  (actions.length>0 && StringUtils.isNotEmpty(action) &&	action.equals(actions[0]))){
-
+		if(isCheckSupposedToExecuteBasedOnAction(actions, action)){
 			Object fieldObj = field.get(container);
 			if(fieldObj instanceof JComponent){
 				JComponent jcomponent = (JComponent)fieldObj;
@@ -186,7 +203,13 @@ public class ActionProcessor {
 		return false;
 	}
 
-	private void trimTexts(Field field, Object prop) {
+    private boolean isCheckSupposedToExecuteBasedOnAction(String[] actions, String action) {
+        return actions==null || actions.length==0
+            ||	(actions.length>0 && "ALL".equals(actions[0]))
+            ||  (actions.length>0 && StringUtils.isNotEmpty(action) &&	action.equals(actions[0]));
+    }
+
+    private void trimTexts(Field field, Object prop) {
 		if(prop instanceof JTextComponent) {
 			JTextComponent txtComp=(JTextComponent)prop;
 

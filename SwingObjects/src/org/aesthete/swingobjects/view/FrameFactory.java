@@ -282,13 +282,7 @@ public class FrameFactory {
 		if (comps != null) {
 			for (Component comp : comps) {
 				framesetIDs.remove(comp);
-				try {
-					MethodUtils.invokeMethod(comp, "dispose", null);
-				} catch (NoSuchMethodException e) {
-					comp.setVisible(false);
-				} catch (Exception e) {
-					throw new SwingObjectRunException(e, ErrorSeverity.SEVERE, FrameFactory.class);
-				}
+				disposeComponent(comp);
 			}
 		}
 	}
@@ -301,18 +295,23 @@ public class FrameFactory {
             if(component!=null){
                 framesetIDs.remove(component);
                 components.remove(component);
-                try {
-                    MethodUtils.invokeMethod(component, "dispose", null);
-                } catch (NoSuchMethodException e) {
-                    component.setVisible(false);
-                } catch (Exception e) {
-                    throw new SwingObjectRunException(e, ErrorSeverity.SEVERE, FrameFactory.class);
-                }
+                disposeComponent(component);
             }
         }
 
     }
-	/**
+
+    private static void disposeComponent(Component comp) {
+        try {
+            MethodUtils.invokeMethod(comp, "dispose", null);
+        } catch (NoSuchMethodException e) {
+            comp.setVisible(false);
+        } catch (Exception e) {
+            throw new SwingObjectRunException(e, ErrorSeverity.SEVERE, FrameFactory.class);
+        }
+    }
+
+    /**
 	 * Disposes of all the containers having the same frameset id and class. For an example see the class level docs.
 	 * @param framesetid the framesetid used to storing/creating the container with the methods - {@link FrameFactory#getNewContainer(String, Class, Object...)} or
 	 * {@link FrameFactory#putContainerInMap(String, Component)}
@@ -325,14 +324,8 @@ public class FrameFactory {
 			for (Component comp : comps) {
 				if (comp.getClass() == clz) {
 					framesetIDs.remove(comp);
-					try {
-						toRemove.add(comp);
-						MethodUtils.invokeMethod(comp, "dispose", null);
-					} catch (NoSuchMethodException e) {
-						comp.setVisible(false);
-					} catch (Exception e) {
-						throw new SwingObjectRunException(e, ErrorSeverity.SEVERE, FrameFactory.class);
-					}
+                    toRemove.add(comp);
+                    disposeComponent(comp);
 				}
 			}
 			comps.removeAll(toRemove);
@@ -347,20 +340,17 @@ public class FrameFactory {
 	 */
 	public static void dispose(String framesetid,String name) {
 		Set<Component> comps = frames.get(framesetid);
+        Set<Component> toRemove=new HashSet<Component>();
 		if (comps != null) {
 			for (Component comp : comps) {
 				if (name.equals(comp.getName())) {
 					framesetIDs.remove(comp);
-					try {
-						MethodUtils.invokeMethod(comp, "dispose", null);
-					} catch (NoSuchMethodException e) {
-						comp.setVisible(false);
-					} catch (Exception e) {
-						throw new SwingObjectRunException(e, ErrorSeverity.SEVERE, FrameFactory.class);
-					}
+					disposeComponent(comp);
+                    toRemove.add(comp);
 				}
 			}
 		}
+        comps.removeAll(toRemove);
 	}
 
 	/**
