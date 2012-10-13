@@ -11,7 +11,7 @@ import org.aesthete.swingobjects.exceptions.ErrorSeverity;
 import org.aesthete.swingobjects.exceptions.SwingObjectRunException;
 import org.aesthete.swingobjects.scope.RequestScope;
 import org.aesthete.swingobjects.scope.RequestScopeObject;
-import org.aesthete.swingobjects.util.FieldCallback;
+import org.aesthete.swingobjects.util.ReflectionCallback;
 import org.aesthete.swingobjects.util.ReflectionUtils;
 import org.aesthete.swingobjects.view.Components;
 import org.aesthete.swingobjects.view.FrameFactory;
@@ -47,7 +47,7 @@ public class DataMapper {
 
 
 	private static void populateObject(final Object container,final SwingObjData objData,final boolean isData){
-		ReflectionUtils.iterateOverFields(container.getClass(), null, new FieldCallback() {
+		ReflectionUtils.iterateOverFields(container.getClass(), null, new ReflectionCallback<Field>() {
 			private boolean isJComponent;
 			@Override
 			public boolean filter(Field field) {

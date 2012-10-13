@@ -16,23 +16,21 @@ import org.aesthete.swingobjects.view.WaitDialog;
 public abstract class CommonSwingWorker extends SwingWorker<Void, Void> implements SwingWorkerInterface{
 
 	private String action;
-	private RequestScopeObject scopeObj;
 
 	public CommonSwingWorker() {
 		this.action = "";
-		scopeObj=RequestScope.getRequestObj();
 	}
 
 	public CommonSwingWorker(String action) {
 		this.action = action;
-		scopeObj=RequestScope.getRequestObj();
 	}
 
 
 	@Override
 	protected Void doInBackground() throws Exception {
 		WaitDialog.displayWaitDialog();
-		try {
+        RequestScopeObject scopeObj=RequestScope.getRequestObj();
+        try {
 			callModel(scopeObj);
 		}catch(SwingObjectException e) {
 			scopeObj.setErrorObj(e);
@@ -49,9 +47,10 @@ public abstract class CommonSwingWorker extends SwingWorker<Void, Void> implemen
 
 	@Override
 	protected void done() {
-		try {
-			WaitDialog.hideWaitDialog();
-			CommonUI.restoreComponentsToInitialState(scopeObj.getFieldsOfTheContainer());
+        RequestScopeObject scopeObj=RequestScope.getRequestObj();
+        try {
+            WaitDialog.hideWaitDialog();
+            CommonUI.restoreComponentsToInitialState(scopeObj.getFieldsOfTheContainer());
 			handleErrorAndCallConnector();
 		}finally {
 			RequestScope.endOfRequest(scopeObj);
@@ -72,7 +71,9 @@ public abstract class CommonSwingWorker extends SwingWorker<Void, Void> implemen
 	 */
 	protected void handleErrorAndCallConnector() {
 		try {
-			SwingObjectsExceptions e = scopeObj.getErrorObj();
+            RequestScopeObject scopeObj=RequestScope.getRequestObj();
+
+            SwingObjectsExceptions e = scopeObj.getErrorObj();
 			boolean isCall=true;
 			if(e!=null) {
 				CommonUI.showErrorDialogForComponent(e);
@@ -126,5 +127,8 @@ public abstract class CommonSwingWorker extends SwingWorker<Void, Void> implemen
 	public void callConnector(RequestScopeObject scopeObj) {
 	}
 
-
+    @Override
+    public boolean proceed(){
+        return true;
+    }
 }

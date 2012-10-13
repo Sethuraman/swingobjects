@@ -9,6 +9,8 @@ import java.util.Map;
 import org.aesthete.swingobjects.annotations.Action;
 import org.aesthete.swingobjects.exceptions.ErrorSeverity;
 import org.aesthete.swingobjects.exceptions.SwingObjectRunException;
+import org.aesthete.swingobjects.util.ReflectionCallback;
+import org.aesthete.swingobjects.util.ReflectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -128,15 +130,25 @@ public class GlobalListener implements ActionListener{
 	private void init() {
 		if(!isInited){
 			actions=new HashMap<String, Method>();
-			Method[] methods = comp.getClass().getMethods();
-			for(Method method : methods){
-				Action a=method.getAnnotation(Action.class);
-				if(a!=null){
-					for(String s : a.value()){
-						actions.put(s, method);
-					}
-				}
-			}
+            ReflectionUtils.iterateOverMethods(comp.getClass(),null,new ReflectionCallback<Method>() {
+
+                private Action action;
+
+                @Override
+                public boolean filter(Method entity) {
+                    action = entity.getAnnotation(Action.class);
+                    return action!=null;
+                }
+
+                @Override
+                public void consume(Method entity) {
+                    for(String s : action.value()){
+                        if(!actions.containsKey(s)){ // this makes sure that we respect overridden  methods.
+                            actions.put(s,entity);
+                        }
+                    }
+                }
+            });
 			isInited=true;
 		}
 	}

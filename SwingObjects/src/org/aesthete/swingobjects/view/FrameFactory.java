@@ -22,7 +22,7 @@ import org.aesthete.swingobjects.SwingObjProps;
 import org.aesthete.swingobjects.annotations.TitleIconImage;
 import org.aesthete.swingobjects.exceptions.ErrorSeverity;
 import org.aesthete.swingobjects.exceptions.SwingObjectRunException;
-import org.aesthete.swingobjects.util.FieldCallback;
+import org.aesthete.swingobjects.util.ReflectionCallback;
 import org.aesthete.swingobjects.util.ReflectionUtils;
 import org.apache.commons.beanutils.ConstructorUtils;
 import org.apache.commons.beanutils.MethodUtils;
@@ -375,7 +375,7 @@ public class FrameFactory {
 	 */
 	private static void registerActionlistener(final Object comp) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		final GlobalListener listener = new GlobalListener(comp);
-		ReflectionUtils.iterateOverFields(comp.getClass(), null, new FieldCallback() {
+		ReflectionUtils.iterateOverFields(comp.getClass(), null, new ReflectionCallback<Field>() {
 			private Object prop;
 
 			@Override

@@ -14,7 +14,7 @@ import org.aesthete.swingobjects.annotations.AnnotationConstants;
 import org.aesthete.swingobjects.annotations.Column;
 import org.aesthete.swingobjects.exceptions.ErrorSeverity;
 import org.aesthete.swingobjects.exceptions.SwingObjectRunException;
-import org.aesthete.swingobjects.util.FieldCallback;
+import org.aesthete.swingobjects.util.ReflectionCallback;
 import org.aesthete.swingobjects.util.ReflectionUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.ClassUtils;
@@ -35,7 +35,7 @@ public class SwingObjTableModel<T extends RowDataBean> extends AbstractTableMode
 	}
 
 	private void init() {
-		ReflectionUtils.iterateOverFields(t, null, new FieldCallback() {
+		ReflectionUtils.iterateOverFields(t, null, new ReflectionCallback<Field>() {
 			private Column column;
 			@Override
 			public boolean filter(Field field) {

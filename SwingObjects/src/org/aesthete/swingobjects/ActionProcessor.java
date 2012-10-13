@@ -19,7 +19,7 @@ import org.aesthete.swingobjects.exceptions.SwingObjectRunException;
 import org.aesthete.swingobjects.exceptions.SwingObjectsExceptions;
 import org.aesthete.swingobjects.scope.RequestScope;
 import org.aesthete.swingobjects.scope.RequestScopeObject;
-import org.aesthete.swingobjects.util.FieldCallback;
+import org.aesthete.swingobjects.util.ReflectionCallback;
 import org.aesthete.swingobjects.util.ReflectionUtils;
 import org.aesthete.swingobjects.view.CommonUI;
 import org.aesthete.swingobjects.view.Components;
@@ -47,6 +47,9 @@ public class ActionProcessor {
 		ActionProcessor processor=new ActionProcessor();
 		try{
 			try {
+                if(!swingworker.proceed()){
+                    return;
+                }
 				processor.initCompsAndValidate(container,swingworker);
 				if(!processor.isError) {
 					DataMapper.mapData(container);
@@ -87,7 +90,7 @@ public class ActionProcessor {
 	}
 
 	private void initCompsAndValidate(final Object container, final SwingWorkerInterface swingworker) throws IllegalArgumentException, IllegalAccessException {
-		ReflectionUtils.iterateOverFields(container.getClass(), Container.class, new FieldCallback() {
+		ReflectionUtils.iterateOverFields(container.getClass(), Container.class, new ReflectionCallback<Field>() {
 			private Object prop=null;
 			@Override
 			public boolean filter(Field field) {
