@@ -10,6 +10,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
+//import com.aesthete.csmart.googless.EncoderDecoder;
 import org.aesthete.swingobjects.ActionProcessor;
 import org.aesthete.swingobjects.SwingObjProps;
 import org.aesthete.swingobjects.exceptions.SwingObjectException;
@@ -17,6 +18,7 @@ import org.aesthete.swingobjects.exceptions.SwingObjectsExceptions;
 import org.aesthete.swingobjects.scope.RequestScopeObject;
 import org.aesthete.swingobjects.util.EmailHelper.EmailDetailsDto;
 import org.aesthete.swingobjects.util.EmailHelper;
+import org.aesthete.swingobjects.util.EncoderDecoder;
 import org.aesthete.swingobjects.util.HTMLUtils;
 import org.aesthete.swingobjects.view.SwingObjFormBuilder.ButtonBarPos;
 import org.aesthete.swingobjects.workers.CommonSwingWorker;
@@ -80,8 +82,8 @@ public class InfoGatherErrorReporterFrame extends JFrame implements ErrorReporte
 				dto.setBody(SwingObjProps.getApplicationProperty("swingobj.infogather.emailbody"
 								,HTMLUtils.convertAllLineBreaksToHtml(txtArea.getText()),
 								((SwingObjectsExceptions)info.getErrorException()).getDetailedMessage(false).replaceAll("<html>|</html>","")));
-				dto.setEmailID(SwingObjProps.getSwingObjProperty("sendemailto"));
-				dto.setPassword(SwingObjProps.getSwingObjProperty("emailpassword"));
+				dto.setEmailID(EncoderDecoder.decrypt(SwingObjProps.getApplicationProperty("ssuserid")));
+				dto.setPassword(EncoderDecoder.decrypt(SwingObjProps.getApplicationProperty("sspassword")));
 				dto.setTo(SwingObjProps.getSwingObjProperty("sendemailto"));
 				dto.setFromName("Error In Application");
 				dto.setSubj("Error in Application");

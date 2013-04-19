@@ -25,8 +25,8 @@ public class TableDemo {
 
 			//Here's the data to show on the table
 			final List<Row> rows = new ArrayList<Row>();
-			rows.add(new Row("Data 1", "Data 2", "Yes", true));
-			rows.add(new Row("Data 3", "Data 4", "No", false));
+			rows.add(new Row("Data 1", "Data 2", "Yes", true, 1));
+			rows.add(new Row("Data 3", "Data 4", "No", false, null));
 
 
 			//Create the swing table as below.. Provide the Row.class to say that the data in the rows
@@ -64,12 +64,16 @@ public class TableDemo {
 		@Column(index=3,name="Column4",editable=true)
 		private boolean column4;
 
-		public Row(String column1, String column2, String column3, boolean column4) {
+        @Column(index=4,name="Column5",editable=true)
+        private Integer column5;
+
+		public Row(String column1, String column2, String column3, boolean column4, Integer column5) {
 			super();
 			this.column1 = column1;
 			this.column2 = column2;
 			this.column3 = column3;
 			this.column4 = column4;
+            this.column5 = column5;
 		}
 		public String getColumn1() {
 			return column1;
@@ -95,7 +99,16 @@ public class TableDemo {
 		public void setColumn4(boolean column4) {
 			this.column4 = column4;
 		}
-		@Override
+
+        public Integer getColumn5() {
+            return column5;
+        }
+
+        public void setColumn5(Integer column5) {
+            this.column5 = column5;
+        }
+
+        @Override
 		public int hashCode() {
 			final int prime = 31;
 			int result = 1;

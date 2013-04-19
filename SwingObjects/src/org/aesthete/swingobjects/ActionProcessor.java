@@ -105,7 +105,7 @@ public class ActionProcessor {
 			@Override
 			public void consume(Field field) {
 				try {
-					if (Components.class.isAssignableFrom(field.getType())) {
+					if (Components.class.isAssignableFrom(field.get(container).getClass())) {
 						initCompsAndValidate(prop, swingworker);
 					}else if(JComponent.class.isAssignableFrom(field.getType())) {
 						fieldsOfContainer.add((JComponent)prop);

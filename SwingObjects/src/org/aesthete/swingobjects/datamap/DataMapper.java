@@ -50,12 +50,12 @@ public class DataMapper {
 		ReflectionUtils.iterateOverFields(container.getClass(), null, new ReflectionCallback<Field>() {
 			private boolean isJComponent;
 			@Override
-			public boolean filter(Field field) {
+			public boolean filter(Field field) throws IllegalAccessException {
 				isJComponent=false;
 				if(JComponent.class.isAssignableFrom(field.getType())){
 					isJComponent=true;
 					return true;
-				}else if(Components.class.isAssignableFrom(field.getType())) {
+				}else if(Components.class.isAssignableFrom(field.get(container).getClass())) {
 					return true;
 				}
 				return false;

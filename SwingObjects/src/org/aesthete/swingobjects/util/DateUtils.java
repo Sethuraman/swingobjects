@@ -1,8 +1,15 @@
 package org.aesthete.swingobjects.util;
 
 import org.aesthete.swingobjects.SwingObjProps;
+import org.aesthete.swingobjects.SwingObjectsInit;
+import org.aesthete.swingobjects.exceptions.ErrorSeverity;
+import org.aesthete.swingobjects.exceptions.SwingObjectException;
+import org.aesthete.swingobjects.exceptions.SwingObjectRunException;
 import org.apache.commons.lang3.StringUtils;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -42,6 +49,23 @@ public class DateUtils {
             }
         }
         throw new ParseException(date, 0);
+    }
+
+    public static void getCurrentDateFromGoogle(){
+        try{
+            URLConnection urlConnection=new URL("http://www.google.com").openConnection();
+            String date = urlConnection.getHeaderField("Date");
+            System.out.println(date);
+
+        }catch (Exception e){
+            throw new SwingObjectRunException(e,DateUtils.class);
+        }
+
+    }
+
+    public static void main(String[] args) throws SwingObjectException {
+        SwingObjectsInit.init("swingobjects", "application");
+        DateUtils.getCurrentDateFromGoogle();
     }
 
 }

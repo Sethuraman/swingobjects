@@ -9,4 +9,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Action {
 	public String[] value();
+    public int overrideWeight() default 0;
 }

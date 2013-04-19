@@ -382,7 +382,10 @@ public class FrameFactory {
 			public boolean filter(Field field) {
 				try {
 					prop = field.get(comp);
-					if (Components.class.isAssignableFrom(field.getType())) {
+                    if(prop==null){
+                        return false;
+                    }
+					if (Components.class.isAssignableFrom(prop.getClass())) {
 						registerActionlistener(field.get(comp));
 					} else if (prop instanceof AbstractButton || prop instanceof JComboBox || prop instanceof JTextField) {
 						return true;

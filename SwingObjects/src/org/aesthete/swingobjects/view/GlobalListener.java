@@ -1,9 +1,12 @@
 package org.aesthete.swingobjects.view;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.Method;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import org.aesthete.swingobjects.annotations.Action;
@@ -100,7 +103,7 @@ public class GlobalListener implements ActionListener{
 
 	private Object comp;
 	private boolean isInited;
-	private Map<String,Method> actions;
+	private Map<String,MethodObject> actions;
 
 	public GlobalListener(Object comp) {
 		this.comp=comp;
@@ -111,13 +114,13 @@ public class GlobalListener implements ActionListener{
 		String action=e.getActionCommand();
 		if(StringUtils.isNotEmpty(action)){
 			init();
-			Method m = actions.get(action);
+			MethodObject m = actions.get(action);
 			if(m!=null){
 				try {
-					if(m.getGenericParameterTypes().length==1) {
-						m.invoke(comp, e);
+					if(m.getMethod().getGenericParameterTypes().length==1) {
+                        m.getMethod().invoke(m.getContainer(), e);
 					}else {
-						m.invoke(comp);
+                        m.getMethod().invoke(m.getContainer());
 					}
 				} catch (Exception exp) {
 					throw new SwingObjectRunException(exp.getCause(),ErrorSeverity.SEVERE, FrameFactory.class);
@@ -129,28 +132,73 @@ public class GlobalListener implements ActionListener{
 
 	private void init() {
 		if(!isInited){
-			actions=new HashMap<String, Method>();
-            ReflectionUtils.iterateOverMethods(comp.getClass(),null,new ReflectionCallback<Method>() {
+			actions=new HashMap<String, MethodObject>();
 
-                private Action action;
+            List<Object> containers=new LinkedList<Object>();
+            containers.add(comp);
 
-                @Override
-                public boolean filter(Method entity) {
-                    action = entity.getAnnotation(Action.class);
-                    return action!=null;
+            if(comp instanceof Component){
+                Component component=(Component)comp;
+                while((component=component.getParent())!=null){
+                    containers.add(component);
                 }
+            }
 
-                @Override
-                public void consume(Method entity) {
-                    for(String s : action.value()){
-                        if(!actions.containsKey(s)){ // this makes sure that we respect overridden  methods.
-                            actions.put(s,entity);
+            for(final Object container : containers){
+                ReflectionUtils.iterateOverMethods(container.getClass(),null,new ReflectionCallback<Method>() {
+
+                    private Action action;
+
+                    @Override
+                    public boolean filter(Method entity) {
+                        action = entity.getAnnotation(Action.class);
+                        return action!=null;
+                    }
+
+                    @Override
+                    public void consume(Method entity) {
+                        for(String s : action.value()){
+                            MethodObject methodObject=actions.get(s);
+                            if(methodObject==null){
+                                actions.put(s,new MethodObject(entity, action, container));
+                                return;
+                            }
+
+                            if(methodObject.getAction().overrideWeight() >= action.overrideWeight()){
+                                return;
+                            }
+
+                            actions.put(s,new MethodObject(entity, action, container));
                         }
                     }
-                }
-            });
+                });
+            }
 			isInited=true;
 		}
 	}
+
+    private static class MethodObject{
+        private Method method;
+        private Action action;
+        private Object container;
+
+        private MethodObject(Method method, Action action, Object container) {
+            this.method = method;
+            this.action = action;
+            this.container = container;
+        }
+
+        public Method getMethod() {
+            return method;
+        }
+
+        public Action getAction() {
+            return action;
+        }
+
+        public Object getContainer() {
+            return container;
+        }
+    }
 
 }
