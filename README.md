@@ -16,7 +16,7 @@ Take a look the below code blocks:
 
 Automatic mapping of ActionListeners. No messy if else ladders or anonymous inner classes of the ActionListener interface
 
-public class TestContainer {
+    public class TestContainer {
         public static class MyFrame extends JFrame{
         
                 //a field that implements the Components interface and has other JComponents in it
@@ -85,20 +85,20 @@ public class TestContainer {
 }
 A simple Table Model that will make everyone's life easy. Declare your columns with the @Column annotation as below:
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+    import java.util.ArrayList;
+    import java.util.List;
+    import java.util.Locale;
 
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
+    import javax.swing.JFrame;
+    import javax.swing.JScrollPane;
 
-import org.aesthete.swingobjects.SwingObjectsInit;
-import org.aesthete.swingobjects.annotations.Column;
-import org.aesthete.swingobjects.view.table.RowDataBean;
-import org.aesthete.swingobjects.view.table.SwingObjTable;
-import org.jdesktop.swingx.JXFrame;
-
-public class TableDemo {
+    import org.aesthete.swingobjects.SwingObjectsInit;
+    import org.aesthete.swingobjects.annotations.Column;
+    import org.aesthete.swingobjects.view.table.RowDataBean;
+    import org.aesthete.swingobjects.view.table.SwingObjTable;
+    import org.jdesktop.swingx.JXFrame;
+    
+    public class TableDemo {
 
         public static void main(String[] args) {
 
@@ -222,43 +222,43 @@ public class TableDemo {
 }
 An implementation of the SwingWorker is provided for you. If your background task takes more than 100ms (configurable) to complete, an indeterminate wait dialog will show up. You have control over a text area shown on this wait dialog, to display information about the progress of the background task.
 
-package test;
-
-import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
-
-import org.aesthete.swingobjects.ActionProcessor;
-import org.aesthete.swingobjects.SwingObjectsInit;
-import org.aesthete.swingobjects.YesNo;
-import org.aesthete.swingobjects.annotations.Action;
-import org.aesthete.swingobjects.annotations.DataBeanName;
-import org.aesthete.swingobjects.annotations.Required;
-import org.aesthete.swingobjects.annotations.Trim;
-import org.aesthete.swingobjects.datamap.SwingObjData;
-import org.aesthete.swingobjects.exceptions.SwingObjectException;
-import org.aesthete.swingobjects.scope.RequestScopeObject;
-import org.aesthete.swingobjects.view.CommonUI;
-import org.aesthete.swingobjects.view.FrameFactory;
-import org.aesthete.swingobjects.view.SwingObjFormBuilder;
-import org.aesthete.swingobjects.view.SwingObjFormBuilder.ButtonBarPos;
-import org.aesthete.swingobjects.view.table.SwingObjTable;
-import org.aesthete.swingobjects.view.validator.Validator;
-import org.aesthete.swingobjects.workers.CommonSwingWorker;
-
-import com.jgoodies.forms.layout.FormLayout;
-
-@DataBeanName("CompTest")
-public class CompTest extends JFrame implements Validator{
+    package test;
+    
+    import java.awt.event.ActionEvent;
+    import java.util.ArrayList;
+    import java.util.List;
+    
+    import javax.swing.JButton;
+    import javax.swing.JCheckBox;
+    import javax.swing.JComboBox;
+    import javax.swing.JFrame;
+    import javax.swing.JOptionPane;
+    import javax.swing.JScrollPane;
+    import javax.swing.JTextField;
+    import javax.swing.UIManager;
+    
+    import org.aesthete.swingobjects.ActionProcessor;
+    import org.aesthete.swingobjects.SwingObjectsInit;
+    import org.aesthete.swingobjects.YesNo;
+    import org.aesthete.swingobjects.annotations.Action;
+    import org.aesthete.swingobjects.annotations.DataBeanName;
+    import org.aesthete.swingobjects.annotations.Required;
+    import org.aesthete.swingobjects.annotations.Trim;
+    import org.aesthete.swingobjects.datamap.SwingObjData;
+    import org.aesthete.swingobjects.exceptions.SwingObjectException;
+    import org.aesthete.swingobjects.scope.RequestScopeObject;
+    import org.aesthete.swingobjects.view.CommonUI;
+    import org.aesthete.swingobjects.view.FrameFactory;
+    import org.aesthete.swingobjects.view.SwingObjFormBuilder;
+    import org.aesthete.swingobjects.view.SwingObjFormBuilder.ButtonBarPos;
+    import org.aesthete.swingobjects.view.table.SwingObjTable;
+    import org.aesthete.swingobjects.view.validator.Validator;
+    import org.aesthete.swingobjects.workers.CommonSwingWorker;
+    
+    import com.jgoodies.forms.layout.FormLayout;
+    
+    @DataBeanName("CompTest")
+    public class CompTest extends JFrame implements Validator{
 
         private static final long serialVersionUID = 1L;
 
