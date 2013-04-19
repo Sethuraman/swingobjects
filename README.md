@@ -1,3 +1,6 @@
+<h1>SwingObjects</h1>
+
+
 2 line description
 This is a framework that allows you to build a desktop application using the MVC pattern. It packs a lot of tools and utilities and UI widgets that you can use out of the box. All you will need to do is concentrate on GUI, Model and the swing objects library will string them all up for you nicely.
 
@@ -82,7 +85,8 @@ Automatic mapping of ActionListeners. No messy if else ladders or anonymous inne
         public static void main(String[] args) {
                 MyFrame frame=FrameFactory.getNewContainer("TestSetOfContainers", MyFrame.class,new MySetOfComponents());
         }
-}
+    }
+
 A simple Table Model that will make everyone's life easy. Declare your columns with the @Column annotation as below:
 
     import java.util.ArrayList;
@@ -219,7 +223,8 @@ A simple Table Model that will make everyone's life easy. Declare your columns w
                         return true;
                 }
         }
-}
+    }
+    
 An implementation of the SwingWorker is provided for you. If your background task takes more than 100ms (configurable) to complete, an indeterminate wait dialog will show up. You have control over a text area shown on this wait dialog, to display information about the progress of the background task.
 
     package test;
@@ -387,4 +392,4 @@ An implementation of the SwingWorker is provided for you. If your background tas
         public boolean continueIfError(String action) {
                 return false;
         }
-}
+    }
