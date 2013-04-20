@@ -160,6 +160,15 @@ public class FrameFactory {
 		return (T) comp;
 	}
 
+
+    public static <T extends Component> T getNewContainerIfNotAlreadyExists(String framesetid, Class<? extends Component> clz,Object... objs) {
+        Component comp = null;
+        if((comp=getContainer(framesetid,clz))==null){
+            comp=getNewContainer(framesetid,clz,objs);
+        }
+        return (T)comp;
+    }
+
 	private static <T> void handleWindows(final String framesetid,final Class<? extends Component> clz, Component comp) {
 		if(comp instanceof Window) {
 			TitleIconImage title=clz.getAnnotation(TitleIconImage.class);

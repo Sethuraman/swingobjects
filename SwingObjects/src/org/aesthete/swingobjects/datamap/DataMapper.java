@@ -49,15 +49,23 @@ public class DataMapper {
 	private static void populateObject(final Object container,final SwingObjData objData,final boolean isData){
 		ReflectionUtils.iterateOverFields(container.getClass(), null, new ReflectionCallback<Field>() {
 			private boolean isJComponent;
-			@Override
+            private Object prop;
+
+            @Override
 			public boolean filter(Field field) throws IllegalAccessException {
-				isJComponent=false;
-				if(JComponent.class.isAssignableFrom(field.getType())){
-					isJComponent=true;
-					return true;
-				}else if(Components.class.isAssignableFrom(field.get(container).getClass())) {
-					return true;
-				}
+                prop = field.get(container);
+                if(prop==null){
+                    return false;
+                }
+                isJComponent=false;
+                if(JComponent.class.isAssignableFrom(field.getType())){
+                    isJComponent=true;
+                    return true;
+                }else {
+                    if(Components.class.isAssignableFrom(prop.getClass())) {
+                        return true;
+                    }
+                }
 				return false;
 			}
 
@@ -69,10 +77,10 @@ public class DataMapper {
 						Converter converter=ConverterUtils.getConverter(field.getType());
 						if(converter!=null) {
 							if(isData) {
-								objData.setUnchanged(name, converter.getDataFromViewComponent((JComponent)field.get(container)));
+								objData.setUnchanged(name, converter.getDataFromViewComponent((JComponent)prop));
 							}else {
 								if(objData.isChanged(name)) {
-									converter.setDataIntoViewComponent(objData.getValue(name),(JComponent)field.get(container));
+									converter.setDataIntoViewComponent(objData.getValue(name),(JComponent)prop);
 								}
 							}
 						}
@@ -80,14 +88,14 @@ public class DataMapper {
 						SwingObjData swingObjdata=null;
 						if(isData) {
 							swingObjdata=new SwingObjData();
-							populateObject(field.get(container),swingObjdata,isData);
+							populateObject(prop,swingObjdata,isData);
 							if(isData) {
 								objData.setUnchanged(name, swingObjdata);
 							}
 						}else {
 							swingObjdata=(SwingObjData)objData.getValue(name).getValue();
 							if(swingObjdata.isDataChanged()) {
-								populateObject(field.get(container),swingObjdata,isData);
+								populateObject(prop,swingObjdata,isData);
 							}
 						}
 					}
