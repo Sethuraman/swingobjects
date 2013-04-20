@@ -1,0 +1,21 @@
+*.class
+*/bin/*
+*.log
+*.log.*
+## generic files to ignore
+*~
+*.lock
+*.DS_Store
+*.swp
+*.out
+bin/
+*.log
+*.log.*
+*.exe
+.idea/
+*.iml
+*.eml
+build/
+SwingObjects.iml
+out/
+build.xml
