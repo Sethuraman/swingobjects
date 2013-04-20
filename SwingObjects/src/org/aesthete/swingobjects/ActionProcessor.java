@@ -51,8 +51,8 @@ public class ActionProcessor {
                     return;
                 }
 				processor.initCompsAndValidate(container,swingworker);
-				if(!processor.isError) {
-					DataMapper.mapData(container);
+                DataMapper.mapData(container);
+                if(!processor.isError) {
 					processor.isError=!swingworker.validateAndPopulate(processor.scopeObj);
 					if(!processor.isError) {
 						processor.scopeObj.setContainer(container);
