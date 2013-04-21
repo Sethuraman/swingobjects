@@ -46,7 +46,7 @@ public class DataMapper {
 	}
 
 
-	private static void populateObject(final Object container,final SwingObjData objData,final boolean isData){
+	private static void populateObject(final Object container,final SwingObjData objData,final boolean isFromGuiToSwingObjData){
 		ReflectionUtils.iterateOverFields(container.getClass(), null, new ReflectionCallback<Field>() {
 			private boolean isJComponent;
             private Object prop;
@@ -58,13 +58,11 @@ public class DataMapper {
                     return false;
                 }
                 isJComponent=false;
-                if(JComponent.class.isAssignableFrom(field.getType())){
+                if(Components.class.isAssignableFrom(prop.getClass())) {
+                    return true;
+                }else if(JComponent.class.isAssignableFrom(field.getType())){
                     isJComponent=true;
                     return true;
-                }else {
-                    if(Components.class.isAssignableFrom(prop.getClass())) {
-                        return true;
-                    }
                 }
 				return false;
 			}
@@ -76,7 +74,7 @@ public class DataMapper {
 					if(isJComponent) {
 						Converter converter=ConverterUtils.getConverter(field.getType());
 						if(converter!=null) {
-							if(isData) {
+							if(isFromGuiToSwingObjData) {
 								objData.setUnchanged(name, converter.getDataFromViewComponent((JComponent)prop));
 							}else {
 								if(objData.isChanged(name)) {
@@ -86,16 +84,16 @@ public class DataMapper {
 						}
 					}else {
 						SwingObjData swingObjdata=null;
-						if(isData) {
+						if(isFromGuiToSwingObjData) {
 							swingObjdata=new SwingObjData();
-							populateObject(prop,swingObjdata,isData);
-							if(isData) {
+							populateObject(prop,swingObjdata,isFromGuiToSwingObjData);
+							if(isFromGuiToSwingObjData) {
 								objData.setUnchanged(name, swingObjdata);
 							}
 						}else {
 							swingObjdata=(SwingObjData)objData.getValue(name).getValue();
 							if(swingObjdata.isDataChanged()) {
-								populateObject(prop,swingObjdata,isData);
+								populateObject(prop,swingObjdata,isFromGuiToSwingObjData);
 							}
 						}
 					}
