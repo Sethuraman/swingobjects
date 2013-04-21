@@ -50,10 +50,10 @@ public class ActionProcessor {
                 if(!swingworker.proceed()){
                     return;
                 }
-				processor.initCompsAndValidate(container,swingworker);
-                DataMapper.mapData(container);
+                processor.initCompsAndValidate(container,swingworker);
                 if(!processor.isError) {
-					processor.isError=!swingworker.validateAndPopulate(processor.scopeObj);
+                    DataMapper.mapData(container);
+                    processor.isError=!swingworker.validateAndPopulate(processor.scopeObj);
 					if(!processor.isError) {
 						processor.scopeObj.setContainer(container);
 						processor.scopeObj.setFieldsOfTheContainer(processor.fieldsOfContainer);
