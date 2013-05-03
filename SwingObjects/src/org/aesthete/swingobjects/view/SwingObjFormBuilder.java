@@ -275,7 +275,20 @@ public class SwingObjFormBuilder {
 	}
 
 
-	/**
+    /**
+     * Adds a horizontal separator spanning all columns. It appends a $rowsegap first and then add the separator on a new $row
+     */
+    public void addSeperator(String rowGapSpec, String rowSpec){
+        builder.appendRow(rowGapSpec);
+        incrementRowCounter(1);
+        resetColumnCount();
+        builder.addSeparator(null,cc.xyw(col-1,row,columnCount));
+        builder.appendRow(rowSpec);
+        incrementRowCounter(1);
+    }
+
+
+    /**
 	 * Adds a labeled horizontal separator spanning all columns. It appends a $rowsegap first and then add the separator on a new $row
 	 * @param value the label to be used on the separator.
 	 */

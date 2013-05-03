@@ -2,6 +2,7 @@ package org.aesthete.swingobjects.view.table;
 
 import org.aesthete.swingobjects.view.DatePicker;
 import org.apache.commons.lang3.StringUtils;
+import org.jdesktop.swingx.JXTable;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -14,10 +15,10 @@ import java.util.Observer;
 public class TableCellDatePicker implements Observer{
 
 
-	private SwingObjTable<?> table;
+	private JXTable table;
 	private int colThatIsDate;
 
-	public TableCellDatePicker(SwingObjTable<?> table, int colThatIsDate) {
+	public TableCellDatePicker(JXTable table, int colThatIsDate) {
 		super();
 		this.table = table;
 		this.colThatIsDate=colThatIsDate;

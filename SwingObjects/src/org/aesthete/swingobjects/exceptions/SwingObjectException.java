@@ -39,7 +39,7 @@ public class SwingObjectException extends Exception implements SwingObjectsExcep
 		logger.error(formatMessage(), e==null?null:(e.getCause()==null?e:e.getCause()));
 	}
 
-	public String getMessage(String errorCode,String[] placeholders) {
+	public String getErrorDesc() {
         return SwingObjProps.getApplicationProperty(errorCode, placeHolderValues);
     }
 

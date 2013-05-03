@@ -155,7 +155,7 @@ public class FrameFactory {
     }
 
 
-    public static <T extends Component> T getNewContainerIfNotAlreadyExists(String framesetid, Class<? extends Component> clz, Object... objs) {
+    public static <T extends Component> T getNewContainerIfNotAlreadyExists(String framesetid, Class<T> clz, Object... objs) {
         Component comp = null;
         if ((comp = getContainer(framesetid, clz)) == null) {
             comp = getNewContainer(framesetid, clz, objs);
@@ -360,6 +360,16 @@ public class FrameFactory {
             }
         }
         comps.removeAll(toRemove);
+    }
+
+    public static void disposeAll(Class<? extends Component> clz){
+        for(Set<Component> components : frames.values()){
+            for(Component component : components){
+                if(component.getClass().equals(clz)){
+                    dispose(component);
+                }
+            }
+        }
     }
 
     /**

@@ -202,15 +202,7 @@ public class SwingObjTableModel<T extends RowDataBean> extends AbstractTableMode
 		return isTableEditable;
 	}
 
-	public void setTableEditable(boolean isTableEditable) {
-		this.isTableEditable = isTableEditable;
-	}
-
 	public Map<Integer, ColumnInfo> getColumns() {
 		return columns;
-	}
-
-	public void setColumns(Map<Integer, ColumnInfo> columns) {
-		this.columns = columns;
 	}
 }

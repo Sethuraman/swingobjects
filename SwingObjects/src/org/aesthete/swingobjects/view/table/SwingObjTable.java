@@ -97,14 +97,6 @@ public class SwingObjTable<T extends RowDataBean> extends JXTable {
 		}
 	}
 
-	public static class ComboBoxEditor extends DefaultCellEditor {
-		private static final long serialVersionUID = 1L;
-
-		public ComboBoxEditor(ComboBoxModel model) {
-            super(new JComboBox(model));
-        }
-    }
-
     public void makeColumnsIntoADate(int... cols) {
         for(int col : cols) {
             new TableCellDatePicker(this, col);
