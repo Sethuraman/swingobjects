@@ -16,19 +16,12 @@ import javax.swing.UIManager;
 import org.aesthete.swingobjects.ActionProcessor;
 import org.aesthete.swingobjects.SwingObjectsInit;
 import org.aesthete.swingobjects.YesNo;
-import org.aesthete.swingobjects.annotations.Action;
-import org.aesthete.swingobjects.annotations.DataBeanName;
-import org.aesthete.swingobjects.annotations.Required;
-import org.aesthete.swingobjects.annotations.TitleIconImage;
-import org.aesthete.swingobjects.annotations.Trim;
+import org.aesthete.swingobjects.annotations.*;
 import org.aesthete.swingobjects.datamap.SwingObjData;
 import org.aesthete.swingobjects.exceptions.SwingObjectException;
 import org.aesthete.swingobjects.scope.RequestScopeObject;
-import org.aesthete.swingobjects.view.CommonUI;
-import org.aesthete.swingobjects.view.FrameFactory;
-import org.aesthete.swingobjects.view.SwingObjFormBuilder;
+import org.aesthete.swingobjects.view.*;
 import org.aesthete.swingobjects.view.SwingObjFormBuilder.ButtonBarPos;
-import org.aesthete.swingobjects.view.WaitDialog;
 import org.aesthete.swingobjects.view.table.SwingObjTable;
 import org.aesthete.swingobjects.view.validator.Validator;
 import org.aesthete.swingobjects.workers.CommonSwingWorker;
@@ -42,7 +35,8 @@ public class CompTest extends JFrame{
 	private static final long serialVersionUID = 1L;
 
 	@Required
-	private JTextField tftest;
+    @ValidDate
+	private DateTextField tftest;
 
 	@Required
 	@Trim(YesNo.NO)
@@ -60,7 +54,7 @@ public class CompTest extends JFrame{
 	public CompTest() {
 		try {
 			btntest = new JButton("Test");
-			tftest = new JTextField("I like sugar");
+			tftest = new DateTextField("12/12/2012");
 			tftest.setColumns(20);
 			tftest.setActionCommand("tftest");
 			btntest.setActionCommand("btntest");
@@ -107,8 +101,8 @@ public class CompTest extends JFrame{
 			@Override
 			public boolean validateAndPopulate(RequestScopeObject scopeObj) {
 				SwingObjData objData = (SwingObjData) scopeObj.getObjectFromMap("CompTest");
-				if(!"I like sugar".equals(objData.getValue("tftest").asString())) {
-					CommonUI.setErrorBorderAndTooltip(tftest,"Has to be \"I like sugar\"");
+				if(!"12/12/2012".equals(objData.getValue("tftest").asString())) {
+					CommonUI.setErrorBorderAndTooltip(tftest,"Has to be \"12/12/2012\"");
 					return false;
 				}
 				return true;
@@ -129,7 +123,7 @@ public class CompTest extends JFrame{
 				testdata.get(0).setTftest1("Changed row data");
 				objData.set("table", testdata);
 				System.out.println(testdata.size());
-				objData.set("tftest","Changed tftest1");
+				objData.set("tftest","19/12/2019");
                 objData.set("tftest1","Changed tftest2");
 			}
 

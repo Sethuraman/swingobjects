@@ -2,16 +2,15 @@ package org.aesthete.swingobjects;
 
 import java.awt.Container;
 import java.lang.reflect.Field;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
-import org.aesthete.swingobjects.annotations.Required;
-import org.aesthete.swingobjects.annotations.ShouldBeEmpty;
-import org.aesthete.swingobjects.annotations.TableSelectARow;
-import org.aesthete.swingobjects.annotations.Trim;
+import org.aesthete.swingobjects.annotations.*;
 import org.aesthete.swingobjects.datamap.DataMapper;
 import org.aesthete.swingobjects.exceptions.ErrorSeverity;
 import org.aesthete.swingobjects.exceptions.SwingObjectException;
@@ -113,6 +112,7 @@ public class ActionProcessor {
 						trimTexts(field, prop);
                         handleRequiredEmptyChecks(field, container, swingworker);
                         handleTableSelectARow(field,container,swingworker);
+                        handleValidDate(field,container,swingworker);
 					}
 				}catch(Exception e){
 					throw new SwingObjectRunException(e, ErrorSeverity.SEVERE, DataMapper.class);
@@ -120,6 +120,35 @@ public class ActionProcessor {
 			}
 		});
 	}
+
+    private void handleValidDate(Field field, Object container, SwingWorkerInterface swingworker) throws IllegalAccessException {
+        ValidDate validDate=field.getAnnotation(ValidDate.class);
+        if(validDate!=null && isCheckSupposedToExecuteBasedOnAction(validDate.value(), swingworker.getAction())){
+            Object jtextComponentObj = field.get(container);
+            if(jtextComponentObj instanceof JTextComponent){
+                JTextComponent textComponent= (JTextComponent) jtextComponentObj;
+                String text=textComponent.getText();
+                if(StringUtils.isBlank(text)){
+                   CommonUI.setErrorBorderAndTooltip(textComponent, "Required");
+                    this.isError=true;
+                   return;
+                }
+                String[] formats=validDate.formats();
+                for(String format : formats){
+                    try{
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
+                        simpleDateFormat.setLenient(false);
+                        simpleDateFormat.parse(text);
+                        return;
+                    }catch (ParseException e){
+
+                    }
+                }
+                this.isError=true;
+                CommonUI.setErrorBorderAndTooltip(textComponent, "Invalid Date. Please enter the date in the format "+formats[0]);
+            }
+        }
+    }
 
     private void handleTableSelectARow(Field field, Object container, SwingWorkerInterface swingworker) throws IllegalAccessException {
         TableSelectARow selectARow = field.getAnnotation(TableSelectARow.class);

@@ -15,6 +15,8 @@ import org.jdesktop.swingx.treetable.MutableTreeTableNode;
 import org.jdesktop.swingx.treetable.TreeTableNode;
 
 import javax.swing.tree.TreePath;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,15 +29,15 @@ import java.util.List;
  * Time: 8:07 AM
  * To change this template use File | Settings | File Templates.
  */
-public class SwingObjTreeTableModel<T> extends AbstractTreeTableModel{
+public class SwingObjTreeTableModel<$ModelData> extends AbstractTreeTableModel implements PropertyChangeListener{
 
     private HashMap<Integer, ColumnInfo> columns;
-    private Class<T> t;
-    private GenericTreeNode<T> root;
+    private Class<$ModelData> t;
+    private GenericTreeNode<$ModelData> root;
     private boolean isTableEditable;
 
-    public SwingObjTreeTableModel(Class<T> t){
-        super(new GenericTreeNode<T>());
+    public SwingObjTreeTableModel(Class<$ModelData> t){
+        super(new GenericTreeNode<$ModelData>());
         this.t=t;
         columns=new HashMap<Integer, ColumnInfo>();
         init();
@@ -93,14 +95,14 @@ public class SwingObjTreeTableModel<T> extends AbstractTreeTableModel{
     @Override
     public boolean isCellEditable(Object node, int column) {
         throwExceptionIfNodeDoesntBelongToTree(node);
-        GenericTreeNode<T> treeNode=(GenericTreeNode<T>)node;
+        GenericTreeNode<$ModelData> treeNode=(GenericTreeNode<$ModelData>)node;
         return treeNode.isEditable() && columns.get(column).isEditable();
     }
 
     @Override
     public Object getChild(Object parent, int index) {
         if(getChildCount(parent)>index){
-            GenericTreeNode<T> treeNode=(GenericTreeNode<T>)parent;
+            GenericTreeNode<$ModelData> treeNode=(GenericTreeNode<$ModelData>)parent;
             return treeNode.getChildAt(index);
         }
         return null;
@@ -108,21 +110,21 @@ public class SwingObjTreeTableModel<T> extends AbstractTreeTableModel{
 
     @Override
     public int getChildCount(Object parent) {
-        GenericTreeNode<T> treeNode=(GenericTreeNode<T>)parent;
+        GenericTreeNode<$ModelData> treeNode=(GenericTreeNode<$ModelData>)parent;
         return treeNode.getNumberOfChildren();
     }
 
     @Override
     public int getIndexOfChild(Object parent, Object child) {
-        GenericTreeNode<T> treeNode=(GenericTreeNode<T>)parent;
-        return treeNode.getChildIndex((GenericTreeNode<T>) child);
+        GenericTreeNode<$ModelData> treeNode=(GenericTreeNode<$ModelData>)parent;
+        return treeNode.getChildIndex((GenericTreeNode<$ModelData>) child);
     }
 
     private void throwExceptionIfNodeDoesntBelongToTree(Object node) {
         boolean result = false;
 
         if (node instanceof GenericTreeNode) {
-            GenericTreeNode<T> ttn = (GenericTreeNode<T>) node;
+            GenericTreeNode<? extends PropertyChangeSupporter> ttn = (GenericTreeNode<? extends PropertyChangeSupporter>) node;
 
             while (!result && ttn != null) {
                 result = ttn == root;
@@ -138,7 +140,7 @@ public class SwingObjTreeTableModel<T> extends AbstractTreeTableModel{
     }
 
     @Override
-    public GenericTreeNode<T> getRoot() {
+    public GenericTreeNode<$ModelData> getRoot() {
         return root;
     }
 
@@ -165,8 +167,8 @@ public class SwingObjTreeTableModel<T> extends AbstractTreeTableModel{
         }
 
         try{
-            GenericTreeNode<T> treeNode=(GenericTreeNode<T>)node;
-            T t=treeNode.getData();
+            GenericTreeNode<$ModelData> treeNode=(GenericTreeNode<$ModelData>)node;
+            $ModelData t=treeNode.getData();
             return PropertyUtils.getProperty(t, columns.get(column).getFieldName());
         }catch (Exception e){
             throw new SwingObjectRunException(e, ErrorSeverity.SEVERE, this);
@@ -188,8 +190,8 @@ public class SwingObjTreeTableModel<T> extends AbstractTreeTableModel{
         if (column < getColumnCount()) {
 
             try{
-                GenericTreeNode<T> treeNode=(GenericTreeNode<T>)node;
-                T t=treeNode.getData();
+                GenericTreeNode<$ModelData> treeNode=(GenericTreeNode<$ModelData>)node;
+                $ModelData t=treeNode.getData();
                 PropertyUtils.setProperty(t, columns.get(column).getFieldName(), value);
                 modelSupport.firePathChanged(new TreePath(getPathToRoot(treeNode)));
             }catch (Exception e){
@@ -207,7 +209,7 @@ public class SwingObjTreeTableModel<T> extends AbstractTreeTableModel{
     public boolean isLeaf(Object node) {
        throwExceptionIfNodeDoesntBelongToTree(node);
 
-        return !((GenericTreeNode<T>) node).hasChildren();
+        return !((GenericTreeNode<$ModelData>) node).hasChildren();
     }
 
     /**
@@ -222,9 +224,9 @@ public class SwingObjTreeTableModel<T> extends AbstractTreeTableModel{
      * @throws NullPointerException
      *             if {@code aNode} is {@code null}
      */
-    public GenericTreeNode[] getPathToRoot(GenericTreeNode<T> aNode) {
-        List<GenericTreeNode<T>> path = new ArrayList<GenericTreeNode<T>>();
-        GenericTreeNode<T> node = aNode;
+    public GenericTreeNode[] getPathToRoot(GenericTreeNode<$ModelData> aNode) {
+        List<GenericTreeNode<$ModelData>> path = new ArrayList<GenericTreeNode<$ModelData>>();
+        GenericTreeNode<$ModelData> node = aNode;
 
         while (node != root) {
             path.add(0, node);
@@ -245,19 +247,22 @@ public class SwingObjTreeTableModel<T> extends AbstractTreeTableModel{
      * This is the preferred way to add children as it will create the
      * appropriate event.
      */
-    public void insertNodeInto(GenericTreeNode<T> newChild, GenericTreeNode<T> parent, int index) {
+    public void insertNodeInto(GenericTreeNode<$ModelData> newChild, GenericTreeNode<$ModelData> parent, int index) {
         parent.addChildAt(index, newChild);
+        modelSupport.fireChildAdded(new TreePath(getPathToRoot(parent)), index, newChild);
+    }
 
+    public void insertNodeIntoWithoutUpdatingTheUnderlyingStructure(GenericTreeNode<$ModelData> newChild,
+                                                                    GenericTreeNode<$ModelData> parent, int index){
         modelSupport.fireChildAdded(new TreePath(getPathToRoot(parent)), index, newChild);
     }
 
     /**
-     * Message this to remove node from its parent. This will message
-     * nodesWereRemoved to create the appropriate event. This is the preferred
-     * way to remove a node as it handles the event creation for you.
+     * This method will remove the node from the parent and also update the underlying
+     * tree structure
      */
-    public void removeNodeFromParent(GenericTreeNode<T> node) {
-        GenericTreeNode<T> parent = (GenericTreeNode<T>) node.getParent();
+    public void removeNodeFromParent(GenericTreeNode<$ModelData> node) {
+        GenericTreeNode<$ModelData> parent = (GenericTreeNode<$ModelData>) node.getParent();
 
         if (parent == null) {
             throw new IllegalArgumentException("node does not have a parent.");
@@ -269,12 +274,34 @@ public class SwingObjTreeTableModel<T> extends AbstractTreeTableModel{
         modelSupport.fireChildRemoved(new TreePath(getPathToRoot(parent)), index, node);
     }
 
-    public void updateNode(GenericTreeNode<T> node){
+    public void removeNodeFromParentWithoutUpdatingUnderlyingStructure(GenericTreeNode<$ModelData> node, int indexOfThisNodeInItsParent){
+        GenericTreeNode<$ModelData> parent = (GenericTreeNode<$ModelData>) node.getParent();
+        if (parent == null) {
+            throw new IllegalArgumentException("node does not have a parent.");
+        }
+        modelSupport.fireChildRemoved(new TreePath(getPathToRoot(parent)), indexOfThisNodeInItsParent, node);
+    }
+
+    public void updateTreeStructure(GenericTreeNode<$ModelData> node){
+        modelSupport.fireTreeStructureChanged(new TreePath(getPathToRoot(node)));
+    }
+
+    public void updateNode(GenericTreeNode<$ModelData> node){
         modelSupport.firePathChanged(new TreePath(getPathToRoot(node)));
     }
 
-    public void setData(GenericTreeNode<T> root){
+    public void setData(GenericTreeNode<$ModelData> root){
         this.root=root;
         modelSupport.fireNewRoot();
+        root.setTreeModel(this);
+    }
+
+    public HashMap<Integer, ColumnInfo> getColumns() {
+        return columns;
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        updateNode((GenericTreeNode<$ModelData>) evt.getNewValue());
     }
 }

@@ -6,7 +6,6 @@ import org.aesthete.swingobjects.exceptions.SwingObjectException;
 import org.aesthete.swingobjects.model.tree.GenericTreeNode;
 import org.aesthete.swingobjects.view.CommonUI;
 import org.aesthete.swingobjects.view.table.PropertyChangeSupporter;
-import org.aesthete.swingobjects.view.table.RowDataBean;
 import org.aesthete.swingobjects.view.table.SwingObjTreeTable;
 
 import javax.swing.*;
@@ -22,7 +21,7 @@ import java.util.Locale;
  * Time: 2:54 PM
  * To change this template use File | Settings | File Templates.
  */
-public class TreeTableDemo {
+public class TreeTableDemoUpdateUnderlyingDataStructure {
 
     public static void main(String[] args) throws SwingObjectException {
         CommonUI.runInEDT(new Runnable() {
@@ -34,7 +33,7 @@ public class TreeTableDemo {
                     final GenericTreeNode<Row> root = new GenericTreeNode<Row>(new Row(0, "-", "-"));
                     root.setEmptyRootNode(true);
 
-                    GenericTreeNode<Row> child = new GenericTreeNode<Row>(new Row(1, "Garfield1", "Kitty"));
+                    final GenericTreeNode<Row> child = new GenericTreeNode<Row>(new Row(1, "Garfield1", "Kitty"));
                     root.addChild(child);
                     child.addChild(new GenericTreeNode<Row>(new Row(2, "Garfield2", "Kitty")));
                     child.addChild(new GenericTreeNode<Row>(new Row(3, "Garfield3", "Kitty")));
@@ -52,10 +51,11 @@ public class TreeTableDemo {
                     panel.add(new JScrollPane(treeTable));
 
                     JButton comp = new JButton("Add Node To Root");
+
                     comp.addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            treeTable.addRow(new GenericTreeNode<Row>(new Row(9, "Garfield9", "Kitty")), root);
+                            child.addChild(new GenericTreeNode<Row>(new Row(5, "Employee Name","Department")));
                         }
                     });
 

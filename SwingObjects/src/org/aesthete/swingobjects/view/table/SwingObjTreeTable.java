@@ -1,6 +1,8 @@
 package org.aesthete.swingobjects.view.table;
 
+import org.aesthete.swingobjects.model.tree.GenericTree;
 import org.aesthete.swingobjects.model.tree.GenericTreeNode;
+import org.aesthete.swingobjects.model.tree.GenericTreeTraversalOrderEnum;
 import org.jdesktop.swingx.JXTreeTable;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
 import org.jdesktop.swingx.renderer.DefaultTableRenderer;
@@ -18,23 +20,31 @@ import java.awt.event.ComponentListener;
  * Time: 8:05 AM
  * To change this template use File | Settings | File Templates.
  */
-public class SwingObjTreeTable<T> extends JXTreeTable{
-    private T prototypeData;
-    private SwingObjTreeTableModel<T> model;
+public class SwingObjTreeTable<$ModelData extends PropertyChangeSupporter> extends JXTreeTable{
+    private $ModelData prototypeData;
+    private SwingObjTreeTableModel<$ModelData> model;
 
-    public SwingObjTreeTable(Class<T> classOfData, GenericTreeNode<T> root) {
-        super(new SwingObjTreeTableModel<T>(classOfData));
-        model= (SwingObjTreeTableModel<T>) getTreeTableModel();
-        initTable(classOfData, root);
+    public SwingObjTreeTable(Class<$ModelData> classOfData, GenericTreeNode<$ModelData> root) {
+        super(new SwingObjTreeTableModel<$ModelData>(classOfData));
+        model= (SwingObjTreeTableModel<$ModelData>) getTreeTableModel();
+        initTable(root);
     }
 
-    private void initTable(Class<T> classOfData, GenericTreeNode<T> root) {
+    public SwingObjTreeTable(SwingObjTreeTableModel<$ModelData> model, GenericTreeNode<$ModelData> root){
+        super(model);
+        initTable(root);
+    }
+
+    private void initTable(GenericTreeNode<$ModelData> root) {
         setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         this.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
         this.setVisibleColumnCount(model.getColumnCount());
         this.addHighlighter(HighlighterFactory.createAlternateStriping());
 
         model.setData(root);
+        for(GenericTreeNode<$ModelData> node : new GenericTree<$ModelData>(root).build(root, GenericTreeTraversalOrderEnum.PRE_ORDER)){
+            node.setTreeModel(model);
+        }
     }
 
     public void makeColumnsIntoComboBox(Object[] values,int... cols){
@@ -99,30 +109,34 @@ public class SwingObjTreeTable<T> extends JXTreeTable{
         return -1;
     }
 
-    public GenericTreeNode<T> getNodeForIndex(int index){
+    public GenericTreeNode<$ModelData> getNodeForIndex(int index){
         if(index<0){
             return null;
         }
-        return (GenericTreeNode<T>) getPathForRow(index).getLastPathComponent();
+        return (GenericTreeNode<$ModelData>) getPathForRow(index).getLastPathComponent();
     }
 
-    public void addRow(GenericTreeNode<T> row, GenericTreeNode<T> parent){
+    public void addRow(GenericTreeNode<$ModelData> row, GenericTreeNode<$ModelData> parent){
         model.insertNodeInto(row, parent, parent.getNumberOfChildren());
     }
 
-    public void addRow(GenericTreeNode<T> row, GenericTreeNode<T> parent, int index){
+    public void addRow(GenericTreeNode<$ModelData> row, GenericTreeNode<$ModelData> parent, int index){
         model.insertNodeInto(row, parent, index);
     }
 
-    public void removeRow(GenericTreeNode<T> row){
+    public void removeRow(GenericTreeNode<$ModelData> row){
         model.removeNodeFromParent(row);
     }
 
-    public void setData(GenericTreeNode<T> root){
+    public void setData(GenericTreeNode<$ModelData> root){
         model.setData(root);
     }
 
-    public GenericTreeNode<T> getRoot(){
+    public GenericTreeNode<$ModelData> getRoot(){
         return model.getRoot();
+    }
+
+    public void reload(){
+        model.setData(model.getRoot());
     }
 }
