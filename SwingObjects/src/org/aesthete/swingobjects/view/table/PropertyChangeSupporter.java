@@ -12,21 +12,29 @@ import java.util.List;
  * Time: 6:28 AM
  * To change this template use File | Settings | File Templates.
  */
-public abstract class PropertyChangeSupporter {
+public abstract class PropertyChangeSupporter extends RowDataBean{
 
     private SwingPropertyChangeSupport propertyChangeSupport;
-    private List<PropertyChangeListener> propertyChangeListeners;
 
     protected PropertyChangeSupporter() {
         this.propertyChangeSupport = new SwingPropertyChangeSupport(this);
-        propertyChangeListeners=new LinkedList<PropertyChangeListener>();
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener, String... properties){
+        for(String propertyName : properties){
+            propertyChangeSupport.addPropertyChangeListener(propertyName, listener);
+        }
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener){
-        propertyChangeListeners.add(listener);
+        propertyChangeSupport.addPropertyChangeListener(listener);
     }
 
     public SwingPropertyChangeSupport getPropertyChangeSupport() {
         return propertyChangeSupport;
+    }
+
+    public void setPropertyChangeSupport(SwingPropertyChangeSupport propertyChangeSupport) {
+        this.propertyChangeSupport = propertyChangeSupport;
     }
 }

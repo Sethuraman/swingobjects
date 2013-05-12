@@ -37,7 +37,6 @@ public class SwingObjTreeTableModel<$ModelData> extends AbstractTreeTableModel i
     private boolean isTableEditable;
 
     public SwingObjTreeTableModel(Class<$ModelData> t){
-        super(new GenericTreeNode<$ModelData>());
         this.t=t;
         columns=new HashMap<Integer, ColumnInfo>();
         init();
@@ -248,8 +247,18 @@ public class SwingObjTreeTableModel<$ModelData> extends AbstractTreeTableModel i
      * appropriate event.
      */
     public void insertNodeInto(GenericTreeNode<$ModelData> newChild, GenericTreeNode<$ModelData> parent, int index) {
+        if(parent.getTreeModel()!=null){
+            if(parent.getTreeModel()!=this){
+                throw new SwingObjectRunException(ErrorSeverity.SEVERE,
+                        "The parent node has got a different tree model set into it and the child being added to another tree model", this.getClass());
+            }
+        }
+
         parent.addChildAt(index, newChild);
-        modelSupport.fireChildAdded(new TreePath(getPathToRoot(parent)), index, newChild);
+
+        if(parent.getTreeModel()==null){
+            modelSupport.fireChildAdded(new TreePath(getPathToRoot(parent)), index, newChild);
+        }
     }
 
     public void insertNodeIntoWithoutUpdatingTheUnderlyingStructure(GenericTreeNode<$ModelData> newChild,
@@ -262,6 +271,13 @@ public class SwingObjTreeTableModel<$ModelData> extends AbstractTreeTableModel i
      * tree structure
      */
     public void removeNodeFromParent(GenericTreeNode<$ModelData> node) {
+        if(node.getTreeModel()!=null){
+            if(node.getTreeModel()!=this){
+                throw new SwingObjectRunException(ErrorSeverity.SEVERE,
+                        "The node has got a different tree model set into it and removeNodeFromParent is being called on another tree model", this.getClass());
+            }
+        }
+
         GenericTreeNode<$ModelData> parent = (GenericTreeNode<$ModelData>) node.getParent();
 
         if (parent == null) {
@@ -271,7 +287,9 @@ public class SwingObjTreeTableModel<$ModelData> extends AbstractTreeTableModel i
         int index = parent.getChildIndex(node);
         parent.removeChildAt(index);
 
-        modelSupport.fireChildRemoved(new TreePath(getPathToRoot(parent)), index, node);
+        if(node.getTreeModel()==null){
+            modelSupport.fireChildRemoved(new TreePath(getPathToRoot(parent)), index, node);
+        }
     }
 
     public void removeNodeFromParentWithoutUpdatingUnderlyingStructure(GenericTreeNode<$ModelData> node, int indexOfThisNodeInItsParent){

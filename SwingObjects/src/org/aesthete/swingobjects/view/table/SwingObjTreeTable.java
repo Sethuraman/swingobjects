@@ -32,6 +32,7 @@ public class SwingObjTreeTable<$ModelData extends PropertyChangeSupporter> exten
 
     public SwingObjTreeTable(SwingObjTreeTableModel<$ModelData> model, GenericTreeNode<$ModelData> root){
         super(model);
+        this.model=model;
         initTable(root);
     }
 

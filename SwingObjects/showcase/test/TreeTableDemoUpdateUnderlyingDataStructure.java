@@ -110,5 +110,27 @@ public class TreeTableDemoUpdateUnderlyingDataStructure {
         public void setDepartment(String department) {
             this.department = department;
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof Row)) return false;
+
+            Row row = (Row) o;
+
+            if (employeeID != row.employeeID) return false;
+            if (department != null ? !department.equals(row.department) : row.department != null) return false;
+            if (employeeName != null ? !employeeName.equals(row.employeeName) : row.employeeName != null) return false;
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = employeeID;
+            result = 31 * result + (employeeName != null ? employeeName.hashCode() : 0);
+            result = 31 * result + (department != null ? department.hashCode() : 0);
+            return result;
+        }
     }
 }

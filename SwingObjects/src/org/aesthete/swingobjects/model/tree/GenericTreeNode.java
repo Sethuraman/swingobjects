@@ -26,14 +26,8 @@ public class GenericTreeNode<$TreeData> implements PropertyChangeListener{
     private boolean isEmptyRootNode;
     private SwingObjTreeTableModel<$TreeData> treeModel;
 
-
-    public GenericTreeNode() {
-        super();
-        children = new LinkedList<GenericTreeNode<$TreeData>>();
-    }
-
     public GenericTreeNode($TreeData data) {
-        this();
+        children = new LinkedList<GenericTreeNode<$TreeData>>();
         setData(data);
         if(data instanceof PropertyChangeSupporter){
             ((PropertyChangeSupporter)data).addPropertyChangeListener(this);
@@ -41,7 +35,7 @@ public class GenericTreeNode<$TreeData> implements PropertyChangeListener{
     }
 
     public GenericTreeNode($TreeData data, boolean isEmptyRootNode) {
-        this();
+        children = new LinkedList<GenericTreeNode<$TreeData>>();
         setData(data);
         setEmptyRootNode(isEmptyRootNode);
         if(data instanceof PropertyChangeSupporter){
@@ -145,6 +139,10 @@ public class GenericTreeNode<$TreeData> implements PropertyChangeListener{
 
     public void setEmptyRootNode(boolean emptyRootNode) {
         isEmptyRootNode = emptyRootNode;
+    }
+
+    public SwingObjTreeTableModel<$TreeData> getTreeModel() {
+        return treeModel;
     }
 
     @Override
