@@ -259,6 +259,8 @@ public class SwingObjTreeTableModel<$ModelData> extends AbstractTreeTableModel i
         if(parent.getTreeModel()==null){
             modelSupport.fireChildAdded(new TreePath(getPathToRoot(parent)), index, newChild);
         }
+
+
     }
 
     public void insertNodeIntoWithoutUpdatingTheUnderlyingStructure(GenericTreeNode<$ModelData> newChild,

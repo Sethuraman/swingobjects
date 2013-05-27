@@ -29,8 +29,12 @@ public class SwingObjectException extends Exception implements SwingObjectsExcep
 		this(errorCode,null,errorSeverity,clz,placeholders);
 	}
 
+    public SwingObjectException(String errorCode, Class<?> clz, String... placeHolderValues) {
+        this(errorCode, ErrorSeverity.ERROR, clz, placeHolderValues);
 
-	public SwingObjectException(String errorCode,Throwable e, ErrorSeverity errorSeverity,Class<?> clz,String... placeholders){
+    }
+
+    public SwingObjectException(String errorCode,Throwable e, ErrorSeverity errorSeverity,Class<?> clz,String... placeholders){
 		super(e);
 		this.errorCode=errorCode;
 		this.errorSeverity=errorSeverity;

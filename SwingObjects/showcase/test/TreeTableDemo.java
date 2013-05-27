@@ -42,6 +42,8 @@ public class TreeTableDemo {
 
                     final SwingObjTreeTable<Row> treeTable = new SwingObjTreeTable<Row>(Row.class, root);
 
+                    treeTable.expandAll();
+
                     final JFrame frame = new JFrame();
                     JPanel panel=new JPanel(new BorderLayout());
                     frame.setContentPane(panel);

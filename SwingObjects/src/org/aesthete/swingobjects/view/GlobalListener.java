@@ -161,11 +161,11 @@ public class GlobalListener implements ActionListener{
                             MethodObject methodObject=actions.get(s);
                             if(methodObject==null){
                                 actions.put(s,new MethodObject(entity, action, container));
-                                return;
+                                continue;
                             }
 
                             if(methodObject.getAction().overrideWeight() >= action.overrideWeight()){
-                                return;
+                                continue;
                             }
 
                             actions.put(s,new MethodObject(entity, action, container));

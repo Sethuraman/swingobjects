@@ -45,6 +45,9 @@ public class TableCellDatePicker implements Observer{
 	}
 
 	protected void showDatePicker(MouseEvent e) {
+        if(table.getRowCount()==0){
+            return;
+        }
 		Point p=e.getPoint();
 		int col = table.columnAtPoint(p);
 

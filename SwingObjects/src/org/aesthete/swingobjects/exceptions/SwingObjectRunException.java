@@ -48,7 +48,11 @@ public class SwingObjectRunException extends RuntimeException implements SwingOb
 		logger.error(formatMessage(), e);
 	}
 
-	public String getMessage(String errorCode,String[] placeholders) {
+    public SwingObjectRunException(String errorCode, Class<?> clz) {
+        this(errorCode, null, ErrorSeverity.ERROR, clz);
+    }
+
+    public String getMessage(String errorCode,String[] placeholders) {
         return SwingObjProps.getApplicationProperty(errorCode, placeHolderValues);
     }
 

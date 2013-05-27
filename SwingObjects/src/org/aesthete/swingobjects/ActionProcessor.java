@@ -110,9 +110,7 @@ public class ActionProcessor {
 						fieldsOfContainer.add((JComponent)prop);
 						CommonUI.initComponent(prop);
 						trimTexts(field, prop);
-                        handleRequiredEmptyChecks(field, container, swingworker);
-                        handleTableSelectARow(field,container,swingworker);
-                        handleValidDate(field,container,swingworker);
+                        handleValidations(field, container, swingworker);
 					}
 				}catch(Exception e){
 					throw new SwingObjectRunException(e, ErrorSeverity.SEVERE, DataMapper.class);
@@ -120,6 +118,28 @@ public class ActionProcessor {
 			}
 		});
 	}
+
+    private void handleValidations(Field field, Object container, SwingWorkerInterface swingworker) throws IllegalAccessException {
+        handleRequiredEmptyChecks(field, container, swingworker);
+        handleTableSelectARow(field,container,swingworker);
+        handleValidDate(field,container,swingworker);
+        handleTableEnterData(field, container, swingworker);
+    }
+
+    private void handleTableEnterData(Field field, Object container, SwingWorkerInterface swingworker) throws IllegalAccessException {
+        TableRowsExist tableRowsExist=field.getAnnotation(TableRowsExist.class);
+        if(tableRowsExist!=null && isCheckSupposedToExecuteBasedOnAction(tableRowsExist.value(), swingworker.getAction())){
+            Object swingObjTableObj=field.get(container);
+            if(swingObjTableObj instanceof JTable){
+                JTable table=(JTable)swingObjTableObj;
+                if(table.getRowCount()<=0){
+                    scopeObj.setErrorObj(new SwingObjectException("swingobj.placeholdererror",
+                            ErrorSeverity.ERROR,ActionProcessor.class,tableRowsExist.errorMsg()));
+                    this.isError=true;
+                }
+            }
+        }
+    }
 
     private void handleValidDate(Field field, Object container, SwingWorkerInterface swingworker) throws IllegalAccessException {
         ValidDate validDate=field.getAnnotation(ValidDate.class);

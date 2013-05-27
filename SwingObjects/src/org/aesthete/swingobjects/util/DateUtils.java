@@ -3,9 +3,13 @@ package org.aesthete.swingobjects.util;
 import org.aesthete.swingobjects.SwingObjProps;
 import org.aesthete.swingobjects.SwingObjectsInit;
 import org.aesthete.swingobjects.exceptions.ErrorSeverity;
+import org.aesthete.swingobjects.exceptions.IncorrectDataException;
 import org.aesthete.swingobjects.exceptions.SwingObjectException;
 import org.aesthete.swingobjects.exceptions.SwingObjectRunException;
 import org.apache.commons.lang3.StringUtils;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -28,6 +32,7 @@ import java.util.regex.Pattern;
 public class DateUtils {
 
     private static final Map<Pattern,String> patterns=getPatterns();
+    public static final DateTimeFormatter defaultDateTimeFormat=DateTimeFormat.forPattern(SwingObjProps.getApplicationProperty("defaultDateFormat"));
 
     private static Map<Pattern,String> getPatterns() {
         String[] acceptabledateformatses = StringUtils.split(SwingObjProps.getApplicationProperty("acceptabledateformats"),"~");
@@ -40,15 +45,19 @@ public class DateUtils {
     }
 
 
-    public static Date getDateFromFormatOfString(String date) throws ParseException {
-        for(Map.Entry<Pattern,String> entry : patterns.entrySet()){
-            if(entry.getKey().matcher(date).matches()){
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat(entry.getValue());
-                simpleDateFormat.setLenient(false);
-                return simpleDateFormat.parse(date);
+    public static Date getDateFromFormatOfString(String date){
+        try {
+            for(Map.Entry<Pattern,String> entry : patterns.entrySet()){
+                if(entry.getKey().matcher(date).matches()){
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat(entry.getValue());
+                    simpleDateFormat.setLenient(false);
+                    return simpleDateFormat.parse(date);
+                }
             }
+        } catch (ParseException e) {
+            throw new IncorrectDataException(e, DateUtils.class);
         }
-        throw new ParseException(date, 0);
+        throw new IncorrectDataException(DateUtils.class);
     }
 
     public static void getCurrentDateFromGoogle(){
@@ -60,12 +69,10 @@ public class DateUtils {
         }catch (Exception e){
             throw new SwingObjectRunException(e,DateUtils.class);
         }
-
     }
 
-    public static void main(String[] args) throws SwingObjectException {
-        SwingObjectsInit.init("swingobjects", "application");
-        DateUtils.getCurrentDateFromGoogle();
+    public static String getStringFromDateDefaultFormat(Date date){
+        return new DateTime(date).toString(defaultDateTimeFormat);
     }
 
 }
