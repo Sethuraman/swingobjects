@@ -9,6 +9,7 @@ import org.aesthete.swingobjects.view.CommonUI;
 import org.aesthete.swingobjects.view.table.PropertyChangeSupporter;
 import org.aesthete.swingobjects.view.table.SwingObjTreeTableModel;
 
+import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class GenericTreeNode<$TreeData> implements PropertyChangeListener{
     private boolean isEditable;
     private boolean isEmptyRootNode;
     private SwingObjTreeTableModel<$TreeData> treeModel;
+    private Color colorOfRow;
 
     public GenericTreeNode($TreeData data) {
         children = new LinkedList<GenericTreeNode<$TreeData>>();
@@ -73,6 +75,14 @@ public class GenericTreeNode<$TreeData> implements PropertyChangeListener{
 
     public String toString() {
         return getData().toString();
+    }
+
+    public Color getColorOfRow() {
+        return colorOfRow;
+    }
+
+    public void setColorOfRow(Color colorOfRow) {
+        this.colorOfRow = colorOfRow;
     }
 
     @Override

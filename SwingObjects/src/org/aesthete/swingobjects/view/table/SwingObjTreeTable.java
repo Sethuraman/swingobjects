@@ -4,11 +4,13 @@ import org.aesthete.swingobjects.model.tree.GenericTree;
 import org.aesthete.swingobjects.model.tree.GenericTreeNode;
 import org.aesthete.swingobjects.model.tree.GenericTreeTraversalOrderEnum;
 import org.jdesktop.swingx.JXTreeTable;
+import org.jdesktop.swingx.decorator.Highlighter;
 import org.jdesktop.swingx.decorator.HighlighterFactory;
 import org.jdesktop.swingx.renderer.DefaultTableRenderer;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -20,7 +22,7 @@ import java.awt.event.ComponentListener;
  * Time: 8:05 AM
  * To change this template use File | Settings | File Templates.
  */
-public class SwingObjTreeTable<$ModelData extends PropertyChangeSupporter> extends JXTreeTable{
+public class SwingObjTreeTable<$ModelData> extends JXTreeTable{
     private $ModelData prototypeData;
     private SwingObjTreeTableModel<$ModelData> model;
 
@@ -114,7 +116,11 @@ public class SwingObjTreeTable<$ModelData extends PropertyChangeSupporter> exten
         if(index<0){
             return null;
         }
-        return (GenericTreeNode<$ModelData>) getPathForRow(index).getLastPathComponent();
+        TreePath pathForRow = getPathForRow(index);
+        if(pathForRow==null){
+            return null;
+        }
+        return (GenericTreeNode<$ModelData>) pathForRow.getLastPathComponent();
     }
 
     public void addRow(GenericTreeNode<$ModelData> row, GenericTreeNode<$ModelData> parent){
@@ -139,5 +145,21 @@ public class SwingObjTreeTable<$ModelData extends PropertyChangeSupporter> exten
 
     public void reload(){
         model.setData(model.getRoot());
+    }
+
+    public int getIndexForNodeData($ModelData modelData){
+        GenericTreeNode<$ModelData> root=model.getRoot();
+        int i=0;
+        for(GenericTreeNode<$ModelData> node : new GenericTree<$ModelData>(root).build(GenericTreeTraversalOrderEnum.PRE_ORDER)){
+            if(node.getData()!=null && node.getData().equals(modelData)){
+                return i;
+            }
+            i++;
+        }
+        return -1;
+    }
+
+    public void updatedHighlighters(Highlighter updatedHighlighter){
+        setHighlighters(getHighlighters());
     }
 }

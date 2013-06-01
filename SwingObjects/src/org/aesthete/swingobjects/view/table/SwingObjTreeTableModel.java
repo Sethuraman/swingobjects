@@ -10,6 +10,8 @@ import org.aesthete.swingobjects.util.ReflectionCallback;
 import org.aesthete.swingobjects.util.ReflectionUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.ClassUtils;
+import org.jdesktop.swingx.decorator.ColorHighlighter;
+import org.jdesktop.swingx.decorator.Highlighter;
 import org.jdesktop.swingx.treetable.AbstractTreeTableModel;
 import org.jdesktop.swingx.treetable.MutableTreeTableNode;
 import org.jdesktop.swingx.treetable.TreeTableNode;
@@ -33,6 +35,7 @@ public class SwingObjTreeTableModel<$ModelData> extends AbstractTreeTableModel i
 
     private HashMap<Integer, ColumnInfo> columns;
     private Class<$ModelData> t;
+    private SwingObjTreeTable<$ModelData> treeTable;
     private GenericTreeNode<$ModelData> root;
     private boolean isTableEditable;
 
@@ -318,6 +321,10 @@ public class SwingObjTreeTableModel<$ModelData> extends AbstractTreeTableModel i
 
     public HashMap<Integer, ColumnInfo> getColumns() {
         return columns;
+    }
+
+    public void setTreeTable(SwingObjTreeTable<$ModelData> treeTable) {
+        this.treeTable = treeTable;
     }
 
     @Override

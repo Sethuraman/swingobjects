@@ -17,7 +17,7 @@ public abstract class PropertyChangeSupporter extends RowDataBean{
     private SwingPropertyChangeSupport propertyChangeSupport;
 
     protected PropertyChangeSupporter() {
-        this.propertyChangeSupport = new SwingPropertyChangeSupport(this);
+        this.propertyChangeSupport = new SwingPropertyChangeSupport(this, true);
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener, String... properties){

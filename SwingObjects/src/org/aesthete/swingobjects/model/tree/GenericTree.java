@@ -10,23 +10,23 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GenericTree<T> {
+public class GenericTree<$ModelData> {
 
-    private GenericTreeNode<T> root;
+    private GenericTreeNode<$ModelData> root;
 
     public GenericTree() {
         super();
     }
 
-    public GenericTree(GenericTreeNode<T> root) {
+    public GenericTree(GenericTreeNode<$ModelData> root) {
         this.root = root;
     }
 
-    public GenericTreeNode<T> getRoot() {
+    public GenericTreeNode<$ModelData> getRoot() {
         return this.root;
     }
 
-    public void setRoot(GenericTreeNode<T> root) {
+    public void setRoot(GenericTreeNode<$ModelData> root) {
         this.root = root;
     }
 
@@ -40,22 +40,22 @@ public class GenericTree<T> {
         return numberOfNodes;
     }
 
-    private int auxiliaryGetNumberOfNodes(GenericTreeNode<T> node) {
+    private int auxiliaryGetNumberOfNodes(GenericTreeNode<$ModelData> node) {
         int numberOfNodes = node.getNumberOfChildren();
 
-        for(GenericTreeNode<T> child : node.getChildren()) {
+        for(GenericTreeNode<$ModelData> child : node.getChildren()) {
             numberOfNodes += auxiliaryGetNumberOfNodes(child);
         }
 
         return numberOfNodes;
     }
 
-    public boolean exists(T dataToFind) {
+    public boolean exists($ModelData dataToFind) {
         return (find(dataToFind) != null);
     }
 
-    public GenericTreeNode<T> find(T dataToFind) {
-        GenericTreeNode<T> returnNode = null;
+    public GenericTreeNode<$ModelData> find($ModelData dataToFind) {
+        GenericTreeNode<$ModelData> returnNode = null;
 
         if(root != null) {
             returnNode = auxiliaryFind(root, dataToFind);
@@ -64,8 +64,8 @@ public class GenericTree<T> {
         return returnNode;
     }
 
-    private GenericTreeNode<T> auxiliaryFind(GenericTreeNode<T> currentNode, T dataToFind) {
-        GenericTreeNode<T> returnNode = null;
+    private GenericTreeNode<$ModelData> auxiliaryFind(GenericTreeNode<$ModelData> currentNode, $ModelData dataToFind) {
+        GenericTreeNode<$ModelData> returnNode = null;
         int i = 0;
 
         if (currentNode.getData().equals(dataToFind)) {
@@ -87,8 +87,8 @@ public class GenericTree<T> {
         return (root == null);
     }
 
-    public List<GenericTreeNode<T>> build(GenericTreeTraversalOrderEnum traversalOrder) {
-        List<GenericTreeNode<T>> returnList = null;
+    public List<GenericTreeNode<$ModelData>> build(GenericTreeTraversalOrderEnum traversalOrder) {
+        List<GenericTreeNode<$ModelData>> returnList = null;
 
         if(root != null) {
             returnList = build(root, traversalOrder);
@@ -97,8 +97,8 @@ public class GenericTree<T> {
         return returnList;
     }
 
-    public List<GenericTreeNode<T>> build(GenericTreeNode<T> node, GenericTreeTraversalOrderEnum traversalOrder) {
-        List<GenericTreeNode<T>> traversalResult = new ArrayList<GenericTreeNode<T>>();
+    public List<GenericTreeNode<$ModelData>> build(GenericTreeNode<$ModelData> node, GenericTreeTraversalOrderEnum traversalOrder) {
+        List<GenericTreeNode<$ModelData>> traversalResult = new ArrayList<GenericTreeNode<$ModelData>>();
 
         if(traversalOrder == GenericTreeTraversalOrderEnum.PRE_ORDER) {
             buildPreOrder(node, traversalResult);
@@ -111,24 +111,24 @@ public class GenericTree<T> {
         return traversalResult;
     }
 
-    private void buildPreOrder(GenericTreeNode<T> node, List<GenericTreeNode<T>> traversalResult) {
+    private void buildPreOrder(GenericTreeNode<$ModelData> node, List<GenericTreeNode<$ModelData>> traversalResult) {
         traversalResult.add(node);
 
-        for(GenericTreeNode<T> child : node.getChildren()) {
+        for(GenericTreeNode<$ModelData> child : node.getChildren()) {
             buildPreOrder(child, traversalResult);
         }
     }
 
-    private void buildPostOrder(GenericTreeNode<T> node, List<GenericTreeNode<T>> traversalResult) {
-        for(GenericTreeNode<T> child : node.getChildren()) {
+    private void buildPostOrder(GenericTreeNode<$ModelData> node, List<GenericTreeNode<$ModelData>> traversalResult) {
+        for(GenericTreeNode<$ModelData> child : node.getChildren()) {
             buildPostOrder(child, traversalResult);
         }
 
         traversalResult.add(node);
     }
 
-    public Map<GenericTreeNode<T>, Integer> buildWithDepth(GenericTreeTraversalOrderEnum traversalOrder) {
-        Map<GenericTreeNode<T>, Integer> returnMap = null;
+    public Map<GenericTreeNode<$ModelData>, Integer> buildWithDepth(GenericTreeTraversalOrderEnum traversalOrder) {
+        Map<GenericTreeNode<$ModelData>, Integer> returnMap = null;
 
         if(root != null) {
             returnMap = buildWithDepth(root, traversalOrder);
@@ -137,8 +137,8 @@ public class GenericTree<T> {
         return returnMap;
     }
 
-    public Map<GenericTreeNode<T>, Integer> buildWithDepth(GenericTreeNode<T> node, GenericTreeTraversalOrderEnum traversalOrder) {
-        Map<GenericTreeNode<T>, Integer> traversalResult = new LinkedHashMap<GenericTreeNode<T>, Integer>();
+    public Map<GenericTreeNode<$ModelData>, Integer> buildWithDepth(GenericTreeNode<$ModelData> node, GenericTreeTraversalOrderEnum traversalOrder) {
+        Map<GenericTreeNode<$ModelData>, Integer> traversalResult = new LinkedHashMap<GenericTreeNode<$ModelData>, Integer>();
 
         if(traversalOrder == GenericTreeTraversalOrderEnum.PRE_ORDER) {
             buildPreOrderWithDepth(node, traversalResult, 0);
@@ -151,16 +151,16 @@ public class GenericTree<T> {
         return traversalResult;
     }
 
-    private void buildPreOrderWithDepth(GenericTreeNode<T> node, Map<GenericTreeNode<T>, Integer> traversalResult, int depth) {
+    private void buildPreOrderWithDepth(GenericTreeNode<$ModelData> node, Map<GenericTreeNode<$ModelData>, Integer> traversalResult, int depth) {
         traversalResult.put(node, depth);
 
-        for(GenericTreeNode<T> child : node.getChildren()) {
+        for(GenericTreeNode<$ModelData> child : node.getChildren()) {
             buildPreOrderWithDepth(child, traversalResult, depth + 1);
         }
     }
 
-    private void buildPostOrderWithDepth(GenericTreeNode<T> node, Map<GenericTreeNode<T>, Integer> traversalResult, int depth) {
-        for(GenericTreeNode<T> child : node.getChildren()) {
+    private void buildPostOrderWithDepth(GenericTreeNode<$ModelData> node, Map<GenericTreeNode<$ModelData>, Integer> traversalResult, int depth) {
+        for(GenericTreeNode<$ModelData> child : node.getChildren()) {
             buildPostOrderWithDepth(child, traversalResult, depth + 1);
         }
 
