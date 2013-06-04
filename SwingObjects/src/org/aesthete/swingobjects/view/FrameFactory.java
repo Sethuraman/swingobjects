@@ -328,15 +328,14 @@ public class FrameFactory {
     public static void dispose(String framesetid, Class<? extends Component> clz) {
         Set<Component> comps = frames.get(framesetid);
         if (comps != null) {
-            Set<Component> toRemove = new HashSet<Component>();
-            for (Component comp : comps) {
+            for (Iterator<Component> it=comps.iterator();it.hasNext();) {
+                Component comp=it.next();
                 if (comp.getClass() == clz) {
                     framesetIDs.remove(comp);
-                    toRemove.add(comp);
+                    it.remove();
                     disposeComponent(comp);
                 }
             }
-            comps.removeAll(toRemove);
         }
     }
 
@@ -349,25 +348,28 @@ public class FrameFactory {
      */
     public static void dispose(String framesetid, String name) {
         Set<Component> comps = frames.get(framesetid);
-        Set<Component> toRemove = new HashSet<Component>();
         if (comps != null) {
-            for (Component comp : comps) {
+            for (Iterator<Component> it=comps.iterator();it.hasNext();) {
+                Component comp=it.next();
                 if (name.equals(comp.getName())) {
                     framesetIDs.remove(comp);
                     disposeComponent(comp);
-                    toRemove.add(comp);
+                    it.remove();
                 }
             }
         }
-        comps.removeAll(toRemove);
     }
 
     public static void disposeAll(Class<? extends Component> clz){
         for(Set<Component> components : frames.values()){
+            Set<Component> disposal=new HashSet<Component>();
             for(Component component : components){
                 if(component.getClass().equals(clz)){
-                    dispose(component);
+                    disposal.add(component);
                 }
+            }
+            for(Component component : disposal){
+                dispose(component);
             }
         }
     }

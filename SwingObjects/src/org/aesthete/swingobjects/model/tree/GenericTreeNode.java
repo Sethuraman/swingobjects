@@ -192,6 +192,13 @@ public class GenericTreeNode<$TreeData> implements PropertyChangeListener{
         }
     }
 
+    public void removeChild(GenericTreeNode<$TreeData> child){
+       int index=children.indexOf(child);
+       if(index>-1){
+           removeChildAt(index);
+       }
+    }
+
     public GenericTreeNode<$TreeData> addChild(final GenericTreeNode<$TreeData> child) {
         child.parent = this;
         children.add(child);
