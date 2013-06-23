@@ -114,7 +114,7 @@ public abstract class CommonSwingWorker extends SwingWorker<Void, Void> implemen
 	 * method. This is where a call to your model should go.
 	 */
 	@Override
-	public void callModel(RequestScopeObject scopeObj) throws SwingObjectException {
+	public void callModel(RequestScopeObject scopeObj) throws Exception {
 	}
 
 	/**

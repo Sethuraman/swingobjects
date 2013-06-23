@@ -42,6 +42,19 @@ public class WidgetShowcase extends JFrame{
         builder.nextLine();
         TimePicker timePicker=new TimePicker(new Date());
         builder.addComponent(timePicker);
+        builder.nextLine();
+
+
+        SwingObjTabbedPane swingObjTabbedPane = new SwingObjTabbedPane();
+        JPanel panel1 = new JPanel();
+        panel1.setBackground(Color.black);
+        swingObjTabbedPane.addTab("Panel 1", panel1);
+
+        JPanel panel2 = new JPanel();
+        panel2.setBackground(Color.DARK_GRAY);
+        swingObjTabbedPane.addTab("Panel 2", panel2);
+
+        builder.addComponent(swingObjTabbedPane);
         builder.complete();
         this.setContentPane(builder.getPanel());
     }

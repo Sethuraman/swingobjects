@@ -29,19 +29,19 @@ public class SwingObjProps {
 		}
 	}
 
-	public static String getSwingObjProperty(String key,String... placeHolderValues) {
+	public static String getSwingObjProperty(String key,Object... placeHolderValues) {
 		return replacePlaceHolders(swingObjProps.getString(key),placeHolderValues);
 	}
 
-	public static String getApplicationProperty(String key,String... placeholderValues){
+	public static String getApplicationProperty(String key,Object... placeholderValues){
 		return replacePlaceHolders(errorProps.getString(key),placeholderValues);
 	}
 
-	public static String replacePlaceHolders(String property,String[] params) {
+	public static String replacePlaceHolders(String property,Object[] params) {
 		if(params!=null && params.length>0){
 			for (int i = 0; i < params.length; i++) {
-				String string = params[i];
-				property=property.replaceAll(Pattern.quote("{"+i+"}"), Matcher.quoteReplacement(string));
+				Object object = params[i];
+				property=property.replaceAll(Pattern.quote("{"+i+"}"), Matcher.quoteReplacement(object.toString()));
 			}
 		}
 		return property;

@@ -1,17 +1,13 @@
 package org.aesthete.swingobjects.util;
 
 import org.aesthete.swingobjects.SwingObjProps;
-import org.aesthete.swingobjects.SwingObjectsInit;
-import org.aesthete.swingobjects.exceptions.ErrorSeverity;
-import org.aesthete.swingobjects.exceptions.IncorrectDataException;
-import org.aesthete.swingobjects.exceptions.SwingObjectException;
+import org.aesthete.swingobjects.exceptions.InvalidDateException;
 import org.aesthete.swingobjects.exceptions.SwingObjectRunException;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.ParseException;
@@ -19,7 +15,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -55,9 +50,9 @@ public class DateUtils {
                 }
             }
         } catch (ParseException e) {
-            throw new IncorrectDataException(e, DateUtils.class);
+            throw new InvalidDateException(e, DateUtils.class);
         }
-        throw new IncorrectDataException(DateUtils.class);
+        throw new InvalidDateException(DateUtils.class);
     }
 
     public static void getCurrentDateFromGoogle(){

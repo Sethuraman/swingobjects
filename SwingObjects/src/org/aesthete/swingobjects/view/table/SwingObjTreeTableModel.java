@@ -22,6 +22,7 @@ import java.beans.PropertyChangeListener;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -195,7 +196,7 @@ public class SwingObjTreeTableModel<$ModelData> extends AbstractTreeTableModel i
                 GenericTreeNode<$ModelData> treeNode=(GenericTreeNode<$ModelData>)node;
                 $ModelData t=treeNode.getData();
                 PropertyUtils.setProperty(t, columns.get(column).getFieldName(), value);
-                modelSupport.firePathChanged(new TreePath(getPathToRoot(treeNode)));
+                modelSupport.firePathChanged(new TreePath(treeNode.getPathToRoot()));
             }catch (Exception e){
                 throw new SwingObjectRunException(e, ErrorSeverity.SEVERE, this);
             }
@@ -215,35 +216,6 @@ public class SwingObjTreeTableModel<$ModelData> extends AbstractTreeTableModel i
     }
 
     /**
-     * Gets the path from the root to the specified node.
-     *
-     * @param aNode
-     *            the node to query
-     * @return an array of {@code TreeTableNode}s, where
-     *         {@code arr[0].equals(getRoot())} and
-     *         {@code arr[arr.length - 1].equals(aNode)}, or an empty array if
-     *         the node is not found.
-     * @throws NullPointerException
-     *             if {@code aNode} is {@code null}
-     */
-    public GenericTreeNode[] getPathToRoot(GenericTreeNode<$ModelData> aNode) {
-        List<GenericTreeNode<$ModelData>> path = new ArrayList<GenericTreeNode<$ModelData>>();
-        GenericTreeNode<$ModelData> node = aNode;
-
-        while (node != root) {
-            path.add(0, node);
-
-            node = node.getParent();
-        }
-
-        if (node == root) {
-            path.add(0, node);
-        }
-
-        return path.toArray(new GenericTreeNode[0]);
-    }
-
-    /**
      * Invoked this to insert newChild at location index in parents children.
      * This will then message nodesWereInserted to create the appropriate event.
      * This is the preferred way to add children as it will create the
@@ -260,7 +232,7 @@ public class SwingObjTreeTableModel<$ModelData> extends AbstractTreeTableModel i
         parent.addChildAt(index, newChild);
 
         if(parent.getTreeModel()==null){
-            modelSupport.fireChildAdded(new TreePath(getPathToRoot(parent)), index, newChild);
+            modelSupport.fireChildAdded(new TreePath(parent.getPathToRoot()), index, newChild);
         }
 
 
@@ -268,7 +240,7 @@ public class SwingObjTreeTableModel<$ModelData> extends AbstractTreeTableModel i
 
     public void insertNodeIntoWithoutUpdatingTheUnderlyingStructure(GenericTreeNode<$ModelData> newChild,
                                                                     GenericTreeNode<$ModelData> parent, int index){
-        modelSupport.fireChildAdded(new TreePath(getPathToRoot(parent)), index, newChild);
+        modelSupport.fireChildAdded(new TreePath(parent.getPathToRoot()), index, newChild);
     }
 
     /**
@@ -293,7 +265,7 @@ public class SwingObjTreeTableModel<$ModelData> extends AbstractTreeTableModel i
         parent.removeChildAt(index);
 
         if(node.getTreeModel()==null){
-            modelSupport.fireChildRemoved(new TreePath(getPathToRoot(parent)), index, node);
+            modelSupport.fireChildRemoved(new TreePath(parent.getPathToRoot()), index, node);
         }
     }
 
@@ -302,15 +274,15 @@ public class SwingObjTreeTableModel<$ModelData> extends AbstractTreeTableModel i
         if (parent == null) {
             throw new IllegalArgumentException("node does not have a parent.");
         }
-        modelSupport.fireChildRemoved(new TreePath(getPathToRoot(parent)), indexOfThisNodeInItsParent, node);
+        modelSupport.fireChildRemoved(new TreePath(parent.getPathToRoot()), indexOfThisNodeInItsParent, node);
     }
 
     public void updateTreeStructure(GenericTreeNode<$ModelData> node){
-        modelSupport.fireTreeStructureChanged(new TreePath(getPathToRoot(node)));
+        modelSupport.fireTreeStructureChanged(new TreePath(node.getPathToRoot()));
     }
 
     public void updateNode(GenericTreeNode<$ModelData> node){
-        modelSupport.firePathChanged(new TreePath(getPathToRoot(node)));
+        modelSupport.firePathChanged(new TreePath(node.getPathToRoot()));
     }
 
     public void setData(GenericTreeNode<$ModelData> root){

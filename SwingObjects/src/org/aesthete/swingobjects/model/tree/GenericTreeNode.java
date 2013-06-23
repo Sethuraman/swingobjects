@@ -260,5 +260,32 @@ public class GenericTreeNode<$TreeData> implements PropertyChangeListener{
     public void setTreeModel(SwingObjTreeTableModel<$TreeData> treeModel) {
         this.treeModel = treeModel;
     }
+
+
+    /**
+     * Gets the path from the root to this node.
+     *
+     * @return an array of {@code TreeTableNode}s, where
+     *         {@code arr[0].equals(getRoot())} and
+     *         {@code arr[arr.length - 1].equals(aNode)}, or an empty array if
+     *         the node is not found.
+     * @throws NullPointerException
+     *             if {@code aNode} is {@code null}
+     */
+    public GenericTreeNode[] getPathToRoot() {
+        LinkedList<GenericTreeNode<$TreeData>> path = new LinkedList<GenericTreeNode<$TreeData>>();
+        GenericTreeNode<$TreeData> node = this;
+
+        while (node.getParent()!=null) {
+            path.addFirst(node);
+            node = node.getParent();
+        }
+
+        if (node.getParent()==null) {
+            path.addFirst(node);
+        }
+
+        return path.toArray(new GenericTreeNode[0]);
+    }
 }
 

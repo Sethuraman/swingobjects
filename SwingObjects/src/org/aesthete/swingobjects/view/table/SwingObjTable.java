@@ -70,11 +70,6 @@ public class SwingObjTable<T extends RowDataBean> extends JXTable {
 			setModel(model);
 			setColumnControlVisible(true);
 			setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-			if (isSingleSelection) {
-				setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-			} else {
-				setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-			}
 			this.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 			if (prototypeData != null) {
 				for (ColumnInfo colInfo : model.getColumns().values()) {
@@ -188,6 +183,11 @@ public class SwingObjTable<T extends RowDataBean> extends JXTable {
 
 	public void setSingleSelection(boolean isSingleSelection) {
 		this.isSingleSelection = isSingleSelection;
+        if (isSingleSelection) {
+            setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        } else {
+            setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        }
 	}
 
 	public boolean isRowColorPrecedence() {

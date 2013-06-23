@@ -7,13 +7,13 @@ package org.aesthete.swingobjects.exceptions;
  * Time: 10:09 PM
  * To change this template use File | Settings | File Templates.
  */
-public class IncorrectDataException extends SwingObjectRunException{
+public class InvalidDateException extends SwingObjectRunException{
 
-    public IncorrectDataException(Class<?> clz) {
+    public InvalidDateException(Class<?> clz) {
         super("date.incorrect", clz);
     }
 
-    public IncorrectDataException(Throwable e, Class<?> clz) {
+    public InvalidDateException(Throwable e, Class<?> clz) {
         super(e, clz);
     }
 }

@@ -7,7 +7,7 @@ public interface SwingWorkerInterface {
 	public String getAction();
     boolean proceed();
 	public abstract boolean validateAndPopulate(RequestScopeObject scopeObj);
-	public abstract void callModel(RequestScopeObject scopeObj) throws SwingObjectException;
+	public abstract void callModel(RequestScopeObject scopeObj) throws Exception;
 	public abstract void callConnector(RequestScopeObject scopeObj);
 	public abstract void execute();
 }

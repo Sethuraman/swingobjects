@@ -152,7 +152,7 @@ public class SwingObjTreeTable<$ModelData> extends JXTreeTable{
         int i=0;
         for(GenericTreeNode<$ModelData> node : new GenericTree<$ModelData>(root).build(GenericTreeTraversalOrderEnum.PRE_ORDER)){
             if(node.getData()!=null && node.getData().equals(modelData)){
-                return i;
+                return i-1;
             }
             i++;
         }

@@ -1,16 +1,15 @@
 package org.aesthete.swingobjects.datamap;
 
-import java.math.BigDecimal;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.util.Calendar;
-
-import org.aesthete.swingobjects.CommonUtilities;
 import org.aesthete.swingobjects.exceptions.ErrorSeverity;
 import org.aesthete.swingobjects.exceptions.SwingObjectRunException;
 import org.aesthete.swingobjects.util.DateUtils;
 import org.aesthete.swingobjects.view.FrameFactory;
 import org.apache.commons.lang3.StringUtils;
+
+import java.math.BigDecimal;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.Calendar;
 
 public class DataWrapper {
 

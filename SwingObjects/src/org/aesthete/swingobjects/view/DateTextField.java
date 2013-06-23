@@ -1,8 +1,12 @@
 package org.aesthete.swingobjects.view;
 
-import java.awt.Cursor;
-import java.awt.Graphics;
-import java.awt.Point;
+import org.aesthete.swingobjects.exceptions.ErrorSeverity;
+import org.aesthete.swingobjects.exceptions.SwingObjectRunException;
+import org.aesthete.swingobjects.util.DateUtils;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -12,14 +16,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Observable;
 import java.util.Observer;
-
-import javax.imageio.ImageIO;
-import javax.swing.JFormattedTextField;
-import javax.swing.JTextField;
-
-import org.aesthete.swingobjects.CommonUtilities;
-import org.aesthete.swingobjects.exceptions.ErrorSeverity;
-import org.aesthete.swingobjects.exceptions.SwingObjectRunException;
 
 public class DateTextField extends JFormattedTextField implements Observer {
 
@@ -70,7 +66,7 @@ public class DateTextField extends JFormattedTextField implements Observer {
 	public DateTextField(Date date) {
 		this();
 		if(date!=null) {
-			this.setText(CommonUtilities.getDateInddMMYYYYFormat(date));
+			this.setText(DateUtils.getStringFromDateDefaultFormat(date));
 		}
 	}
 
