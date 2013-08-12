@@ -48,12 +48,13 @@ public class SwingObjTreeTable<$ModelData> extends JXTreeTable{
         for(GenericTreeNode<$ModelData> node : new GenericTree<$ModelData>(root).build(root, GenericTreeTraversalOrderEnum.PRE_ORDER)){
             node.setTreeModel(model);
         }
+        model.setTreeTable(this);
     }
 
     public void makeColumnsIntoComboBox(Object[] values,int... cols){
         for(int col : cols){
-            getColumnExt(col).setCellRenderer((new DefaultTableRenderer(new ComboBoxProvider(new DefaultComboBoxModel(values)))));
-            getColumnExt(col).setCellEditor(new ComboBoxEditor(new DefaultComboBoxModel(values)));
+            getColumnExt(col).setCellRenderer((new DefaultTableRenderer(new ComboBoxProvider(new DefaultComboBoxModel(values), false))));
+            getColumnExt(col).setCellEditor(new ComboBoxEditor(new DefaultComboBoxModel(values), false));
         }
     }
 

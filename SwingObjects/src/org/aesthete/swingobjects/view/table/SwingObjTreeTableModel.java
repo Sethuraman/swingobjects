@@ -8,6 +8,7 @@ import org.aesthete.swingobjects.exceptions.SwingObjectRunException;
 import org.aesthete.swingobjects.model.tree.GenericTreeNode;
 import org.aesthete.swingobjects.util.ReflectionCallback;
 import org.aesthete.swingobjects.util.ReflectionUtils;
+import org.aesthete.swingobjects.view.CommonUI;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang3.ClassUtils;
 import org.jdesktop.swingx.decorator.ColorHighlighter;

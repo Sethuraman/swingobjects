@@ -2,12 +2,7 @@ package org.aesthete.swingobjects.view;
 
 import java.awt.Color;
 
-import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JSeparator;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 
 import com.jgoodies.forms.builder.PanelBuilder;
 import com.jgoodies.forms.factories.ButtonBarFactory;
@@ -25,7 +20,9 @@ import com.jgoodies.forms.layout.FormLayout;
  */
 public class SwingObjFormBuilder {
 
-	public enum ButtonBarPos{Center,Left,Right};
+    private JDialog dialog;
+
+    public enum ButtonBarPos{Center,Left,Right};
 	public static final int START_FROM_CUR_COL=-1;
 
 	private FormLayout layout;
@@ -34,6 +31,7 @@ public class SwingObjFormBuilder {
 	private CellConstraints cc=new CellConstraints();
 	private PanelBuilder builder;
 	private boolean isDontAddRowsAuto;
+
 
 	/**
 	 * Provide just the colspecs in this form via a comma separated string. The assumption is
@@ -69,6 +67,16 @@ public class SwingObjFormBuilder {
 	public SwingObjFormBuilder(String colSpecs,JPanel panel) {
 		this(new FormLayout(colSpecs),panel);
 	}
+
+    public SwingObjFormBuilder(String colSpecs,JFrame frame) {
+        this(new FormLayout(colSpecs));
+        frame.setContentPane(panel);
+    }
+
+    public SwingObjFormBuilder(String colSpecs,JDialog dialog) {
+        this(new FormLayout(colSpecs));
+        dialog.setContentPane(panel);
+    }
 
 	/**
 	 * Same as above except that instead of String encoded column specs, you can provide a FormLayout object. In the Form layout object, if you specify rows

@@ -50,9 +50,9 @@ public class DateUtils {
                 }
             }
         } catch (ParseException e) {
-            throw new InvalidDateException(e, DateUtils.class);
+            throw new InvalidDateException(date, e, DateUtils.class);
         }
-        throw new InvalidDateException(DateUtils.class);
+        throw new InvalidDateException(date, DateUtils.class);
     }
 
     public static void getCurrentDateFromGoogle(){

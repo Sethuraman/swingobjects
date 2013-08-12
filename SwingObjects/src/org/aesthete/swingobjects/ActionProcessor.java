@@ -84,7 +84,7 @@ public class ActionProcessor {
 		if(scopeObj.getErrorObj()!=null) {
 			CommonUI.showErrorDialogForComponent(scopeObj.getErrorObj());
 		}else {
-			CommonUI.showErrorDialogForComponent(new SwingObjectException("swingobj.commonerror", null,ErrorSeverity.ERROR, ActionProcessor.class));
+			CommonUI.showErrorDialogForComponent(new SwingObjectException("swingobj.commonerror", (Throwable)null,ErrorSeverity.ERROR, ActionProcessor.class));
 		}
 	}
 

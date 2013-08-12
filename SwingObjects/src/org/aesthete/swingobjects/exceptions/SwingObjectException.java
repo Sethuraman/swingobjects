@@ -15,26 +15,26 @@ public class SwingObjectException extends Exception implements SwingObjectsExcep
 	private String errorCode;
 	private ErrorSeverity errorSeverity;
     private String message;
-    private String[] placeHolderValues;
+    private Object[] placeHolderValues;
 
     public SwingObjectException(ErrorSeverity errorSeverity,Class<?> classFromWhereThrown){
-		this("swingobj.severe",null,errorSeverity,classFromWhereThrown);
+		this("swingobj.severe",(Throwable)null,errorSeverity,classFromWhereThrown);
 	}
 
 	public SwingObjectException(Throwable e, ErrorSeverity errorSeverity,Class<?> classFromWhereThrown){
 		this("swingobj.severe",e,errorSeverity,classFromWhereThrown);
 	}
 
-	public SwingObjectException(String errorCode,ErrorSeverity errorSeverity,Class<?> clz,String... placeholders){
+	public SwingObjectException(String errorCode,ErrorSeverity errorSeverity,Class<?> clz,Object... placeholders){
 		this(errorCode,null,errorSeverity,clz,placeholders);
 	}
 
-    public SwingObjectException(String errorCode, Class<?> clz, String... placeHolderValues) {
+    public SwingObjectException(String errorCode, Class<?> clz, Object... placeHolderValues) {
         this(errorCode, ErrorSeverity.ERROR, clz, placeHolderValues);
 
     }
 
-    public SwingObjectException(String errorCode,Throwable e, ErrorSeverity errorSeverity,Class<?> clz,String... placeholders){
+    public SwingObjectException(String errorCode,Throwable e, ErrorSeverity errorSeverity,Class<?> clz,Object... placeholders){
 		super(e);
 		this.errorCode=errorCode;
 		this.errorSeverity=errorSeverity;
@@ -129,7 +129,7 @@ public class SwingObjectException extends Exception implements SwingObjectsExcep
 		return builder2.toString();
 	}
 
-	public String[] getPlaceHolderValues() {
+	public Object[] getPlaceHolderValues() {
 		return placeHolderValues;
 	}
 

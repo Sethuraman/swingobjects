@@ -1,6 +1,7 @@
 package org.aesthete.swingobjects.view.table;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,7 +12,16 @@ import javax.swing.*;
  */
 public class ComboBoxEditor extends DefaultCellEditor{
 
-    public ComboBoxEditor(ComboBoxModel model) {
+    private DefaultComboBoxModel model;
+
+    public ComboBoxEditor(DefaultComboBoxModel model, boolean editableComboBox) {
         super(new JComboBox(model));
+        JComboBox comboBox = (JComboBox) getComponent();
+        comboBox.setEditable(editableComboBox);
+        this.model = model;
+    }
+
+    public void addValueToModel(Object value){
+        model.addElement(value);
     }
 }

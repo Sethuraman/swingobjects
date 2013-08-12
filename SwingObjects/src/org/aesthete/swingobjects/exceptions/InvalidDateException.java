@@ -9,11 +9,11 @@ package org.aesthete.swingobjects.exceptions;
  */
 public class InvalidDateException extends SwingObjectRunException{
 
-    public InvalidDateException(Class<?> clz) {
-        super("date.incorrect", clz);
+    public InvalidDateException(String dateInput, Class<?> clz) {
+        super("date.incorrect", null, ErrorSeverity.ERROR, clz, dateInput);
     }
 
-    public InvalidDateException(Throwable e, Class<?> clz) {
-        super(e, clz);
+    public InvalidDateException(String dateInput, Throwable e, Class<?> clz) {
+        super("date.incorrect", e, ErrorSeverity.ERROR, clz, dateInput);
     }
 }

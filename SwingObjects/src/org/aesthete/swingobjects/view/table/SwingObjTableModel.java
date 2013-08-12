@@ -101,7 +101,7 @@ public class SwingObjTableModel<T extends RowDataBean> extends AbstractTableMode
 
 			}
 		} catch (Exception e) {
-			throw new SwingObjectRunException("Error while setting value into Table Model", e, ErrorSeverity.SEVERE, SwingObjTableModel.class);
+			throw new SwingObjectRunException(e, SwingObjTableModel.class);
 		}
 	}
 

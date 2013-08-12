@@ -55,7 +55,9 @@ public class SwingObjTabbedPane extends JTabbedPane{
             if(closeUnderMouse(me.getX(), me.getY())){
                 boolean isToCloseTab = tabAboutToClose(selectedTab);
                 if (isToCloseTab && selectedTab > -1){
+                    Component component=tabbedPane.getComponentAt(selectedTab);
                     tabbedPane.removeTabAt(selectedTab);
+                    FrameFactory.dispose(component);
                 }
                 selectedTab = tabbedPane.getSelectedIndex();
             }

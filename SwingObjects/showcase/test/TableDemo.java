@@ -37,7 +37,7 @@ public class TableDemo {
 
 			//Make any column into a combo box by calling the below method.
 			//A column can be automatically made into a checkbox, by defining your property in the Row class as a boolean
-			table.makeColumnsIntoComboBox(new String[] { "Yes", "No" }, 2);
+			table.makeColumnsIntoEditableComboBox(new String[] { "Yes", "No" }, 2);
 
 			//Initialise the frame and show it on the screen
 			final JXFrame frame = new JXFrame();

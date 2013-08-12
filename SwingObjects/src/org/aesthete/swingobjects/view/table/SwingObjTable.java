@@ -4,18 +4,17 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.swing.ComboBoxModel;
-import javax.swing.DefaultCellEditor;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import org.aesthete.swingobjects.annotations.Column;
 import org.aesthete.swingobjects.datamap.converters.ConverterUtils.SwingObjTableConverter;
 import org.aesthete.swingobjects.exceptions.ErrorSeverity;
 import org.aesthete.swingobjects.exceptions.SwingObjectRunException;
@@ -33,14 +32,17 @@ public class SwingObjTable<T extends RowDataBean> extends JXTable {
 	private boolean isRowColorPrecedence;
 	private T prototypeData;
 	private SwingObjTableModel<T> model;
+    private Class<T> classOfData;
 
-	public SwingObjTable(Class<T> classOfData, T protoDataForSizing) {
-		this.prototypeData = protoDataForSizing;
+    public SwingObjTable(Class<T> classOfData, T protoDataForSizing) {
+        this.classOfData = classOfData;
+        this.prototypeData = protoDataForSizing;
 		initTable(classOfData);
 	}
 
 	public SwingObjTable(Class<T> classOfData) {
-		initTable(classOfData);
+        this.classOfData = classOfData;
+        initTable(classOfData);
 	}
 
 	public Map<Integer, Color> getShadedRowsWithColor() {
@@ -87,10 +89,22 @@ public class SwingObjTable<T extends RowDataBean> extends JXTable {
 
 	public void makeColumnsIntoComboBox(Object[] values,int... cols){
 		for(int col : cols){
-			getColumnExt(col).setCellRenderer((new DefaultTableRenderer(new ComboBoxProvider(new DefaultComboBoxModel(values)))));
-			getColumnExt(col).setCellEditor(new ComboBoxEditor(new DefaultComboBoxModel(values)));
+			getColumnExt(col).setCellRenderer((new DefaultTableRenderer(new ComboBoxProvider(new DefaultComboBoxModel(values), false))));
+			getColumnExt(col).setCellEditor(new ComboBoxEditor(new DefaultComboBoxModel(values), false));
 		}
 	}
+
+    public void makeColumnsIntoEditableComboBox(Object[] initialValues, int... cols){
+        for(int col : cols){
+            getColumnExt(col).setCellRenderer(new DefaultTableRenderer(new ComboBoxProvider(new DefaultComboBoxModel(initialValues), true)));
+            getColumnExt(col).setCellEditor(new ComboBoxEditor(new DefaultComboBoxModel(initialValues), true));
+        }
+    }
+
+    public void addValueToComboBoxColumn(Object value, int col){
+        ((ComboBoxProvider)((DefaultTableRenderer)getColumnExt(col).getCellRenderer()).getComponentProvider()).addValueToModel(value);
+        ((ComboBoxEditor)getColumnExt(col).getCellEditor()).addValueToModel(value);
+    }
 
     public void makeColumnsIntoADate(int... cols) {
         for(int col : cols) {
@@ -210,6 +224,19 @@ public class SwingObjTable<T extends RowDataBean> extends JXTable {
         int selectedRow = getSelectedRow();
         if(selectedRow>-1){
             return convertRowIndexToModel(selectedRow);
+        }
+        return -1;
+    }
+
+    public int getColumnIndex(String columnVariableName){
+        for(Class<?> c=classOfData; c!=null  ; c=c.getSuperclass()) {
+            for(Field f : c.getDeclaredFields()) {
+                f.setAccessible(true);
+                Column column = f.getAnnotation(Column.class);
+                if(column!=null && f.getName().equals(columnVariableName)){
+                    return column.index();
+                }
+            }
         }
         return -1;
     }
