@@ -105,7 +105,7 @@ public class SwingObjTreeTableModel<$ModelData> extends AbstractTreeTableModel i
 
     @Override
     public Object getChild(Object parent, int index) {
-        if(getChildCount(parent)>index){
+        if(index > -1 && getChildCount(parent)>index){
             GenericTreeNode<$ModelData> treeNode=(GenericTreeNode<$ModelData>)parent;
             return treeNode.getChildAt(index);
         }
