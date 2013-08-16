@@ -12,12 +12,10 @@ import javax.swing.text.JTextComponent;
 
 import org.aesthete.swingobjects.annotations.*;
 import org.aesthete.swingobjects.datamap.DataMapper;
-import org.aesthete.swingobjects.exceptions.ErrorSeverity;
-import org.aesthete.swingobjects.exceptions.SwingObjectException;
-import org.aesthete.swingobjects.exceptions.SwingObjectRunException;
-import org.aesthete.swingobjects.exceptions.SwingObjectsExceptions;
+import org.aesthete.swingobjects.exceptions.*;
 import org.aesthete.swingobjects.scope.RequestScope;
 import org.aesthete.swingobjects.scope.RequestScopeObject;
+import org.aesthete.swingobjects.util.DateUtils;
 import org.aesthete.swingobjects.util.ReflectionCallback;
 import org.aesthete.swingobjects.util.ReflectionUtils;
 import org.aesthete.swingobjects.view.CommonUI;
@@ -153,19 +151,12 @@ public class ActionProcessor {
                     this.isError=true;
                    return;
                 }
-                String[] formats=validDate.formats();
-                for(String format : formats){
-                    try{
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
-                        simpleDateFormat.setLenient(false);
-                        simpleDateFormat.parse(text);
-                        return;
-                    }catch (ParseException e){
-
-                    }
+                try{
+                    DateUtils.getDateFromFormatOfString(text);
+                }catch (InvalidDateException e){
+                    this.isError=true;
+                    CommonUI.setErrorBorderAndTooltip(textComponent, e.getMessage());
                 }
-                this.isError=true;
-                CommonUI.setErrorBorderAndTooltip(textComponent, "Invalid Date. Please enter the date in the format "+formats[0]);
             }
         }
     }

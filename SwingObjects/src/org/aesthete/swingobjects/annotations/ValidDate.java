@@ -16,6 +16,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidDate {
     public String[] value() default "ALL";
-    public String[] formats() default {"dd/MM/yyyy","dd-MM-yyyy","yyyy-MM-dd","dd.MM.yyyy"};
     public String errorMsg() default "Please enter a valid date in the format dd/mm/yyyy";
 }

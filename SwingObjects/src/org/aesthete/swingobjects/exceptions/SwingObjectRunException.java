@@ -87,7 +87,7 @@ public class SwingObjectRunException extends RuntimeException implements SwingOb
 	}
 
 	public String getMessage() {
-		return message;
+        return SwingObjProps.getApplicationProperty(errorCode, placeHolderValues);
 	}
 
 	public void setMessage(String message) {
