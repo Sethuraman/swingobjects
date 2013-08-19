@@ -147,8 +147,6 @@ public class ActionProcessor {
                 JTextComponent textComponent= (JTextComponent) jtextComponentObj;
                 String text=textComponent.getText();
                 if(StringUtils.isBlank(text)){
-                   CommonUI.setErrorBorderAndTooltip(textComponent, "Required");
-                    this.isError=true;
                    return;
                 }
                 try{
