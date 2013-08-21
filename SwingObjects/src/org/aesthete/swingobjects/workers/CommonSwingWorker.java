@@ -33,11 +33,14 @@ public abstract class CommonSwingWorker extends SwingWorker<Void, Void> implemen
         try {
 			callModel(scopeObj);
 		}catch(SwingObjectException e) {
+            e.printStackTrace();
 			scopeObj.setErrorObj(e);
 		}catch(SwingObjectRunException e) {
-			scopeObj.setErrorObj(e);
+            e.printStackTrace();
+            scopeObj.setErrorObj(e);
 		}catch(Exception e) {
-			scopeObj.setErrorObj(new SwingObjectException(e,ErrorSeverity.SEVERE, CommonSwingWorker.class));
+            e.printStackTrace();
+            scopeObj.setErrorObj(new SwingObjectException(e,ErrorSeverity.SEVERE, CommonSwingWorker.class));
 		}
 
 		return null;
@@ -90,8 +93,10 @@ public abstract class CommonSwingWorker extends SwingWorker<Void, Void> implemen
 				callConnector(scopeObj);
 			}
 		}catch(SwingObjectRunException e) {
+            e.printStackTrace();
 			CommonUI.showErrorDialogForComponent(e);
 		}catch(Exception e) {
+            e.printStackTrace();
 			CommonUI.showErrorDialogForComponent(new SwingObjectRunException(e, this.getClass()));
 		}
 	}

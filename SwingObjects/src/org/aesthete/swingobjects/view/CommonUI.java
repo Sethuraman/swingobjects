@@ -203,8 +203,12 @@ public class CommonUI {
 		if(StringUtils.isEmpty(tooltip)){
 			tooltip="<html>"+errortooltip+"</html>";
 		}else{
-			tooltip=tooltip.replace(Pattern.quote("<html>"),
-					Matcher.quoteReplacement("<html>"+errortooltip+"<br/>"));
+            if(tooltip.contains("<html>")){
+                tooltip=tooltip.replace(Pattern.quote("<html>"),
+                        Matcher.quoteReplacement("<html>"+errortooltip+"<br/>"));
+            }else{
+                tooltip="<html>"+errortooltip+"<br/>"+tooltip+"</html>";
+            }
 		}
 		jcomponent.setToolTipText(tooltip);
 		jcomponent.setBorder(BorderFactory.createLineBorder(Color.red));
