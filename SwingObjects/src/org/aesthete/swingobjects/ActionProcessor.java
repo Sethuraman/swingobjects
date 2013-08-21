@@ -4,8 +4,7 @@ import java.awt.Container;
 import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
@@ -245,9 +244,10 @@ public class ActionProcessor {
 	}
 
     private boolean isCheckSupposedToExecuteBasedOnAction(String[] actions, String action) {
+        List<String> actionSet= Arrays.asList(actions);
         return actions==null || actions.length==0
-            ||	(actions.length>0 && "ALL".equals(actions[0]))
-            ||  (actions.length>0 && StringUtils.isNotEmpty(action) &&	action.equals(actions[0]));
+            ||	(actions.length>0 && actionSet.contains("ALL")
+            ||  (actions.length>0 && StringUtils.isNotEmpty(action) &&	actionSet.contains(action)));
     }
 
     private void trimTexts(Field field, Object prop) {
