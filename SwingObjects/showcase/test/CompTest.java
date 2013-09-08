@@ -47,6 +47,7 @@ public class CompTest extends JFrame{
 
 	private JCheckBox chkBx;
 
+    @ConfirmBeforeDoing(message = "Are you sure you want to click this?")
 	private JButton btntest;
 
 	private SwingObjTable<TestData> table;

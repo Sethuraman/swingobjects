@@ -14,17 +14,12 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.border.Border;
 
 import org.aesthete.swingobjects.ActionProcessor.CLIENT_PROPS;
@@ -242,5 +237,18 @@ public class CommonUI {
 		} catch (ParseException e) {
 			throw new SwingObjectRunException(e, CommonUI.class);
 		}
+    }
+
+
+    public  static <T> T confirmWithUser(String confirmationMessage, Callable<T> callable){
+        try{
+            int option=JOptionPane.showConfirmDialog(null, confirmationMessage);
+            if(option==JOptionPane.OK_OPTION){
+                return callable.call();
+            }
+            return null;
+        }catch (Exception e){
+            throw new SwingObjectRunException(ErrorSeverity.SEVERE, e);
+        }
     }
 }

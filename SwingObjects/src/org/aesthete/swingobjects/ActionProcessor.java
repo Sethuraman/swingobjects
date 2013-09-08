@@ -33,10 +33,12 @@ public class ActionProcessor {
 	boolean isError=false;
 	private RequestScopeObject scopeObj;
 	private List<JComponent> fieldsOfContainer;
+    private List<String> confirmMessages;
 
 	private ActionProcessor() {
 		scopeObj=RequestScope.getRequestObj();
 		fieldsOfContainer=new ArrayList<JComponent>();
+        confirmMessages=new ArrayList<String>();
 	}
 
 	public static void processAction(Object container,SwingWorkerInterface swingworker){
@@ -47,6 +49,9 @@ public class ActionProcessor {
                     return;
                 }
                 processor.initCompsAndValidate(container,swingworker);
+                if(!processor.confirmMessages.isEmpty() && !processor.isUserSayingOkToContinue()){
+                    return;
+                }
                 if(!processor.isError) {
                     DataMapper.mapData(container);
                     processor.isError=!swingworker.validateAndPopulate(processor.scopeObj);
@@ -77,7 +82,16 @@ public class ActionProcessor {
 		}
 	}
 
-	private void showErrorDialog() {
+    private boolean isUserSayingOkToContinue() {
+        for(String message : confirmMessages){
+            if(JOptionPane.showConfirmDialog(null, message)!=JOptionPane.OK_OPTION){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void showErrorDialog() {
 		if(scopeObj.getErrorObj()!=null) {
 			CommonUI.showErrorDialogForComponent(scopeObj.getErrorObj());
 		}else {
@@ -121,6 +135,14 @@ public class ActionProcessor {
         handleTableSelectARow(field,container,swingworker);
         handleValidDate(field,container,swingworker);
         handleTableEnterData(field, container, swingworker);
+        handleConfirmBeforeDoing(field, container, swingworker);
+    }
+
+    private void handleConfirmBeforeDoing(Field field, Object container, SwingWorkerInterface swingworker) {
+        ConfirmBeforeDoing confirmBeforeDoing=field.getAnnotation(ConfirmBeforeDoing.class);
+        if(confirmBeforeDoing!=null && isCheckSupposedToExecuteBasedOnAction(confirmBeforeDoing.actionCommand(), swingworker.getAction())){
+            confirmMessages.add(confirmBeforeDoing.message());
+        }
     }
 
     private void handleTableEnterData(Field field, Object container, SwingWorkerInterface swingworker) throws IllegalAccessException {
