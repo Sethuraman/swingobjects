@@ -1,0 +1,113 @@
+package org.aesthete.swingobjects.view;
+
+import javax.swing.*;
+import javax.swing.plaf.basic.BasicTextFieldUI;
+import javax.swing.text.JTextComponent;
+import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+
+/**
+ * Created with IntelliJ IDEA.
+ * User: Sethuram
+ * Date: 09/09/13
+ * Time: 9:13 AM
+ * To change this template use File | Settings | File Templates.
+ */
+public class HintTextFieldUI extends BasicTextFieldUI implements FocusListener {
+    private Font fontOriginal;
+    private Font hintFont;
+    private String hint;
+    private boolean hideOnFocus;
+    private Color color;
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+        repaint();
+    }
+
+    private void repaint() {
+        if(getComponent() != null) {
+            getComponent().repaint();
+        }
+    }
+
+    public boolean isHideOnFocus() {
+        return hideOnFocus;
+    }
+
+    public void setHideOnFocus(boolean hideOnFocus) {
+        this.hideOnFocus = hideOnFocus;
+        repaint();
+    }
+
+    public String getHint() {
+        return hint;
+    }
+
+    public void setHint(String hint) {
+        this.hint = hint;
+        repaint();
+    }
+    public HintTextFieldUI(String hint) {
+        this(hint,false);
+    }
+
+    public HintTextFieldUI(String hint, boolean hideOnFocus) {
+        this(hint,hideOnFocus, null);
+    }
+
+    public HintTextFieldUI(String hint, boolean hideOnFocus, Color color) {
+        this.hint = hint;
+        this.hideOnFocus = hideOnFocus;
+        this.color = color;
+
+    }
+
+    @Override
+    protected void paintSafely(Graphics g) {
+        super.paintSafely(g);
+        JTextComponent comp = getComponent();
+        if(fontOriginal==null){
+            fontOriginal=comp.getFont();
+            hintFont = new Font(fontOriginal.getName(), fontOriginal.getStyle() | Font.ITALIC, fontOriginal.getSize());
+        }
+        if(hint!=null && comp.getText().length() == 0 && (!(hideOnFocus && comp.hasFocus()))){
+            if(color != null) {
+                g.setColor(color);
+            } else {
+                g.setColor(comp.getForeground().brighter().brighter().brighter());
+            }
+            int padding = (comp.getHeight() - comp.getFont().getSize())/2;
+            comp.setFont(hintFont);
+            g.drawString(hint, 8, comp.getHeight()-padding-1);
+        }else{
+            comp.setFont(fontOriginal);
+        }
+    }
+
+    @Override
+    public void focusGained(FocusEvent e) {
+        if(hideOnFocus) repaint();
+
+    }
+
+    @Override
+    public void focusLost(FocusEvent e) {
+        if(hideOnFocus) repaint();
+    }
+    @Override
+    protected void installListeners() {
+        super.installListeners();
+        getComponent().addFocusListener(this);
+    }
+    @Override
+    protected void uninstallListeners() {
+        super.uninstallListeners();
+        getComponent().removeFocusListener(this);
+    }
+}

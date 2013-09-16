@@ -207,6 +207,9 @@ public class CommonUI {
 		}
 		jcomponent.setToolTipText(tooltip);
 		jcomponent.setBorder(BorderFactory.createLineBorder(Color.red));
+        if(jcomponent instanceof JCheckBox){
+            ((JCheckBox) jcomponent).setBorderPainted(true);
+        }
     }
 
     public static void runInEDT(final Runnable run) {

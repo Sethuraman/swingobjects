@@ -43,8 +43,12 @@ public class RequestScope {
     }
 
 
-	@SuppressWarnings("unchecked")
 	public static <T> T getObjectFromScope(String key) {
 		return (T)getRequestObj().getObjectFromMap(key);
 	}
+
+    public static void putObjectFromScope(String key, Object value) {
+        getRequestObj().putObjectInMap(key, value);
+    }
+
  }

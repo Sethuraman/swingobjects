@@ -34,6 +34,8 @@ public class CompTest extends JFrame{
 
 	private static final long serialVersionUID = 1L;
 
+    private HintTextField hintTextField;
+
 	@Required
     @ValidDate
 	private DateTextField tftest;
@@ -54,6 +56,7 @@ public class CompTest extends JFrame{
 
 	public CompTest() {
 		try {
+            hintTextField=new HintTextField("This is a hint");
 			btntest = new JButton("Test");
 			tftest = new DateTextField("12/12/2012");
 			tftest.setColumns(20);
@@ -77,6 +80,8 @@ public class CompTest extends JFrame{
 			cbCombo = new JComboBox(new String[] { "Yes", "No" });
 			chkBx = new JCheckBox("Is to be checked?");
 			SwingObjFormBuilder builder=new SwingObjFormBuilder(new FormLayout("5dlu,100dlu:grow,2dlu,100dlu,2dlu,50dlu,2dlu,100dlu,5dlu"));
+            builder.addComponent(hintTextField, 7);
+            builder.nextLine();
 			builder.addComponents(tftest,tftest1,cbCombo,chkBx);
 			builder.nextLine("150dlu");
 			builder.addComponent(new JScrollPane(table), 7);

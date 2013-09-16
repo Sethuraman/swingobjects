@@ -21,7 +21,6 @@ public class SwingObjectsInit {
 
     public static void init(String swingObjPropsBundleBaseName,String applicationPropsBundleBaseName,Locale locale) throws SwingObjectException {
         try {
-
             SwingObjProps.init(swingObjPropsBundleBaseName,applicationPropsBundleBaseName,locale);
             FormLayoutConfig.init();
             initConverters();
