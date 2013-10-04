@@ -53,7 +53,7 @@ public class SwingObjectRunException extends RuntimeException implements SwingOb
     }
 
     public String getMessage(String errorCode,String[] placeholders) {
-        return SwingObjProps.getApplicationProperty(errorCode, placeHolderValues);
+        return SwingObjProps.getApplicationProperty(errorCode, (Object[])placeHolderValues);
     }
 
 	public String formatMessage(){
@@ -61,7 +61,7 @@ public class SwingObjectRunException extends RuntimeException implements SwingOb
         builder.append("\n");
         builder.append("Error Code:"+errorCode);
         builder.append("\n");
-        builder.append("Error Description:"+SwingObjProps.getApplicationProperty(errorCode,placeHolderValues));
+        builder.append("Error Description:"+SwingObjProps.getApplicationProperty(errorCode,(Object[])placeHolderValues));
         builder.append("\n");
         builder.append("Error Severity:"+errorSeverity.toString());
         builder.append("\n");
@@ -87,7 +87,7 @@ public class SwingObjectRunException extends RuntimeException implements SwingOb
 	}
 
 	public String getMessage() {
-        return SwingObjProps.getApplicationProperty(errorCode, placeHolderValues);
+        return SwingObjProps.getApplicationProperty(errorCode, (Object[])placeHolderValues);
 	}
 
 	public void setMessage(String message) {
@@ -112,7 +112,7 @@ public class SwingObjectRunException extends RuntimeException implements SwingOb
 
 		writer.flush();
 		StringBuilder builder=new StringBuilder("<b>");
-		builder.append(HTMLUtils.convertAllLineBreaksToHtml(SwingObjProps.getApplicationProperty(getErrorCode(),getPlaceHolderValues())));
+		builder.append(HTMLUtils.convertAllLineBreaksToHtml(SwingObjProps.getApplicationProperty(getErrorCode(),(Object[])getPlaceHolderValues())));
 		builder.append("</b>");
 		if(isBasic) {
 			return "<html><font family=\"times new roman\">"+builder.toString()+"</font></html>";

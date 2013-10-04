@@ -34,7 +34,7 @@ public class SwingObjProps {
 	}
 
 	public static String getApplicationProperty(String key,Object... placeholderValues){
-		return replacePlaceHolders(errorProps.getString(key),placeholderValues);
+		return replacePlaceHolders(errorProps.getString(key),(Object[])placeholderValues);
 	}
 
 	public static String replacePlaceHolders(String property,Object[] params) {
