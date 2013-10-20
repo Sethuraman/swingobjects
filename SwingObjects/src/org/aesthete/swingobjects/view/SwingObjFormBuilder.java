@@ -14,7 +14,7 @@ import com.jgoodies.forms.layout.FormLayout;
  * provides a lot more functionality and makes life a lit easier. If you would like add more code to this, extend it and add
  * your functionality. Else build your own with this as an example if you need any reference.
  *
- * For an example on how to use this, refer the {@link BuilderShowcase} class.
+ * For an example on how to use this, refer the {@link test.BuilderShowcase} class.
  * @author sethu
  *
  */
@@ -227,6 +227,10 @@ public class SwingObjFormBuilder {
 		panel.add(sep,cc.xywh(col, 1,1,layout.getRowCount()));
 	}
 
+    public void addButtonBar(JButton... btns){
+        addButtonBar(columnCount-2, ButtonBarPos.Center, null, btns);
+    }
+
 	/**
 	 * Adds a button bar which honours the platform's ordering of buttons. A $rowbtngap will be appended first
 	 * then the button bar will be added onto a new $row after that.
@@ -312,7 +316,7 @@ public class SwingObjFormBuilder {
 
 	/**
 	 * Provide a set of row specs to be appeneded to the builder. Have a look at
-	 * {@link BuilderShowcase} for an example of where this is useful.
+	 * {@link test.BuilderShowcase} for an example of where this is useful.
 	 * @param rowspecs
 	 */
 	public void nextFewLines(String... rowspecs) {
