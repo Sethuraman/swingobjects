@@ -67,6 +67,9 @@ public class DateUtils {
     }
 
     public static String getStringFromDateDefaultFormat(Date date){
+        if(date==null){
+            return null;
+        }
         return new DateTime(date).toString(defaultDateTimeFormat);
     }
 
