@@ -24,23 +24,23 @@ import org.jdesktop.swingx.decorator.HighlighterFactory;
 import org.jdesktop.swingx.renderer.DefaultTableRenderer;
 import org.jdesktop.swingx.table.TableColumnExt;
 
-public class SwingObjTable<T extends RowDataBean> extends JXTable {
+public class SwingObjTable<$ModelData extends RowDataBean> extends JXTable {
 	private static final long serialVersionUID = 1L;
 	private boolean isSingleSelection = true; // false for multiple selection
 	protected Map<Integer, Color> shadedColsWithColor = new HashMap<Integer, Color>();
 	protected Map<Integer, Color> shadedRowsWithColor = new HashMap<Integer, Color>();
 	private boolean isRowColorPrecedence;
-	private T prototypeData;
-	private SwingObjTableModel<T> model;
-    private Class<T> classOfData;
+	private $ModelData prototypeData;
+	private SwingObjTableModel<$ModelData> model;
+    private Class<$ModelData> classOfData;
 
-    public SwingObjTable(Class<T> classOfData, T protoDataForSizing) {
+    public SwingObjTable(Class<$ModelData> classOfData, $ModelData protoDataForSizing) {
         this.classOfData = classOfData;
         this.prototypeData = protoDataForSizing;
 		initTable(classOfData);
 	}
 
-	public SwingObjTable(Class<T> classOfData) {
+	public SwingObjTable(Class<$ModelData> classOfData) {
         this.classOfData = classOfData;
         initTable(classOfData);
 	}
@@ -61,12 +61,12 @@ public class SwingObjTable<T extends RowDataBean> extends JXTable {
 		this.shadedColsWithColor = shadedColsWithColor;
 	}
 
-	public void initTable(Class<T> dataClass) {
-		model = new SwingObjTableModel<T>(dataClass);
+	public void initTable(Class<$ModelData> dataClass) {
+		model = new SwingObjTableModel<$ModelData>(dataClass);
 		initTable(model);
 	}
 
-	public void initTable(SwingObjTableModel<T> model) {
+	public void initTable(SwingObjTableModel<$ModelData> model) {
 		try {
 			this.model = model;
 			setModel(model);
@@ -156,7 +156,7 @@ public class SwingObjTable<T extends RowDataBean> extends JXTable {
 	/**
 	 * Need to supress the warning, otherwise from
 	 * {@link SwingObjTableConverter} there will be errors while working with
-	 * generic types. Ensure that the List passed in has only T objects stored
+	 * generic types. Ensure that the List passed in has only $ModelData objects stored
 	 * in it.
 	 *
 	 * @param data
@@ -167,12 +167,17 @@ public class SwingObjTable<T extends RowDataBean> extends JXTable {
 		packAll();
 	}
 
-	public void addRow(T row) {
+    public void addRow(int i, $ModelData row){
+        model.addRow(i, row);
+        packAll();
+    }
+
+	public void addRow($ModelData row) {
 		model.addRow(row);
 		packAll();
 	}
 
-	public void addRows(List<T> rows) {
+	public void addRows(List<$ModelData> rows) {
 		model.addRows(rows);
 		packAll();
 	}
@@ -182,12 +187,12 @@ public class SwingObjTable<T extends RowDataBean> extends JXTable {
 		packAll();
 	}
 
-	public void setRow(int row, T data) {
+	public void setRow(int row, $ModelData data) {
 		model.setRow(row, data);
 		packAll();
 	}
 
-	public List<T> getData() {
+	public List<$ModelData> getData() {
 		return model.getRows();
 	}
 
@@ -212,11 +217,11 @@ public class SwingObjTable<T extends RowDataBean> extends JXTable {
 		this.isRowColorPrecedence = isRowColorPrecedence;
 	}
 
-	public T getPrototypeData() {
+	public $ModelData getPrototypeData() {
 		return prototypeData;
 	}
 
-	public void setPrototypeData(T prototypeData) {
+	public void setPrototypeData($ModelData prototypeData) {
 		this.prototypeData = prototypeData;
 	}
 

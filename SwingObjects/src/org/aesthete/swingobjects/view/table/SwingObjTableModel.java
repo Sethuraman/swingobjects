@@ -110,6 +110,14 @@ public class SwingObjTableModel<T extends RowDataBean> extends AbstractTableMode
 		fireTableDataChanged();
 	}
 
+    public void addRow(int index, T row){
+        if(rows==null){
+            rows=new ArrayList<T>();
+        }
+        rows.add(index, row);
+        fireTableRowsInserted(index, index);
+    }
+
 	public void addRow(T row){
 		if(rows==null){
 			rows=new ArrayList<T>();
