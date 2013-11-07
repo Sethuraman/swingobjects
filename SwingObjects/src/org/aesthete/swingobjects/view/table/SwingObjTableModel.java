@@ -149,8 +149,11 @@ public class SwingObjTableModel<T extends RowDataBean> extends AbstractTableMode
 		}
 
 		rows=newrows;
-
-		fireTableRowsDeleted(rowsToBeDel[0],rowsToBeDel[rowsToBeDel.length-1]);
+        if(rows.isEmpty()){
+            fireTableDataChanged();
+        }else{
+            fireTableRowsDeleted(rowsToBeDel[0],rowsToBeDel[rowsToBeDel.length-1]);
+        }
 	}
 
 	public int getColumnCount() {
