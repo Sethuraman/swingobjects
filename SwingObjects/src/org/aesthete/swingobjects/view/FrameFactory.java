@@ -15,9 +15,7 @@ import java.util.MissingResourceException;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.swing.AbstractButton;
-import javax.swing.JComboBox;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 import org.aesthete.swingobjects.SwingObjProps;
 import org.aesthete.swingobjects.annotations.TitleIconImage;
@@ -170,13 +168,22 @@ public class FrameFactory {
                 setWindowTitle(comp, title);
                 setIconImage(comp, title);
             }
-            ((Window) comp).addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowClosing(WindowEvent e) {
-                    FrameFactory.dispose(framesetid, clz);
-                    super.windowClosing(e);
+
+            boolean addWindowCloseListener=true;
+            if(comp instanceof JFrame){
+                if(((JFrame)comp).getDefaultCloseOperation()==JFrame.DO_NOTHING_ON_CLOSE){
+                    addWindowCloseListener=false;
                 }
-            });
+            }
+            if(addWindowCloseListener){
+                ((Window) comp).addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        FrameFactory.dispose(framesetid, clz);
+                        super.windowClosing(e);
+                    }
+                });
+            }
         }
     }
 
