@@ -15,13 +15,14 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class GenericTreeNode<$TreeData> implements PropertyChangeListener{
 
     private $TreeData data;
-    private List<GenericTreeNode<$TreeData>> children;
+    private LinkedList<GenericTreeNode<$TreeData>> children;
     private GenericTreeNode<$TreeData> parent;
     private boolean isEditable;
     private boolean isEmptyRootNode;
@@ -181,7 +182,7 @@ public class GenericTreeNode<$TreeData> implements PropertyChangeListener{
     }
 
     public void removeChildren() {
-        this.children = new ArrayList<GenericTreeNode<$TreeData>>();
+        this.children = new LinkedList<GenericTreeNode<$TreeData>>();
         if(treeModel!=null){
             CommonUI.runInEDT(new Runnable() {
                 @Override
@@ -229,7 +230,7 @@ public class GenericTreeNode<$TreeData> implements PropertyChangeListener{
         return child;
     }
 
-    public void setChildren(List<GenericTreeNode<$TreeData>> children) {
+    public void setChildren(LinkedList<GenericTreeNode<$TreeData>> children) {
         for(GenericTreeNode<$TreeData> child : children) {
             child.parent = this;
             child.setTreeModel(treeModel);
@@ -259,6 +260,23 @@ public class GenericTreeNode<$TreeData> implements PropertyChangeListener{
 
     public void setTreeModel(SwingObjTreeTableModel<$TreeData> treeModel) {
         this.treeModel = treeModel;
+    }
+
+    public void repositionChildNodeAfter(GenericTreeNode<$TreeData> childNodeToReposition, GenericTreeNode<$TreeData> childNodeAfterWhichToReposition){
+        children.remove(childNodeToReposition);
+        for(ListIterator<GenericTreeNode<$TreeData>> iterator=children.listIterator();iterator.hasNext();){
+            if(iterator.next()==childNodeAfterWhichToReposition){
+                iterator.add(childNodeToReposition);
+            }
+        }
+        if(treeModel!=null){
+            CommonUI.runInEDT(new Runnable() {
+                @Override
+                public void run() {
+                    treeModel.updateTreeStructure(GenericTreeNode.this);
+                }
+            });
+        }
     }
 
 
