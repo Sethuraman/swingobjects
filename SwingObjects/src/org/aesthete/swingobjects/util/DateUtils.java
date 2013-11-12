@@ -27,7 +27,8 @@ import java.util.regex.Pattern;
 public class DateUtils {
 
     private static final Map<Pattern,String> patterns=getPatterns();
-    public static final DateTimeFormatter defaultDateTimeFormat=DateTimeFormat.forPattern(SwingObjProps.getApplicationProperty("defaultDateFormat"));
+    public static final DateTimeFormatter DEFAULT_DATE_FORMAT =DateTimeFormat.forPattern(SwingObjProps.getApplicationProperty("defaultDateFormat"));
+    public static final DateTimeFormatter DEFAULT_DATE_TIME_FORMAT =DateTimeFormat.forPattern(SwingObjProps.getApplicationProperty("defaultDateTimeFormat"));
 
     private static Map<Pattern,String> getPatterns() {
         String[] acceptabledateformatses = StringUtils.split(SwingObjProps.getApplicationProperty("acceptabledateformats"),"~");
@@ -70,7 +71,14 @@ public class DateUtils {
         if(date==null){
             return null;
         }
-        return new DateTime(date).toString(defaultDateTimeFormat);
+        return new DateTime(date).toString(DEFAULT_DATE_FORMAT);
+    }
+
+    public static String getStringFromDateTimeDefaultFormat(Date date){
+        if(date==null){
+            return null;
+        }
+        return new DateTime(date).toString(DEFAULT_DATE_TIME_FORMAT);
     }
 
 }
