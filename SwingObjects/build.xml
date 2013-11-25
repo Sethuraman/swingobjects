@@ -29,7 +29,14 @@
     </target>
 
     <target name="completeswingobj" depends="initswingobj, mainswingobj">
-        <copy file="${swingobjects.basedir}/build/swingobjects.jar" tofile="${swingobjects.basedir}/../../../../Csmart/workspaces/csmart/lib/swingobjects.jar" overwrite="true"/>
+        <copy file="${swingobjects.basedir}/build/swingobjects.jar"
+              tofile="${swingobjects.basedir}/../../../../Csmart/workspaces/csmart/lib/swingobjects.jar" overwrite="true"/>
+        <copy file="${swingobjects.basedir}/build/swingobjects.jar"
+              tofile="${swingobjects.basedir}/../../../../Csmart/workspaces/csmart/build/dist/lib/swingobjects.jar" overwrite="true"/>
+    </target>
+
+    <target name="swingobj-jenkins" depends="mainswingobj">
+        <copy file="${swingobjects.basedir}/build/swingobjects.jar" tofile="${user.home}/build/swingobjects/swingobjects.jar" overwrite="true"/>
     </target>
 
 
