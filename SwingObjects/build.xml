@@ -17,7 +17,7 @@
         <mkdir dir="${swingobjects.basedir}/build/classes" />
     </target>
 
-    <target name="compileswingobj">
+    <target name="compileswingobj" >
         <javac includeAntRuntime="false" debug="true" debuglevel="lines,vars,source" srcdir="${swingobjects.basedir}/src" destdir="${swingobjects.basedir}/build/classes">
             <classpath>
                 <path refid="dependjars" />
@@ -35,7 +35,7 @@
               tofile="${swingobjects.basedir}/../../../../Csmart/workspaces/csmart/build/dist/lib/swingobjects.jar" overwrite="true"/>
     </target>
 
-    <target name="swingobj-jenkins" depends="mainswingobj">
+    <target name="swingobj-jenkins" depends="initswingobj, mainswingobj">
         <copy file="${swingobjects.basedir}/build/swingobjects.jar" tofile="${user.home}/build/swingobjects/swingobjects.jar" overwrite="true"/>
     </target>
 
