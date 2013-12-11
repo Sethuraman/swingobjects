@@ -123,71 +123,76 @@ public class SwingObjFormBuilder {
 	/**
 	 * Add a Jlabel with value and a component side by side separated by column. Meaning if the
 	 * label is added at column x then the component will be added at column x+2.
-	 * @param value
-	 * @param component
-	 */
-	public void addLblValAndComp(String value, JComponent component){
+     * @param value
+     * @param component
+     */
+	public SwingObjFormBuilder addLblValAndComp(String value, JComponent component){
 		JLabel lbl=new JLabel(value);
 		builder.add(lbl,cc.xy(col,row));
 		incrementColumnCounter(2);
 		builder.add(component,cc.xy(col,row));
 		incrementColumnCounter(2);
+        return this;
 	}
 
 	/**
 	 * Add an array of components on the same line. There should be a gap between each component.
 	 * Meaning between components[i] and components[i+1] will be put into column x and
 	 * column x+2.
-	 * @param components
-	 */
-	public void addComponents(JComponent... components){
+     * @param components
+     */
+	public SwingObjFormBuilder addComponents(JComponent... components){
 		for(JComponent comp : components){
 			builder.add(comp,cc.xy(col,row));
 			incrementColumnCounter(2);
 		}
+        return this;
 	}
 
 	/**
 	 * Add a component to span across columns.
 	 *
-	 * @param component component to add
-	 * @param colSpan integer representing the no. of columns to span
-	 */
-	public void addComponent(JComponent component,int colSpan){
+     * @param component component to add
+     * @param colSpan integer representing the no. of columns to span
+     */
+	public SwingObjFormBuilder addComponent(JComponent component, int colSpan){
 		builder.add(component,cc.xyw(col,row,colSpan));
 		incrementColumnCounter(colSpan+1);
+        return this;
 	}
 
 	/**
 	 * Add a component to span across columns and rows.
-	 * @param component component to add
-	 * @param colSpan integer representing the no. of columns to span
-	 * @param rowSpan integer representing the no. of rows to span
-	 */
-	public void addComponent(JComponent component,int colSpan,int rowSpan){
+     * @param component component to add
+     * @param colSpan integer representing the no. of columns to span
+     * @param rowSpan integer representing the no. of rows to span
+     */
+	public SwingObjFormBuilder addComponent(JComponent component, int colSpan, int rowSpan){
 		builder.add(component,cc.xywh(col,row,colSpan,rowSpan));
 		incrementColumnCounter(colSpan+1);
+        return this;
 	}
 
 	/**
 	 * Add a component to span across all the defined columns.
 	 *
-	 * @param component component to add
-	 */
-	public void addComponentSpanAllCols(JComponent component){
+     * @param component component to add
+     */
+	public SwingObjFormBuilder addComponentSpanAllCols(JComponent component){
 		builder.add(component,cc.xyw(1,row,layout.getColumnCount()));
 		resetColumnCount();
+        return this;
 	}
 
 	/**
 	 * Creates a JPanel and add components to the center of it.
 	 *
-	 * @param bgColor Provide a color for the panel that will be created. null if the look and feels colour needs to be used.
-	 * @param colSpan Number of columns to span
-	 * @param startCol The starting column
-	 * @param components the components to add. There will be a gap $columngap appended between each column automatically
-	 */
-	public void addComponentsToCenter(Color bgColor,int colSpan,int startCol,JComponent... components){
+     * @param bgColor Provide a color for the panel that will be created. null if the look and feels colour needs to be used.
+     * @param colSpan Number of columns to span
+     * @param startCol The starting column
+     * @param components the components to add. There will be a gap $columngap appended between each column automatically
+     */
+	public SwingObjFormBuilder addComponentsToCenter(Color bgColor, int colSpan, int startCol, JComponent... components){
 		FormLayout centreLayout=new FormLayout();
 		PanelBuilder tempbuilder=new PanelBuilder(centreLayout);
 		tempbuilder.appendRow("$row");
@@ -206,55 +211,58 @@ public class SwingObjFormBuilder {
 		JPanel temppanel = tempbuilder.getPanel();
 		temppanel.setBackground(bgColor);
 		builder.add(temppanel, cc.xyw(tempstartcol,row,colSpan));
+        return this;
 	}
 
 	/**
 	 * Add component at the current column.
-	 * @param component
-	 */
-	public void addComponent(JComponent component){
+     * @param component
+     */
+	public SwingObjFormBuilder addComponent(JComponent component){
 		builder.add(component,cc.xy(col,row));
 		incrementColumnCounter(2);
+        return this;
 	}
 
 	/**
 	 * Add a vertical separator at the specified column
-	 * @param col column where the vertical separator should be added
-	 */
-	public void addVerticalSeparator(int col){
+     * @param col column where the vertical separator should be added
+     */
+	public SwingObjFormBuilder addVerticalSeparator(int col){
 		JSeparator sep=new JSeparator(SwingConstants.VERTICAL);
 		CellConstraints cc=new CellConstraints();
 		panel.add(sep,cc.xywh(col, 1,1,layout.getRowCount()));
+        return this;
 	}
 
-    public void addButtonBar(JButton... btns){
-        addButtonBar(columnCount-2, ButtonBarPos.Center, null, btns);
+    public SwingObjFormBuilder addButtonBar(JButton... btns){
+        return addButtonBar(columnCount-2, ButtonBarPos.Center, null, btns);
     }
 
 	/**
 	 * Adds a button bar which honours the platform's ordering of buttons. A $rowbtngap will be appended first
 	 * then the button bar will be added onto a new $row after that.
-	 * @param colSpan no. of columns to span
-	 * @param buttonBarPos position of the buttons on the bar.
-	 * @param bgColor a colour of the panel if required. Else null.
-	 * @param buttons the button array to be added.
-	 */
-	public void addButtonBar(int colSpan,ButtonBarPos buttonBarPos,Color bgColor,JButton... buttons){
-		addButtonBar("$rowbtngap", "$row", colSpan, buttonBarPos, bgColor, buttons);
+     * @param colSpan no. of columns to span
+     * @param buttonBarPos position of the buttons on the bar.
+     * @param bgColor a colour of the panel if required. Else null.
+     * @param buttons the button array to be added.
+     */
+	public SwingObjFormBuilder addButtonBar(int colSpan, ButtonBarPos buttonBarPos, Color bgColor, JButton... buttons){
+		return addButtonBar("$rowbtngap", "$row", colSpan, buttonBarPos, bgColor, buttons);
 	}
 
 	/**
 	 * Same as {@link SwingObjFormBuilder#addButtonBar(int, ButtonBarPos, Color, JButton...)} except that you
 	 * are allowed to specify the button row gap and button row's row specs.
-	 * @param buttonRowGap row specs representing the gap between the panel and button bar
-	 * @param buttonRow row specs representing the row on which the buttons will be put on
-	 * @param colSpan number of columns the button bar will span
-	 * @param buttonBarPos position of the buttons on the bar
-	 * @param bgColor Background colour. Null if none.
-	 * @param buttons the button you wish to add
-	 */
-	public void addButtonBar(String buttonRowGap,String buttonRow,int colSpan,
-			ButtonBarPos buttonBarPos,Color bgColor,JButton... buttons){
+     * @param buttonRowGap row specs representing the gap between the panel and button bar
+     * @param buttonRow row specs representing the row on which the buttons will be put on
+     * @param colSpan number of columns the button bar will span
+     * @param buttonBarPos position of the buttons on the bar
+     * @param bgColor Background colour. Null if none.
+     * @param buttons the button you wish to add
+     */
+	public SwingObjFormBuilder addButtonBar(String buttonRowGap, String buttonRow, int colSpan,
+                                            ButtonBarPos buttonBarPos, Color bgColor, JButton... buttons){
 		if(!isDontAddRowsAuto){
 			builder.appendRow(buttonRowGap);
 			builder.appendRow(buttonRow);
@@ -272,39 +280,42 @@ public class SwingObjFormBuilder {
 		}
 		builder.add(buttonBar,cc.xyw(col,row,colSpan));
 		incrementColumnCounter(colSpan+1);
+        return this;
 	}
 
 	/**
 	 * Adds a horizontal separator spanning all columns. It appends a $rowsegap first and then add the separator on a new $row
 	 */
-	public void addSeperator(){
+	public SwingObjFormBuilder addSeperator(){
 		builder.appendRow("$rowsegap");
 		incrementRowCounter(1);
 		resetColumnCount();
 		builder.addSeparator(null,cc.xyw(col-1,row,columnCount));
 		builder.appendRow("$row");
 		incrementRowCounter(1);
+        return this;
 	}
 
 
     /**
      * Adds a horizontal separator spanning all columns. It appends a $rowsegap first and then add the separator on a new $row
      */
-    public void addSeperator(String rowGapSpec, String rowSpec){
+    public SwingObjFormBuilder addSeperator(String rowGapSpec, String rowSpec){
         builder.appendRow(rowGapSpec);
         incrementRowCounter(1);
         resetColumnCount();
         builder.addSeparator(null,cc.xyw(col-1,row,columnCount));
         builder.appendRow(rowSpec);
         incrementRowCounter(1);
+        return this;
     }
 
 
     /**
 	 * Adds a labeled horizontal separator spanning all columns. It appends a $rowsegap first and then add the separator on a new $row
-	 * @param value the label to be used on the separator.
-	 */
-	public void addLabeledSeparatorFromValue(String value){
+     * @param value the label to be used on the separator.
+     */
+	public SwingObjFormBuilder addLabeledSeparatorFromValue(String value){
 		builder.appendRow("$rowsegap");
 		incrementRowCounter(1);
 		resetColumnCount();
@@ -312,40 +323,44 @@ public class SwingObjFormBuilder {
 		builder.appendRow("$row");
 		incrementRowCounter(1);
 		resetColumnCount();
+        return this;
 	}
 
 	/**
 	 * Provide a set of row specs to be appeneded to the builder. Have a look at
 	 * {@link test.BuilderShowcase} for an example of where this is useful.
-	 * @param rowspecs
-	 */
-	public void nextFewLines(String... rowspecs) {
+     * @param rowspecs
+     */
+	public SwingObjFormBuilder nextFewLines(String... rowspecs) {
 		incrementRowCounter(2);
 		for(String rowspec : rowspecs) {
 			builder.appendRow(rowspec);
 		}
 		resetColumnCount();
+        return this;
 	}
 
 	/**
 	 * Increment the row counter by 2 and dont append any rows. It also resets the column count
 	 */
-	public void nextLinePlain(){
+	public SwingObjFormBuilder nextLinePlain(){
 		incrementRowCounter(2);
 		resetColumnCount();
+        return this;
 	}
 
 
 	/**
 	 * Append a row as a row gap and then append a row.
-	 * @param gap row gap spec
-	 * @param row row spec
-	 */
-	public void nextLine(String gap,String row){
+     * @param gap row gap spec
+     * @param row row spec
+     */
+	public SwingObjFormBuilder nextLine(String gap, String row){
 		resetColumnCount();
 		builder.appendRow(gap);
 		builder.appendRow(row);
 		incrementRowCounter(2);
+        return this;
 	}
 
 	/**
@@ -360,46 +375,51 @@ public class SwingObjFormBuilder {
 
 	/**
 	 * Appends a $rowgap first and then a row based on the rowspec provided
-	 * @param rowSpec row spec to be added
-	 */
-	public void nextLine(String rowSpec){
+     * @param rowSpec row spec to be added
+     */
+	public SwingObjFormBuilder nextLine(String rowSpec){
 		resetColumnCount();
 		builder.appendRow("$rowgap");
 		builder.appendRow(rowSpec);
 		incrementRowCounter(2);
+        return this;
 	}
 
 	/**
 	 * Appends a new row based on the rowspec without any gap.
-	 * @param rowSpec
-	 */
-	public void nextLineWithoutGap(String rowSpec){
+     * @param rowSpec
+     */
+	public SwingObjFormBuilder nextLineWithoutGap(String rowSpec){
 		resetColumnCount();
 		builder.appendRow(rowSpec);
 		incrementRowCounter(1);
+        return this;
 	}
 
 	/**
 	 * Resets the column counter to 2
 	 */
-	public void resetColumnCount() {
+	public SwingObjFormBuilder resetColumnCount() {
 		col=2;
+        return this;
 	}
 
 	/**
 	 * Increments the column counter by value
-	 * @param value
-	 */
-	public void incrementColumnCounter(int value){
+     * @param value
+     */
+	public SwingObjFormBuilder incrementColumnCounter(int value){
 		col+=value;
+        return this;
 	}
 
 	/**
 	 * Increments the row counter by value
-	 * @param value
-	 */
-	public void incrementRowCounter(int value){
+     * @param value
+     */
+	public SwingObjFormBuilder incrementRowCounter(int value){
 		row+=value;
+        return this;
 	}
 
 	/**
@@ -426,20 +446,23 @@ public class SwingObjFormBuilder {
 /**
  * Complete laying out a panel by appending a $rowgap at the end.
  */
-	public void complete(){
+	public SwingObjFormBuilder complete(){
 		builder.appendRow("$rowgap");
+        return this;
 	}
 
 	/**
 	 * Sets the rowcounter to the last row.
 	 */
-	public void goToLastRow() {
+	public SwingObjFormBuilder goToLastRow() {
 		this.row=layout.getRowCount();
+        return this;
 	}
 
 
-	public void setRow(int row) {
+	public SwingObjFormBuilder setRow(int row){
 		this.row = row;
+        return this;
 	}
 
 
@@ -451,8 +474,9 @@ public class SwingObjFormBuilder {
 		return row;
 	}
 
-	public void setColumn(int col) {
+	public SwingObjFormBuilder setColumn(int col){
 		this.col = col;
+        return this;
 	}
 
 	/**
@@ -467,19 +491,20 @@ public class SwingObjFormBuilder {
 	 * Tells the builder not append rows automatically.
 	 * @return
 	 */
-	public void setDontAddRowsAuto(boolean isDontAddRowsAuto) {
-		this.isDontAddRowsAuto = isDontAddRowsAuto;
+	public SwingObjFormBuilder setDontAddRowsAuto(boolean isDontAddRowsAuto) {
+        this.isDontAddRowsAuto = isDontAddRowsAuto;
+        return this;
 	}
 
 	/**
 	 * Create a new JPanel based on the column specs provided and add the components to it. Make sure the colspecs includes a gap before and after adding
 	 * all components.
-	 * @param colSpan
-	 * @param bgcolor
-	 * @param layout
-	 * @param components
-	 */
-	public void addComponentsInNewPanel(int colSpan,Color bgcolor,String layout,JComponent... components) {
+     * @param colSpan
+     * @param bgcolor
+     * @param layout
+     * @param components
+     */
+	public SwingObjFormBuilder addComponentsInNewPanel(int colSpan, Color bgcolor, String layout, JComponent... components) {
 		FormLayout innerLayout=new FormLayout(layout);
 		SwingObjFormBuilder builder=new SwingObjFormBuilder(innerLayout);
 		builder.addComponents(components);
@@ -488,6 +513,7 @@ public class SwingObjFormBuilder {
 		}else {
 			this.addComponent(builder.getPanel(bgcolor),colSpan);
 		}
+        return this;
 	}
 
 	/**
