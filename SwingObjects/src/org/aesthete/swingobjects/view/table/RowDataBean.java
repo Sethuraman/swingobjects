@@ -1,7 +1,10 @@
 package org.aesthete.swingobjects.view.table;
 
+import org.aesthete.swingobjects.annotations.Column;
 import org.aesthete.swingobjects.datamap.DataWrapper;
 import org.aesthete.swingobjects.datamap.SwingObjData;
+
+import java.lang.reflect.Field;
 
 /**
  * Any object you wish to use to represent a table's row, needs to extend this class. It will force you to declare
@@ -18,4 +21,15 @@ import org.aesthete.swingobjects.datamap.SwingObjData;
 public abstract class RowDataBean {
 	public abstract int hashCode();
 	public abstract boolean equals(Object objToCheck);
+
+    public static int indexOfColumn(Class<? extends RowDataBean> clz, String columnName){
+        Field[] fields=clz.getDeclaredFields();
+        for(Field field : fields){
+            Column column=field.getAnnotation(Column.class);
+            if(column.name().equals(columnName)){
+                return column.index();
+            }
+        }
+        return -1;
+    }
 }

@@ -333,6 +333,9 @@ public class SwingObjFormBuilder {
      */
 	public SwingObjFormBuilder nextFewLines(String... rowspecs) {
 		incrementRowCounter(2);
+        if(rowspecs[0].indexOf(',')!=-1){
+            rowspecs=rowspecs[0].split(",");
+        }
 		for(String rowspec : rowspecs) {
 			builder.appendRow(rowspec);
 		}

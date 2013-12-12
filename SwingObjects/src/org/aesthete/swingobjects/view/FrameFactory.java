@@ -121,6 +121,14 @@ public class FrameFactory {
 
     private static String frameSetIDInUse;
 
+    public static void showContainerInTheCenter(String framesetid, Class<? extends Component> clz, Object... objs){
+        if(clz.isAssignableFrom(JFrame.class)){
+            CommonUI.showOnScreen((JFrame) getNewContainer(framesetid, clz, objs));
+        }else{
+            CommonUI.showOnScreen((JDialog) getNewContainer(framesetid, clz, objs));
+        }
+    }
+
     /**
      * This will instantiate a new container. The class passed in must extend from Container at the minimum. You
      * would generally pass in a JFrame, JPanel, JDialog, JTabbedPane, etc.
