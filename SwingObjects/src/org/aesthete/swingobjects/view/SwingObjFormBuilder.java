@@ -369,11 +369,12 @@ public class SwingObjFormBuilder {
 	/**
 	 * Appends a $rowgap row first and then a $row row.
 	 */
-	public void nextLine(){
+	public SwingObjFormBuilder nextLine(){
 		resetColumnCount();
 		builder.appendRow("$rowgap");
 		builder.appendRow("$row");
 		incrementRowCounter(2);
+        return this;
 	}
 
 	/**
