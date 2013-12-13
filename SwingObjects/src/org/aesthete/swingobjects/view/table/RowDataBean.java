@@ -5,6 +5,7 @@ import org.aesthete.swingobjects.datamap.DataWrapper;
 import org.aesthete.swingobjects.datamap.SwingObjData;
 
 import java.lang.reflect.Field;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Any object you wish to use to represent a table's row, needs to extend this class. It will force you to declare
