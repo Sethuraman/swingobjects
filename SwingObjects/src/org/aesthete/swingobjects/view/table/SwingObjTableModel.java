@@ -156,6 +156,14 @@ public class SwingObjTableModel<T extends RowDataBean> extends AbstractTableMode
         }
 	}
 
+    public void delAllRows() {
+        if(rows==null){
+            return;
+        }
+        rows.clear();
+        fireTableDataChanged();
+    }
+
 	public int getColumnCount() {
 		return columns.size();
 	}
@@ -216,4 +224,6 @@ public class SwingObjTableModel<T extends RowDataBean> extends AbstractTableMode
 	public Map<Integer, ColumnInfo> getColumns() {
 		return columns;
 	}
+
+
 }

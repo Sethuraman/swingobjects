@@ -187,6 +187,11 @@ public class SwingObjTable<$ModelData extends RowDataBean> extends JXTable {
 		packAll();
 	}
 
+    public void delAllRows(){
+        model.delAllRows();
+        packAll();
+    }
+
 	public void setRow(int row, $ModelData data) {
 		model.setRow(row, data);
 		packAll();
