@@ -121,12 +121,14 @@ public class FrameFactory {
 
     private static String frameSetIDInUse;
 
-    public static void showContainerInTheCenter(String framesetid, Class<? extends Component> clz, Object... objs){
+    public static <T extends Component> T showContainerInTheCenter(String framesetid, Class<? extends Component> clz, Object... objs){
+        Component newContainer = getNewContainer(framesetid, clz, objs);
         if(clz.isAssignableFrom(JFrame.class)){
-            CommonUI.showOnScreen((JFrame) getNewContainer(framesetid, clz, objs));
+            CommonUI.showOnScreen((JFrame) newContainer);
         }else{
-            CommonUI.showOnScreen((JDialog) getNewContainer(framesetid, clz, objs));
+            CommonUI.showOnScreen((JDialog) newContainer);
         }
+        return (T)newContainer;
     }
 
     /**
