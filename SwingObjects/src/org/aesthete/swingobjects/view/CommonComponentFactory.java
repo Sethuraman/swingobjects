@@ -19,16 +19,16 @@ public class CommonComponentFactory {
 	}
 
 	public static JLabel getH1WrappedLabelFromString(String value){
-		return new JLabel(getHtmlString(1, value, "white", false));
+		return new JLabel(getHtmlString(1, value, "black", false));
 	}
 	public static JLabel getH2WrappedLabelFromString(String value){
-		return new JLabel(getHtmlString(2, value, "white", false));
+		return new JLabel(getHtmlString(2, value, "black", false));
 	}
 	public static JLabel getH3WrappedLabelFromString(String value){
-		return new JLabel(getHtmlString(3, value, "white", false));
+		return new JLabel(getHtmlString(3, value, "black", false));
 	}
 	public static JLabel getH4WrappedLabelFromString(String value){
-		return new JLabel(getHtmlString(4, value, "white", false));
+		return new JLabel(getHtmlString(4, value, "black", false));
 	}
 
 	public static String getHtmlString(int heading,String value,String colour,boolean isBold){
